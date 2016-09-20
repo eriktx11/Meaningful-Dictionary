@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Xml;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
@@ -44,12 +47,16 @@ public class MainActivity extends AppCompatActivity {
 //        textView.setText(data);
 //    }
 
+
+    View linealLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        linealLayout =  findViewById(R.id.info);
 
-        textview = (TextView) findViewById(R.id.textId);
+        //textview = (TextView) findViewById(R.id.textId);
         //String dictWord =
         new FectchWords().execute("seat");
         //textView.setText(dictWord);
@@ -65,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
             // Create a progressbar
             pDialog = new ProgressDialog(MainActivity.this);
             // Set progressbar title
-            pDialog.setTitle("Android Simple XML Parsing using DOM Tutorial");
+            pDialog.setTitle("Meaningful Dictionary");
             // Set progressbar message
             pDialog.setMessage("Loading...");
             pDialog.setIndeterminate(false);
@@ -143,11 +150,21 @@ public class MainActivity extends AppCompatActivity {
 
             for (int i = 0; i < nodelist.getLength(); i++) {
                 Node nNode = nodelist.item(i);
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element eElement = (Element) nNode;
-                    // Set the texts into TextViews from item nodes
-                    // Get the title
-                    textview.setText(getNode("dt", eElement));
+                NodeList childList = nodelist.item(i).getChildNodes();
+
+                for (int j = 0; j < childList.getLength(); j++) {
+
+                    Node childNode = childList.item(j);
+                    if ("dt".equals(childNode.getNodeName())) {
+                        TextView valueTV = new TextView(getBaseContext());
+                        Element eElement = (Element) childNode;
+                        valueTV.setText(childList.item(j).getTextContent()
+                                .trim());
+                        valueTV.setId(j);
+                        valueTV.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                        ((LinearLayout) linealLayout).addView(valueTV);
+                    }
                 }
             }
             // Close progressbar
