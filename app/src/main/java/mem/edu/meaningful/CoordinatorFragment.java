@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
@@ -49,7 +50,6 @@ public class CoordinatorFragment extends Fragment {
     List<String> data = new ArrayList<>();
     private AppPreferences _sPref;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.coordinator_layout, container, false);
@@ -58,7 +58,6 @@ public class CoordinatorFragment extends Fragment {
         _sPref = new AppPreferences(getContext());
         new fetchData().execute(_sPref.getSmsBody("key"));
         return rootView;
-
     }
 
     private void setupRecyclerView(RecyclerView recyclerView){
@@ -219,28 +218,23 @@ public class CoordinatorFragment extends Fragment {
                 for (int j = 0; j < childList.getLength(); j++) {
                     Node childNode = childList.item(j);
                     if ("sn".equals(childNode.getNodeName())) {
-                        //tagWord = new TextView(c);
+
                         Element eElement = (Element) childNode;
+                        data.add(String.valueOf(cont));
                     }
 
                     if ("dt".equals(childNode.getNodeName())) {
-                        // TextView meaningWord = new TextView(c);
-                        Element eElement = (Element) childNode;
-//                        meaningWord.setText(childList.item(j).getTextContent()
-//                                .trim());
-//                        meaningWord.setId(j);
-//                        meaningWord.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-//
-//                        ((LinearLayout) linearLayout).addView(meaningWord);
-                        cont++;
-                    }
 
-                    data.add(childList.item(j).getTextContent()
-                            .trim());
+                        cont++;
+
+                        data.add(childList.item(j).getTextContent()
+                                .trim());
+                    }
                 }
             }
             // Close progressbar
             pDialog.dismiss();
+            recyclerView.getAdapter().notifyDataSetChanged();
         }
     }
 

@@ -1,6 +1,7 @@
 package mem.edu.meaningful;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -13,38 +14,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Xml;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xmlpull.v1.XmlPullParser;
-
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
             searchWord = editText.getText().toString();
             _sPref = new AppPreferences(getBaseContext());
             _sPref.saveSmsBody("key", searchWord);
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            linearLayout = findViewById(R.id.info);
+            imm.hideSoftInputFromWindow(linearLayout.getWindowToken(), 0);
             viewPager = (ViewPager)findViewById(R.id.tab_viewpager);
 
             if (viewPager != null){
