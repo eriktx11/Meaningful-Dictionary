@@ -1,12 +1,20 @@
 package mem.edu.meaningful;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Xml;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,6 +37,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -37,147 +48,82 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class MainActivity extends AppCompatActivity {
 
-
     TextView textview;
+    EditText editText;
+    Button button;
+    String searchWord;
+    TextView tagWord;
+    private AppPreferences _sPref;
+    private ViewPager viewPager;
 
-    NodeList nodelist;
-    ProgressDialog pDialog;
+    View linearLayout;
 
-//    private void setData(String data){
-//        textView.setText(data);
-//    }
+    private View.OnClickListener SearchListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            searchWord = editText.getText().toString();
+            _sPref = new AppPreferences(getBaseContext());
+            _sPref.saveSmsBody("key", searchWord);
+            viewPager = (ViewPager)findViewById(R.id.tab_viewpager);
 
-
-    View linealLayout;
+            if (viewPager != null){
+                setupViewPager(viewPager);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        linealLayout =  findViewById(R.id.info);
+        linearLayout =  findViewById(R.id.info);
+        editText = (EditText) findViewById(R.id.editText);
+        //setWord(searchWord);
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(SearchListener);
 
-        //textview = (TextView) findViewById(R.id.textId);
-        //String dictWord =
-        new FectchWords().execute("seat");
-        //textView.setText(dictWord);
+        if (viewPager != null){
+            setupViewPager(viewPager);
+        }
 
     }
 
 
-    public class FectchWords extends AsyncTask<String, String, String>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Create a progressbar
-            pDialog = new ProgressDialog(MainActivity.this);
-            // Set progressbar title
-            pDialog.setTitle("Meaningful Dictionary");
-            // Set progressbar message
-            pDialog.setMessage("Loading...");
-            pDialog.setIndeterminate(false);
-            // Show progressbar
-            pDialog.show();
-        }
-
-
-        private String getMeaningDataJson(String meaningJsonStr) throws JSONException{
-
-
-                Document doc = null;
-                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                try {
-
-                    DocumentBuilder db = dbf.newDocumentBuilder();
-
-                    InputSource is = new InputSource();
-                    is.setCharacterStream(new StringReader(meaningJsonStr));
-                    doc = db.parse(is);
-
-                } catch (ParserConfigurationException e) {
-                    Log.e("Error: ", e.getMessage());
-                    return null;
-                } catch (SAXException e) {
-                    Log.e("Error: ", e.getMessage());
-                    return null;
-                } catch (IOException e) {
-                    Log.e("Error: ", e.getMessage());
-                    return null;
-                }
-
-            nodelist = doc.getElementsByTagName("def");
-
-            return null;
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-
-
-            String xml = null;
-            String url = "http://www.dictionaryapi.com/api/v1/references/collegiate/xml/hypocrite?key=3032f934-5c9e-46c7-9226-1bb18657343f";
-
-
-            try {
-                // defaultHttpClient
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(url);
-
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-                HttpEntity httpEntity = httpResponse.getEntity();
-                xml = EntityUtils.toString(httpEntity);
-
-
-                try {
-                    return getMeaningDataJson(xml);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            for (int i = 0; i < nodelist.getLength(); i++) {
-                Node nNode = nodelist.item(i);
-                NodeList childList = nodelist.item(i).getChildNodes();
-
-                for (int j = 0; j < childList.getLength(); j++) {
-
-                    Node childNode = childList.item(j);
-                    if ("dt".equals(childNode.getNodeName())) {
-                        TextView valueTV = new TextView(getBaseContext());
-                        Element eElement = (Element) childNode;
-                        valueTV.setText(childList.item(j).getTextContent()
-                                .trim());
-                        valueTV.setId(j);
-                        valueTV.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-                        ((LinearLayout) linealLayout).addView(valueTV);
-                    }
-                }
-            }
-            // Close progressbar
-            pDialog.dismiss();
-        }
+    private void setupViewPager(ViewPager viewPager){
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(new CoordinatorFragment(), "Coordinator Layout", searchWord);
+        viewPager.setAdapter(adapter);
     }
 
-    // getNode function
-    private static String getNode(String sTag, Element eElement) {
-        NodeList nlList = eElement.getElementsByTagName(sTag).item(0)
-                .getChildNodes();
-        Node nValue = (Node) nlList.item(0);
-        return nValue.getNodeValue();
+
+    static class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+        private final List<String> mFragmentKeyWord = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager){
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFrag(Fragment fragment, String title, String APIkeyWord){
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+            mFragmentKeyWord.add(APIkeyWord);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position){
+            return mFragmentTitleList.get(position);
+        }
     }
 
 

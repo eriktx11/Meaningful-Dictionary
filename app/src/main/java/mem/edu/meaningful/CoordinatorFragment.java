@@ -1,0 +1,97 @@
+package mem.edu.meaningful;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+/**
+ * Created by rufflez on 6/21/15.
+ */
+public class CoordinatorFragment extends Fragment implements XMLdict.AsyncResponse {
+
+    XMLdict asyncTask = new XMLdict(getActivity());
+    RecyclerView recyclerView;
+
+    String[] data = new String[10];
+    private AppPreferences _sPref;
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        View rootView = inflater.inflate(R.layout.coordinator_layout, container, false);
+        recyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerView);
+        setupRecyclerView(recyclerView);
+        asyncTask.delegate = this;
+        _sPref = new AppPreferences(getContext());
+        asyncTask.execute(_sPref.getSmsBody("key"));
+        return rootView;
+
+    }
+
+    private void setupRecyclerView(RecyclerView recyclerView){
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+        recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(getActivity(),
+                data));
+    }
+
+    @Override
+    public void processFinish(String[] output) {
+        data=output;
+    }
+
+    public static class SimpleStringRecyclerViewAdapter extends RecyclerView.Adapter<SimpleStringRecyclerViewAdapter.ViewHolder>{
+        private String[] mValues;
+        private Context mContext;
+
+        public static class ViewHolder extends RecyclerView.ViewHolder {
+
+            public final View mView;
+            public final TextView mTextView;
+
+            public ViewHolder(View view) {
+                super(view);
+                mView = view;
+                mTextView = (TextView) view.findViewById(android.R.id.text1);
+            }
+        }
+
+        public String getValueAt(int position) {
+            return mValues[position];
+        }
+
+        public SimpleStringRecyclerViewAdapter(Context context, String[] items) {
+            mContext = context;
+            mValues = items;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(android.R.layout.simple_list_item_1, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
+            holder.mTextView.setText(mValues[position]);
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Snackbar.make(v, getValueAt(position), Snackbar.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return mValues.length;
+        }
+    }
+}
