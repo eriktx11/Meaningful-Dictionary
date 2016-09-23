@@ -19,7 +19,9 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/search_horizontal_margin"
+        android:paddingRight="@dimen/search_horizontal_margin">
 
         <EditText
             android:layout_width="match_parent"

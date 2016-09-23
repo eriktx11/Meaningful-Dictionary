@@ -1,24 +1,20 @@
 package mem.edu.meaningful;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Xml;
+
+import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -66,12 +62,34 @@ public class MainActivity extends AppCompatActivity {
             setupViewPager(viewPager);
         }
 
+        TabLayout tabLayout = (TabLayout)findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        PagerTitleStrip titleStrip = (PagerTitleStrip) findViewById(R.id.pager_title_strip);
+        titleStrip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
     }
 
 
     private void setupViewPager(ViewPager viewPager){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new CoordinatorFragment(), "Coordinator Layout", searchWord);
+        adapter.addFrag(new CoordinatorFragment(), searchWord);
+        adapter.addFrag(new ImagesFragment(), "Images");
         viewPager.setAdapter(adapter);
     }
 
@@ -79,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     static class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
-        private final List<String> mFragmentKeyWord = new ArrayList<>();
+       // private final List<String> mFragmentKeyWord = new ArrayList<>();
 
         public ViewPagerAdapter(FragmentManager manager){
             super(manager);
@@ -95,10 +113,10 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentList.size();
         }
 
-        public void addFrag(Fragment fragment, String title, String APIkeyWord){
+        public void addFrag(Fragment fragment, String title){
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
-            mFragmentKeyWord.add(APIkeyWord);
+           // mFragmentKeyWord.add(APIkeyWord);
         }
 
         @Override

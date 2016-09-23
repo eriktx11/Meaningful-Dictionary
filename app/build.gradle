@@ -17,8 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     buildTypes.each {
         it.buildConfigField 'String', 'OPEN_API_KEY', dictionaryKey
+        it.buildConfigField 'String', 'PIXABAY_API_KEY', pixabayKey
     }
 }
 
@@ -30,5 +32,6 @@ dependencies {
     compile 'com.android.support:design:24.1.1'
     compile 'com.android.support:recyclerview-v7:24.1.1'
     compile 'com.android.support:cardview-v7:24.1.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
 }
