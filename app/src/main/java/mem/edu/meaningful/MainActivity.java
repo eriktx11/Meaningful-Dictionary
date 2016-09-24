@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
         linearLayout =  findViewById(R.id.info);
         editText = (EditText) findViewById(R.id.editText);
@@ -62,24 +63,24 @@ public class MainActivity extends AppCompatActivity {
             setupViewPager(viewPager);
         }
 
-        TabLayout tabLayout = (TabLayout)findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(viewPager);
-
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+//        TabLayout tabLayout = (TabLayout)findViewById(R.id.tabLayout);
+//        tabLayout.setupWithViewPager(viewPager);
+//
+//        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                viewPager.setCurrentItem(tab.getPosition());
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
 
         PagerTitleStrip titleStrip = (PagerTitleStrip) findViewById(R.id.pager_title_strip);
         titleStrip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
