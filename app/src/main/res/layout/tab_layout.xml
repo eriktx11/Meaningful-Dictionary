@@ -18,7 +18,7 @@
             <!--android:layout_height="?attr/actionBarSize"-->
             <!--android:layout_gravity="bottom"-->
             <!--app:tabMode="scrollable"-->
-            <!--android:background="#ffffff"/>-->
+            <!--android:background="#d7bdbd"/>-->
     </android.support.design.widget.AppBarLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/tab_viewpager"
@@ -30,5 +30,6 @@
         style="@style/PagerTitleStrip"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#bcffcb"
     android:layout_gravity="top"/></android.support.v4.view.ViewPager>
 </android.support.design.widget.CoordinatorLayout>

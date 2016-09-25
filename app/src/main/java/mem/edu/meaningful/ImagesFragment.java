@@ -145,17 +145,6 @@ public class ImagesFragment extends Fragment {
 //usage example
 //https://pixabay.com/api/?key=[MY KEY]&q=yellow+flowers&image_type=photo&pretty=true";
 
-                //Uri
-
-
-//                Uri builtUri = Uri.parse(URLEncoder.encode(PIXAurl).buildUpon()
-//                        .appendPath("?key=")
-//                        .appendPath(BuildConfig.PIXABAY_API_KEY)
-//                        .appendPath("&q=")
-//                        .appendPath(WORD_BASE_URL)
-//                        .appendPath("&image_type=photo")
-//                        .build());
-
                 StringBuilder urlChartBuilder = new StringBuilder();
 
                 urlChartBuilder.append(PIXAurl)

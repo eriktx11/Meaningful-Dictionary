@@ -11,10 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView textview;
     EditText editText;
-    Button button;
+    ImageButton button;
     String searchWord;
     TextView tagWord;
     private AppPreferences _sPref;
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
             viewPager = (ViewPager)findViewById(R.id.tab_viewpager);
 
             if (viewPager != null){
+                findViewById(R.id.dictImgId).setVisibility(View.GONE);
                 setupViewPager(viewPager);
             }
         }
@@ -56,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         linearLayout =  findViewById(R.id.info);
         editText = (EditText) findViewById(R.id.editText);
         //setWord(searchWord);
-        button = (Button) findViewById(R.id.button);
+        button = (ImageButton) findViewById(R.id.button);
         button.setOnClickListener(SearchListener);
 
         if (viewPager != null){
@@ -93,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFrag(new ImagesFragment(), "Images");
         viewPager.setAdapter(adapter);
     }
-
 
     static class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
