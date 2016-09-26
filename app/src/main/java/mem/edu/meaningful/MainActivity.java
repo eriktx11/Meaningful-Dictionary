@@ -1,6 +1,8 @@
 package mem.edu.meaningful;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,17 +39,31 @@ public class MainActivity extends AppCompatActivity {
 
     private View.OnClickListener SearchListener = new View.OnClickListener() {
         public void onClick(View v) {
-            searchWord = editText.getText().toString();
-            _sPref = new AppPreferences(getBaseContext());
-            _sPref.saveSmsBody("key", searchWord);
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            linearLayout = findViewById(R.id.info);
-            imm.hideSoftInputFromWindow(linearLayout.getWindowToken(), 0);
-            viewPager = (ViewPager)findViewById(R.id.tab_viewpager);
 
-            if (viewPager != null){
-                findViewById(R.id.dictImgId).setVisibility(View.GONE);
-                setupViewPager(viewPager);
+            ConnectivityManager cm =
+                    (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            boolean isConnected = activeNetwork != null &&
+                    activeNetwork.isConnectedOrConnecting();
+
+            if(isConnected){//If not network don't run Google service
+
+                searchWord = editText.getText().toString();
+                _sPref = new AppPreferences(getBaseContext());
+                _sPref.saveSmsBody("key", searchWord);
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                linearLayout = findViewById(R.id.info);
+                imm.hideSoftInputFromWindow(linearLayout.getWindowToken(), 0);
+                viewPager = (ViewPager)findViewById(R.id.tab_viewpager);
+
+                if (viewPager != null){
+                    findViewById(R.id.dictImgId).setVisibility(View.GONE);
+                    setupViewPager(viewPager);
+                }
+
+
+            }else {
+                Toast.makeText(getBaseContext(), getString(R.string.network_toast), Toast.LENGTH_LONG).show();
             }
         }
     };
