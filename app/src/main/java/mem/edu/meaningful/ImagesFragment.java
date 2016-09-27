@@ -68,16 +68,12 @@ public class ImagesFragment extends Fragment {
         return v;
     }
 
-
-    public String result;
-
     public class FetchImgList extends AsyncTask<String, Void, String[]> {
 
 
         private String[] getImgDataFromJson(String imagesJsonStr)
                 throws JSONException {
 
-            result = "0";
 
             final String PAGES = "hits";
             final String POSTER = "webformatURL";
@@ -117,11 +113,6 @@ public class ImagesFragment extends Fragment {
                 mGridData.add(item);
 
             }
-
-            if (resultStrs!=null){
-                result="1";
-            }else{
-                result="0";}
 
             return null;
         }

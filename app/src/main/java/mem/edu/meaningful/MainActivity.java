@@ -111,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new CoordinatorFragment(), searchWord);
         adapter.addFrag(new ImagesFragment(), "Images");
+        adapter.addFrag(new ConjugateFragment(), "Conjugation");
+        adapter.addFrag(new SoundFragment(), "Sound");
         viewPager.setAdapter(adapter);
     }
 

@@ -9,6 +9,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,6 +26,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
+import org.jsoup.Jsoup;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -34,6 +37,8 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,11 +107,14 @@ public class CoordinatorFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
-            holder.mTextView.setText(mValues.get(position));
+
+            Spanned sp = Html.fromHtml( mValues.get(position) );
+
+            holder.mTextView.setText(sp);
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Snackbar.make(v, getValueAt(position), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(v, Jsoup.parse(mValues.get(position)).text(), Snackbar.LENGTH_SHORT).show();
                 }
             });
         }
@@ -122,6 +130,8 @@ public class CoordinatorFragment extends Fragment {
 
         ProgressDialog pDialog;
         NodeList nodelist;
+        NodeList nodeSound;
+        NodeList nodeTitles;
         View linearLayout;
         TextView tagWord;
 
@@ -164,12 +174,13 @@ public class CoordinatorFragment extends Fragment {
             }
 
             nodelist = doc.getElementsByTagName("def");
+            nodeSound = doc.getElementsByTagName("wav");
+            nodeTitles = doc.getElementsByTagName("entry");
             return null;
         }
 
         @Override
         protected String doInBackground(String... strings) {
-
 
             String xml = null;
             String url = "http://www.dictionaryapi.com/api/v1/references/collegiate/xml/";
@@ -180,7 +191,6 @@ public class CoordinatorFragment extends Fragment {
                     .build();
             url = buildUri.toString();
 
-
             try {
                 // defaultHttpClient
                 DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -189,7 +199,6 @@ public class CoordinatorFragment extends Fragment {
                 HttpResponse httpResponse = httpClient.execute(httpPost);
                 HttpEntity httpEntity = httpResponse.getEntity();
                 xml = EntityUtils.toString(httpEntity);
-
 
                 try {
                     return getMeaningDataJson(xml);
@@ -210,27 +219,32 @@ public class CoordinatorFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            int cont = 1;
             data.clear();
 
-            for (int i = 0; i < nodelist.getLength(); i++) {
-                Node nNode = nodelist.item(i);
-                NodeList childList = nodelist.item(i).getChildNodes();
+            _sPref.saveSmsBody("sound", nodeSound.item(0).getTextContent()
+                    .trim());
 
-                for (int j = 0; j < childList.getLength(); j++) {
-                    Node childNode = childList.item(j);
-                    if ("sn".equals(childNode.getNodeName())) {
+            for (int h = 0; h < nodeTitles.getLength(); h++) {
 
-                        Element eElement = (Element) childNode;
-                        data.add(String.valueOf(cont));
+                NodeList childTitle = nodeTitles.item(h).getChildNodes();
+
+                for (int i = 0; i < childTitle.getLength(); i++) {
+
+                    Node tNode = childTitle.item(i);
+                    if ("ew".equals(tNode.getNodeName())) {
+                        data.add("<br><h2>"+childTitle.item(i).getTextContent()
+                                .trim().replace("-"," ")+"</h2>");
                     }
 
-                    if ("dt".equals(childNode.getNodeName())) {
-
-                        cont++;
-
-                        data.add(childList.item(j).getTextContent()
-                                .trim());
+                    if ("def".equals(tNode.getNodeName())) {
+                        NodeList childList = childTitle.item(i).getChildNodes();
+                        for (int j = 0; j < childList.getLength(); j++) {
+                        Node childNode = childList.item(j);
+                        if ("dt".equals(childNode.getNodeName())) {
+                            data.add(childList.item(j).getTextContent()
+                                    .trim());
+                        }
+                    }
                     }
                 }
             }
