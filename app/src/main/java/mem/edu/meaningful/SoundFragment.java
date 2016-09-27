@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import java.io.IOException;
+import java.text.StringCharacterIterator;
 
 /**
  * Created by erikllerena on 9/27/16.
@@ -28,10 +29,15 @@ public class SoundFragment extends Fragment {
 
         _sPref = new AppPreferences(getContext());
 
+        StringCharacterIterator characterIterator = new StringCharacterIterator(_sPref.getSmsBody("sound"));
+        char s = characterIterator.first();
+        String url;
+        url="http://media.merriam-webster.com/soundc11/"+s+"/"+_sPref.getSmsBody("sound");
+
         try {
             MediaPlayer player = new MediaPlayer();
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setDataSource("http://media.merriam-webster.com/soundc11/s/seat0001.wav");
+            player.setDataSource(url);
             player.prepare();
             player.start();
         } catch (Exception e) {

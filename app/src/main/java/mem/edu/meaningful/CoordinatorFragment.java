@@ -162,6 +162,14 @@ public class CoordinatorFragment extends Fragment {
                 is.setCharacterStream(new StringReader(meaningJsonStr));
                 doc = db.parse(is);
 
+                nodelist = doc.getElementsByTagName("def");
+                nodeSound = doc.getElementsByTagName("wav");
+                nodeTitles = doc.getElementsByTagName("entry");
+                if(nodeSound.getLength()>0){
+                    _sPref.saveSmsBody("sound", nodeSound.item(0).getTextContent()
+                            .trim());
+                }else {_sPref.saveSmsBody("sound", "");}
+
             } catch (ParserConfigurationException e) {
                 Log.e("Error: ", e.getMessage());
                 return null;
@@ -172,10 +180,6 @@ public class CoordinatorFragment extends Fragment {
                 Log.e("Error: ", e.getMessage());
                 return null;
             }
-
-            nodelist = doc.getElementsByTagName("def");
-            nodeSound = doc.getElementsByTagName("wav");
-            nodeTitles = doc.getElementsByTagName("entry");
             return null;
         }
 
@@ -220,9 +224,6 @@ public class CoordinatorFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             data.clear();
-
-            _sPref.saveSmsBody("sound", nodeSound.item(0).getTextContent()
-                    .trim());
 
             for (int h = 0; h < nodeTitles.getLength(); h++) {
 

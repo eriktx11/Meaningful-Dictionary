@@ -15,6 +15,11 @@ import android.widget.GridView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,12 +47,14 @@ public class ConjugateFragment extends Fragment{
         webView = (WebView) v.findViewById(R.id.webView);
 
         _sPref = new AppPreferences(getContext());
-        new FetchImgList().execute(_sPref.getSmsBody("key"));
+        if(_sPref.getSmsBody("sound")!=""){
+            new FetchImgList().execute(_sPref.getSmsBody("key"));
+        }
+
         return v;
     }
 
     public class FetchImgList extends AsyncTask<String, Void, String> {
-
 
         @Override
         protected String doInBackground(String... strings) {
@@ -122,14 +129,15 @@ public class ConjugateFragment extends Fragment{
         @Override
         protected void onPostExecute(String result) {
 
-//            WebSettings webSettings = webView.getSettings();
-//            webSettings.setJavaScriptEnabled(true);
+            //this text is remove below
+            //<a href="http://www.kolumbus.fi/toti/conjugue/test.htm">Back to the form</a>
+            //This service is provided by <a href=http://www.verbix.com/ class=set2>Verbix</a>
 
-            webView.loadDataWithBaseURL(null, result, "text/html", "UTF-8", null);
-//            webView.loadUrl(result[0]);
-//            webView.setWebViewClient(new WebViewClient());
-
+            Document doc = Jsoup.parse(result);
+            Elements e = doc.select("a[href]").remove();
+            String content = doc.html().replaceAll(e.text(), "");
+            content = doc.html().replaceAll("This service is provided by", "");
+            webView.loadDataWithBaseURL(null, content, "text/html", "UTF-8", null);
         }
-
     }
 }
