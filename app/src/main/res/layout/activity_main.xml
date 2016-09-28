@@ -6,10 +6,10 @@
     android:id="@+id/info"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/zero_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="0dp"
+    android:paddingTop="@dimen/zero_margin"
     tools:context="mem.edu.meaningful.MainActivity"
     android:orientation="vertical">
 
@@ -61,12 +61,20 @@
              android:layout_height="match_parent"
              android:layout_marginTop="115dp"/>
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/dictImgId"
-        android:src="@drawable/dictionary"
-        android:adjustViewBounds="true"
-        android:layout_marginTop="135dp"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="135dp"
+        android:id="@+id/welcomeSVId">
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="centerCrop"
+            android:id="@+id/dictImgId"
+            android:src="@drawable/dictionary"
+            android:adjustViewBounds="true"/>
+
+    </ScrollView>
 
 </FrameLayout>

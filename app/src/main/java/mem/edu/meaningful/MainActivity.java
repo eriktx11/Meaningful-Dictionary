@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton button;
     String searchWord;
     TextView tagWord;
+    ScrollView welcomeSV;
     private AppPreferences _sPref;
     private ViewPager viewPager;
 
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 viewPager = (ViewPager)findViewById(R.id.tab_viewpager);
 
                 if (viewPager != null){
+                    findViewById(R.id.welcomeSVId).setVisibility(View.GONE);
                     findViewById(R.id.dictImgId).setVisibility(View.GONE);
                     setupViewPager(viewPager);
                 }
