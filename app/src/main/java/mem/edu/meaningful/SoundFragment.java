@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.io.IOException;
 import java.text.StringCharacterIterator;
@@ -20,32 +21,36 @@ public class SoundFragment extends Fragment {
 
 
     private AppPreferences _sPref;
-    Button btn;
+    ImageButton btn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.sound_view, container, false);
-        btn = (Button)rootView.findViewById(R.id.btnSoundId);
+        btn = (ImageButton)rootView.findViewById(R.id.btnSoundId);
 
-        _sPref = new AppPreferences(getContext());
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        StringCharacterIterator characterIterator = new StringCharacterIterator(_sPref.getSmsBody("sound"));
-        char s = characterIterator.first();
-        String url;
-        url="http://media.merriam-webster.com/soundc11/"+s+"/"+_sPref.getSmsBody("sound");
+                _sPref = new AppPreferences(getContext());
 
-        try {
-            MediaPlayer player = new MediaPlayer();
-            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setDataSource(url);
-            player.prepare();
-            player.start();
-        } catch (Exception e) {
-        }
+                StringCharacterIterator characterIterator = new StringCharacterIterator(_sPref.getSmsBody("sound"));
+                char s = characterIterator.first();
+                String url;
+                url="http://media.merriam-webster.com/soundc11/"+s+"/"+_sPref.getSmsBody("sound");
 
+                try {
+                    MediaPlayer player = new MediaPlayer();
+                    player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    player.setDataSource(url);
+                    player.prepare();
+                    player.start();
+                } catch (Exception e) {
+                }
 //reference
 //http://media.merriam-webster.com/soundc11/s/seat0001.wav
-
+            }
+        });
         return rootView;
     }
 }

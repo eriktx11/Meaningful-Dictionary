@@ -11,17 +11,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="0dp"
     tools:context="mem.edu.meaningful.MainActivity"
-    android:orientation="vertical"
-    >
-
-
-    <!--<android.support.v7.widget.Toolbar-->
-        <!--android:id="@+id/toolbar"-->
-        <!--app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="#65dd62">-->
-    <!--</android.support.v7.widget.Toolbar>-->
+    android:orientation="vertical">
 
     <LinearLayout
         android:orientation="horizontal"

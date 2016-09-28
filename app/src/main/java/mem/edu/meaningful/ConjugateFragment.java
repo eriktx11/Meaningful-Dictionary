@@ -42,7 +42,6 @@ public class ConjugateFragment extends Fragment{
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
         View v = inflater.inflate(R.layout.conjugate_page, container, false);
         webView = (WebView) v.findViewById(R.id.webView);
 
@@ -50,7 +49,6 @@ public class ConjugateFragment extends Fragment{
         if(_sPref.getSmsBody("sound")!=""){
             new FetchImgList().execute(_sPref.getSmsBody("key"));
         }
-
         return v;
     }
 
@@ -59,12 +57,10 @@ public class ConjugateFragment extends Fragment{
         @Override
         protected String doInBackground(String... strings) {
 
-
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
             String ConjugationStr = null;
-
             try {
 
                 final String WORD_BASE_URL = strings[0];
@@ -85,7 +81,6 @@ public class ConjugateFragment extends Fragment{
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
-
 
                 InputStream inputStream = urlConnection.getInputStream();
                 StringBuffer buffer = new StringBuffer();
