@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
                     findViewById(R.id.dictImgId).setVisibility(View.GONE);
                     setupViewPager(viewPager);
                 }
-
-
             }else {
                 Toast.makeText(getBaseContext(), getString(R.string.network_toast), Toast.LENGTH_LONG).show();
             }
@@ -78,32 +76,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         linearLayout =  findViewById(R.id.info);
         editText = (EditText) findViewById(R.id.editText);
-        //setWord(searchWord);
         button = (ImageButton) findViewById(R.id.button);
         button.setOnClickListener(SearchListener);
 
         if (viewPager != null){
             setupViewPager(viewPager);
         }
-
-//        TabLayout tabLayout = (TabLayout)findViewById(R.id.tabLayout);
-//        tabLayout.setupWithViewPager(viewPager);
-//
-//        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                viewPager.setCurrentItem(tab.getPosition());
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
 
         PagerTitleStrip titleStrip = (PagerTitleStrip) findViewById(R.id.pager_title_strip);
         titleStrip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
@@ -122,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
     static class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
-       // private final List<String> mFragmentKeyWord = new ArrayList<>();
 
         public ViewPagerAdapter(FragmentManager manager){
             super(manager);
@@ -141,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
         public void addFrag(Fragment fragment, String title){
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
-           // mFragmentKeyWord.add(APIkeyWord);
         }
 
         @Override
@@ -149,6 +125,4 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
-
-
 }
