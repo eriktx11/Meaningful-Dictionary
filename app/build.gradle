@@ -7,8 +7,8 @@ android {
         applicationId "mem.edu.meaningful"
         minSdkVersion 13
         targetSdkVersion 23
-        versionName '3.0'
-        versionCode 3
+        versionName '3.1'
+        versionCode 4
     }
     buildTypes {
         release {

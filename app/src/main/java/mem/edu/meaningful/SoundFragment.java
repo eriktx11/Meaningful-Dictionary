@@ -1,5 +1,6 @@
 package mem.edu.meaningful;
 
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ public class SoundFragment extends Fragment {
 
     private AppPreferences _sPref;
     ImageButton btn;
+    Button savebtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -51,6 +53,16 @@ public class SoundFragment extends Fragment {
 //http://media.merriam-webster.com/soundc11/s/seat0001.wav
             }
         });
+
+        savebtn= (Button) rootView.findViewById(R.id.btnSave);
+        savebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), LoginPlease.class);
+                startActivity(i);
+            }
+        });
+
         return rootView;
     }
 }
