@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Meaningful</string>
     <string name="network_toast">Oops ! No network available.</string>
+    <string name="eng_accent">English accents by the community</string>
 </resources>

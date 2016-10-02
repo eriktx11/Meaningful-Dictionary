@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-              <!--android:orientation="vertical"-->
-              <!--android:layout_width="match_parent"-->
-              <!--android:layout_height="match_parent">-->
 
-    <!---->
-<!--</LinearLayout>-->
 <ScrollView
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -14,18 +8,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-
-<TableLayout
-             android:id="@+id/tableLayout1"
-             android:layout_width="fill_parent"
-             android:layout_height="fill_parent">
-<TableRow
-    android:id="@+id/tableRow1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
 
     <ImageButton
         android:layout_width="50dp"
@@ -38,134 +23,319 @@
         android:id="@+id/btnSoundId"/>
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Register Form "
-        android:layout_span="1"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:text="@string/eng_accent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAlignment="textStart"
+        android:gravity="start"/>
 
-</TableRow>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-<View
-    android:layout_height="1dip"
-    android:background="#CCCCCC" />
-
-<TableLayout
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_weight="0.1"
-    android:orientation="horizontal">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Input Username :"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <EditText
-        android:id="@+id/txtUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10" >
-    </EditText>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Input Password/Confirm Password :"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    <TableRow>
-        <EditText
-            android:id="@+id/txtPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="6"
-            android:inputType="textPassword" >
-        </EditText>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Again " />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Alaska"
+            android:id="@+id/textView1"
+            android:textAlignment="center"
+            android:paddingLeft="8dp"
+            android:paddingTop="6dp"/>
 
-        <EditText
-            android:id="@+id/txtConPassword"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="contribute"
+            android:id="@+id/rectxt1"
+            android:gravity="right"
+            android:paddingRight="5dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp">
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="7"
-            android:inputType="textPassword" >
-        </EditText>
-    </TableRow>
+            android:orientation="vertical"
+            >
 
-    <TextView
-        android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView1"
+                android:padding="5dp"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId11"
+            android:layout_gravity="center_vertical"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButtonl1a1"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButtonl1a2"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId12"
+            android:layout_gravity="center_vertical"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButtonl1b1"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButtonl1b2"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId13"
+            android:layout_gravity="center_vertical"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButtonl1c1"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButtonl1c2"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/rcrbtn1"
+            android:layout_gravity="center_vertical"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:src="@drawable/record"
+            android:paddingRight="5dp"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Alabama"
+            android:id="@+id/textView2"
+            android:textAlignment="center"
+            android:paddingLeft="8dp"
+            android:paddingTop="6dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="contribute"
+            android:id="@+id/rectxt2"
+            android:gravity="right"
+            android:paddingRight="5dp"/>
+    </LinearLayout>
+
+    <!--start-->
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Input Name :"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:paddingBottom="10dp">
 
-    <EditText
-        android:id="@+id/txtName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10" >
-    </EditText>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Input Email :"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView2"
+                android:padding="5dp"
+                android:layout_gravity="center"/>
 
-    <EditText
-        android:id="@+id/txtEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10" >
-    </EditText>
+        </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Input Tel :"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId21"
+            android:layout_gravity="center_vertical"/>
 
-    <EditText
-        android:id="@+id/txtTel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10" >
-    </EditText>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save" />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButtonl2a1"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButtonl2a2"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId22"
+            android:layout_gravity="center_vertical"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButtonl2b1"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButtonl2b2"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId23"
+            android:layout_gravity="center_vertical"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButtonl2c1"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButtonl2c2"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton"
+            android:layout_gravity="center_vertical"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:src="@drawable/record"
+            android:paddingRight="5dp"/>
 
 
-</TableLayout >
+    </LinearLayout>
 
-<View
-    android:layout_height="1dip"
-    android:background="#CCCCCC" />
-
-<LinearLayout
-    android:id="@+id/LinearLayout1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="5dip" >
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="By.. ThaiCreate.Com" />
+    <!--end-->
 
 </LinearLayout>
 
-</TableLayout>
-</LinearLayout>
 </ScrollView>

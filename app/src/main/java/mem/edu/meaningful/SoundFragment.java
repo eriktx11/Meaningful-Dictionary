@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.text.StringCharacterIterator;
@@ -54,14 +57,22 @@ public class SoundFragment extends Fragment {
             }
         });
 
-        savebtn= (Button) rootView.findViewById(R.id.btnSave);
-        savebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getActivity(), LoginPlease.class);
-                startActivity(i);
-            }
-        });
+//        savebtn= (Button) rootView.findViewById(R.id.btnSave);
+//        savebtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(getActivity(), LoginPlease.class);
+//                startActivity(i);
+//            }
+//        });
+
+        Picasso.with(getContext())
+                .load("http://www.dia40.com/oodles/st-flag/ak.png").resize(0, 70)
+                .into((ImageView) rootView.findViewById(R.id.imageView1));
+
+        Picasso.with(getContext())
+                .load("http://www.dia40.com/oodles/st-flag/al.png").resize(0, 70)
+                .into((ImageView) rootView.findViewById(R.id.imageView2));
 
         return rootView;
     }
