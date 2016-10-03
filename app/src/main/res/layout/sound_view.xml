@@ -322,7 +322,7 @@
         <ImageButton
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton"
+            android:id="@+id/rcrbtn2"
             android:layout_gravity="center_vertical"
             android:cropToPadding="false"
             android:adjustViewBounds="true"
