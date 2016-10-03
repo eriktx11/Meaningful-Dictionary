@@ -3,10 +3,12 @@
 
 [Availabe in Google Play](https://play.google.com/store/apps/details?id=mem.edu.meaningful)
 
-<img src="https://github.com/eriktx11/Meaningful-Dictionary/blob/master/ss4.jpg" width="600"><br>
-<img src="https://github.com/eriktx11/Meaningful-Dictionary/blob/master/ss1.png" width="300">
-<img src="https://github.com/eriktx11/Meaningful-Dictionary/blob/master/ss2.png" width="300"><br>
-<img src="https://github.com/eriktx11/Meaningful-Dictionary/blob/master/ss3.png" width="300">
+<img src="http://www.dia40.com/oodles/colorp/ss4.png" width="600"><br>
+<img src="http://www.dia40.com/oodles/colorp/ss1.png" width="300">
+<img src="http://www.dia40.com/oodles/colorp/ss2.png" width="300"><br>
+<img src="http://www.dia40.com/oodles/colorp/ss3.png" width="300">
+<img src="http://www.dia40.com/oodles/colorp/ss5.png" width="300">
+<img src="http://www.dia40.com/oodles/colorp/ss6.png" width="300">
 
 ## API
 Make sure you go to [dictionaryapi.com](https://www.dictionaryapi.com) and to [pixabay.com](https://www.pixabay.com) to get your API key, and put it in the gradle.properties file, otherwise this app will not run.
