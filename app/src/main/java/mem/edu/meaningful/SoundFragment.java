@@ -1,6 +1,9 @@
 package mem.edu.meaningful;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.Image;
@@ -9,6 +12,7 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +22,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -39,11 +45,12 @@ public class SoundFragment extends Fragment {
     private AppPreferences _sPref;
     ImageButton btn;
     ImageButton start;
-    ImageButton stop;
+    //ImageButton stop;
+    View rootView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View rootView = inflater.inflate(R.layout.sound_view, container, false);
+        rootView = inflater.inflate(R.layout.sound_view, container, false);
         btn = (ImageButton)rootView.findViewById(R.id.btnSoundId);
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -82,99 +89,142 @@ public class SoundFragment extends Fragment {
 
 
         start=(ImageButton)rootView.findViewById(R.id.rcrbtn1);
-        stop=(ImageButton)rootView.findViewById(R.id.rcrbtn2);
+        //stop=(ImageButton)rootView.findViewById(R.id.rcrbtn2);
 
-        final AudioRecorder recorder = new AudioRecorder("/audiometer/temp");
-
-
-
-        start.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                try {
-                    recorder.start();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        start.setOnClickListener(btnClick);
+        //stop.setOnClickListener(btnClick);
+        //start.setEnabled(false);
 
 
-            }
-        });
-
-        //….wait a while
-
-        stop.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                try {
-                    recorder.stop();
-                } catch (IOException e) {
-
-                    e.printStackTrace();
-                }
-
-            }
-        });
-
+//        setButtonHandlers();
+//        enableButtons(false);
+//        setFormatButtonCaption();
 
         return rootView;
     }
 
 
 
+    private static final String AUDIO_RECORDER_FILE_EXT_3GP = ".3gp";
+    private static final String AUDIO_RECORDER_FILE_EXT_MP4 = ".mp4";
+    private static final String AUDIO_RECORDER_FOLDER = "AudioRecorder";
+    private MediaRecorder recorder = null;
+    private int currentFormat = 0;
+    private int output_formats[] = { MediaRecorder.OutputFormat.MPEG_4, MediaRecorder.OutputFormat.THREE_GPP };
+    private String file_exts[] = { AUDIO_RECORDER_FILE_EXT_MP4, AUDIO_RECORDER_FILE_EXT_3GP };
 
 
-    public class AudioRecorder {
-        final MediaRecorder recorder = new MediaRecorder();
-        final String path;
-
-        /**
-         * Creates a new audio recording at the given path (relative to root of SD card).
-         */
-        public AudioRecorder(String path) {
-            this.path = sanitizePath(path);
+    private String getFilename() {
+        String filepath = Environment.getExternalStorageDirectory().getPath();
+        File file = new File(filepath, AUDIO_RECORDER_FOLDER);
+        if (!file.exists()) {
+            file.mkdirs();
         }
+        return (file.getAbsolutePath() + "/" + System.currentTimeMillis() + file_exts[currentFormat]);
+    }
 
-        private String sanitizePath(String path) {
-            if (!path.startsWith("/")) {
-                path = "/" + path;
-            }
-            if (!path.contains(".")) {
-                path += ".3gp";
-            }
-            return Environment.getExternalStorageDirectory().getAbsolutePath() + path;
-        }
-
-        /**
-         * Starts a new recording.
-         */
-        public void start() throws IOException {
-            String state = android.os.Environment.getExternalStorageState();
-            if(!state.equals(android.os.Environment.MEDIA_MOUNTED))  {
-                throw new IOException("SD Card is not mounted.  It is " + state + ".");
-            }
-
-            // make sure the directory we plan to store the recording in exists
-            File directory = new File(path).getParentFile();
-            if (!directory.exists() && !directory.mkdirs()) {
-                throw new IOException("Path to file could not be created.");
-            }
-
-            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-            recorder.setOutputFile(path);
+    private void startRecording() {
+        recorder = new MediaRecorder();
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(output_formats[currentFormat]);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        recorder.setOutputFile(getFilename());
+        recorder.setOnErrorListener(errorListener);
+        recorder.setOnInfoListener(infoListener);
+        try {
             recorder.prepare();
             recorder.start();
-        }
-
-        /**
-         * Stops a recording that has been previously started.
-         */
-        public void stop() throws IOException {
-            recorder.stop();
-            recorder.release();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
+    private void stopRecording() {
+        if (null != recorder) {
+            recorder.stop();
+            recorder.reset();
+            recorder.release();
+            recorder = null;
+        }
+    }
+
+    private void displayFormatDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        String formats[] = { "MPEG 4", "3GPP" };
+        builder.setTitle(getString(R.string.app_name)).setSingleChoiceItems(formats, currentFormat, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                currentFormat = which;
+                //setFormatButtonCaption();
+                dialog.dismiss();
+            }
+        }).show();
+    }
+
+    private MediaRecorder.OnErrorListener errorListener = new MediaRecorder.OnErrorListener() {
+        @Override
+        public void onError(MediaRecorder mr, int what, int extra) {
+            Toast.makeText(getContext(), "Error: " + what + ", " + extra, Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private MediaRecorder.OnInfoListener infoListener = new MediaRecorder.OnInfoListener() {
+        @Override
+        public void onInfo(MediaRecorder mr, int what, int extra) {
+            Toast.makeText(getContext(), "Warning: " + what + ", " + extra, Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private View.OnClickListener btnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            final Dialog dialog = new Dialog(getContext());
+
+
+                    Toast.makeText(getContext(), "Speak now !", Toast.LENGTH_SHORT).show();
+                    //stop.setEnabled(true);
+                    //start.setEnabled(false);
+
+                    dialog.setContentView(R.layout.recording_box);
+                    dialog.setTitle("Recording...");
+
+                    startRecording();
+
+                    // set the custom dialog components - text, image and button
+                    TextView text = (TextView) dialog.findViewById(R.id.textId);
+                    text.setText("Android custom dialog example!");
+                    ImageView image = (ImageView) dialog.findViewById(R.id.imageId);
+                    image.setImageResource(R.drawable.record_button);
+
+                    Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+                    // if button is clicked, close the custom dialog
+                    dialogButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            stopRecording();
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+
+
+//                case R.id.rcrbtn2: {
+//                    dialog.hide();
+//                    Toast.makeText(getContext(), "Stop Recording", Toast.LENGTH_SHORT).show();
+//                    start.setEnabled(true);
+//                    stop.setEnabled(false);
+//                    stopRecording();
+//                    break;
+//                }
+//                case R.id.btnFormat: {
+//                    displayFormatDialog();
+//                    break;
+                //}
+
+        }
+    };
 
 }
