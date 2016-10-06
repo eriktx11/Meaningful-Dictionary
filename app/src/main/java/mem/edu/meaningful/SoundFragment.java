@@ -1,19 +1,20 @@
 package mem.edu.meaningful;
 
+
+import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.AudioManager;
-import android.media.Image;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,15 +22,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.squareup.picasso.Picasso;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.StringCharacterIterator;
+
 
 /**
  * Created by erikllerena on 9/27/16.
@@ -39,14 +43,22 @@ public class SoundFragment extends Fragment {
     private static final String LOG_TAG = "AccentRecord";
     private static String mFileName = null;
 
-    private MediaRecorder mRecorder = null;
-    private MediaPlayer   mPlayer = null;
+    //private MediaRecorder mRecorder = null;
+    //private MediaPlayer   mPlayer = null;
 
     private AppPreferences _sPref;
     ImageButton btn;
     ImageButton start;
     //ImageButton stop;
     View rootView;
+
+    // gallery request code.
+    public static final int GALLEY_REQUEST_CODE = 10;
+    String ROOT_URL = "http://www.dia40.com";
+    // tag to print logs.
+    private String TAG = MainActivity.class.getSimpleName();
+    private ImageView image;
+    private Uri realUri;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -86,96 +98,150 @@ public class SoundFragment extends Fragment {
                 .load("http://www.dia40.com/oodles/st-flag/al.png").resize(0, 70)
                 .into((ImageView) rootView.findViewById(R.id.imageView2));
 
-
-
+        image=(ImageView)rootView.findViewById(R.id.image);
         start=(ImageButton)rootView.findViewById(R.id.rcrbtn1);
-        //stop=(ImageButton)rootView.findViewById(R.id.rcrbtn2);
-
         start.setOnClickListener(btnClick);
-        //stop.setOnClickListener(btnClick);
-        //start.setEnabled(false);
-
-
-//        setButtonHandlers();
-//        enableButtons(false);
-//        setFormatButtonCaption();
 
         return rootView;
     }
 
 
-
-    private static final String AUDIO_RECORDER_FILE_EXT_3GP = ".3gp";
-    private static final String AUDIO_RECORDER_FILE_EXT_MP4 = ".mp4";
-    private static final String AUDIO_RECORDER_FOLDER = "AudioRecorder";
-    private MediaRecorder recorder = null;
-    private int currentFormat = 0;
-    private int output_formats[] = { MediaRecorder.OutputFormat.MPEG_4, MediaRecorder.OutputFormat.THREE_GPP };
-    private String file_exts[] = { AUDIO_RECORDER_FILE_EXT_MP4, AUDIO_RECORDER_FILE_EXT_3GP };
-
-
-    private String getFilename() {
-        String filepath = Environment.getExternalStorageDirectory().getPath();
-        File file = new File(filepath, AUDIO_RECORDER_FOLDER);
-        if (!file.exists()) {
-            file.mkdirs();
+    public View.OnClickListener btnChoose = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // this will open gallery to choose image.
+            Intent openGallery = new Intent(Intent.ACTION_PICK,MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(Intent.createChooser(openGallery, "Select Audio"), GALLEY_REQUEST_CODE);
         }
-        return (file.getAbsolutePath() + "/" + System.currentTimeMillis() + file_exts[currentFormat]);
-    }
+    };
 
-    private void startRecording() {
-        recorder = new MediaRecorder();
-        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(output_formats[currentFormat]);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        recorder.setOutputFile(getFilename());
-        recorder.setOnErrorListener(errorListener);
-        recorder.setOnInfoListener(infoListener);
-        try {
-            recorder.prepare();
-            recorder.start();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    private void stopRecording() {
-        if (null != recorder) {
-            recorder.stop();
-            recorder.reset();
-            recorder.release();
-            recorder = null;
-        }
-    }
-
-    private void displayFormatDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        String formats[] = { "MPEG 4", "3GPP" };
-        builder.setTitle(getString(R.string.app_name)).setSingleChoiceItems(formats, currentFormat, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                currentFormat = which;
-                //setFormatButtonCaption();
-                dialog.dismiss();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALLEY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            //image.setImageURI(data.getData()); // set image to image view
+            try{
+                // Get real path to make File
+                realUri = Uri.parse(getPath(data.getData()));
+                Log.d(TAG,"Image path :- "+realUri);
             }
-        }).show();
+            catch (Exception e){
+                Log.e(TAG,e.getMessage());
+            }
+        }
     }
 
-    private MediaRecorder.OnErrorListener errorListener = new MediaRecorder.OnErrorListener() {
+    private String getPath(Uri uri) throws Exception {
+        // this method will be used to get real path of Image chosen from gallery.
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContext().getContentResolver().query(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    public class doFileUpload extends AsyncTask<Void, Void, Void> {
+
         @Override
-        public void onError(MediaRecorder mr, int what, int extra) {
-            Toast.makeText(getContext(), "Error: " + what + ", " + extra, Toast.LENGTH_SHORT).show();
+        protected Void doInBackground(Void... params) {
+
+            HttpURLConnection conn = null;
+            DataOutputStream dos = null;
+            DataInputStream inStream = null;
+            String existingFileName = realUri.toString(); //Environment.getExternalStorageDirectory().getAbsolutePath() +
+            String lineEnd = "\r\n";
+            String twoHyphens = "--";
+            String boundary = "*****";
+            int bytesRead, bytesAvailable, bufferSize;
+            byte[] buffer;
+            int maxBufferSize = 1 * 1024 * 1024;
+            String responseFromServer = "";
+            String urlString = "http://www.dia40.com/oodles/fileUpload.php";
+
+            try {
+
+                //------------------ CLIENT REQUEST
+                FileInputStream fileInputStream = new FileInputStream(new File(existingFileName));
+                // open a URL connection to the Servlet
+                URL url = new URL(urlString);
+                // Open a HTTP connection to the URL
+                conn = (HttpURLConnection) url.openConnection();
+                // Allow Inputs
+                conn.setDoInput(true);
+                // Allow Outputs
+                conn.setDoOutput(true);
+                // Don't use a cached copy.
+                conn.setUseCaches(false);
+                // Use a post method.
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Connection", "Keep-Alive");
+                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+                dos = new DataOutputStream(conn.getOutputStream());
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name=\"uploadedfile\";filename=\"" + existingFileName + "\"" + lineEnd);
+                dos.writeBytes(lineEnd);
+                // create a buffer of maximum size
+                bytesAvailable = fileInputStream.available();
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                buffer = new byte[bufferSize];
+                // read file and write it into form...
+                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+                while (bytesRead > 0) {
+
+                    dos.write(buffer, 0, bufferSize);
+                    bytesAvailable = fileInputStream.available();
+                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+                }
+
+                // send multipart form data necesssary after file data...
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+                // close streams
+                Log.e("Debug", "File is written");
+                fileInputStream.close();
+                dos.flush();
+                dos.close();
+
+            } catch (MalformedURLException ex) {
+                Log.e("Debug", "error: " + ex.getMessage(), ex);
+            } catch (IOException ioe) {
+                Log.e("Debug", "error: " + ioe.getMessage(), ioe);
+            }
+
+            //------------------ read the SERVER RESPONSE
+            try {
+
+                inStream = new DataInputStream(conn.getInputStream());
+                String str;
+
+                while ((str = inStream.readLine()) != null) {
+
+                    Log.e("Debug", "Server Response " + str);
+
+                }
+
+                inStream.close();
+
+            } catch (IOException ioex) {
+                Log.e("Debug", "error: " + ioex.getMessage(), ioex);
+            }
+
+            return null;
+        }
+    }
+
+
+    private View.OnClickListener btnUpload = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            new doFileUpload().execute();
         }
     };
 
-    private MediaRecorder.OnInfoListener infoListener = new MediaRecorder.OnInfoListener() {
-        @Override
-        public void onInfo(MediaRecorder mr, int what, int extra) {
-            Toast.makeText(getContext(), "Warning: " + what + ", " + extra, Toast.LENGTH_SHORT).show();
-        }
-    };
 
     private View.OnClickListener btnClick = new View.OnClickListener() {
         @Override
@@ -183,48 +249,114 @@ public class SoundFragment extends Fragment {
 
             final Dialog dialog = new Dialog(getContext());
 
-
-                    Toast.makeText(getContext(), "Speak now !", Toast.LENGTH_SHORT).show();
-                    //stop.setEnabled(true);
-                    //start.setEnabled(false);
-
-                    dialog.setContentView(R.layout.recording_box);
-                    dialog.setTitle("Recording...");
-
-                    startRecording();
+                    //Toast.makeText(getContext(), "Speak now !", Toast.LENGTH_SHORT).show();
+            dialog.setContentView(R.layout.recording_box);
+            dialog.setTitle("upload");
 
                     // set the custom dialog components - text, image and button
-                    TextView text = (TextView) dialog.findViewById(R.id.textId);
-                    text.setText("Android custom dialog example!");
-                    ImageView image = (ImageView) dialog.findViewById(R.id.imageId);
-                    image.setImageResource(R.drawable.record_button);
+//                    TextView text = (TextView) dialog.findViewById(R.id.textId);
+//                    text.setText("Android custom dialog example!");
 
-                    Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-                    // if button is clicked, close the custom dialog
-                    dialogButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            stopRecording();
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
+            Button choose = (Button) dialog.findViewById(R.id.btn_choose);
+            Button upload = (Button) dialog.findViewById(R.id.btn_upload);
 
-
-//                case R.id.rcrbtn2: {
-//                    dialog.hide();
-//                    Toast.makeText(getContext(), "Stop Recording", Toast.LENGTH_SHORT).show();
-//                    start.setEnabled(true);
-//                    stop.setEnabled(false);
-//                    stopRecording();
-//                    break;
-//                }
-//                case R.id.btnFormat: {
-//                    displayFormatDialog();
-//                    break;
-                //}
-
+            choose.setOnClickListener(btnChoose);
+            upload.setOnClickListener(btnUpload);
+            dialog.show();
         }
     };
+
+
+//    private static final String AUDIO_RECORDER_FILE_EXT_3GP = ".3gp";
+//    private static final String AUDIO_RECORDER_FILE_EXT_MP4 = ".mp4";
+//    private static final String AUDIO_RECORDER_FOLDER = "AudioRecorder";
+//    private MediaRecorder recorder = null;
+//    private int currentFormat = 0;
+//    private int output_formats[] = { MediaRecorder.OutputFormat.MPEG_4, MediaRecorder.OutputFormat.THREE_GPP };
+//    private String file_exts[] = { AUDIO_RECORDER_FILE_EXT_MP4, AUDIO_RECORDER_FILE_EXT_3GP };
+//
+//    private String getFilename() {
+//        String filepath = Environment.getExternalStorageDirectory().getPath();
+//        File file = new File(filepath, AUDIO_RECORDER_FOLDER);
+//        if (!file.exists()) {
+//            file.mkdirs();
+//        }
+//        return (file.getAbsolutePath() + "/" + System.currentTimeMillis() + file_exts[currentFormat]);
+//    }
+//
+//    private void startRecording() {
+//        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+//        recorder.setOutputFormat(output_formats[currentFormat]);
+//        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+//        recorder.setAudioEncodingBitRate(16);
+//        recorder.setAudioSamplingRate(44100);
+//        recorder.setOutputFile(getFilename());
+//        recorder.setOnErrorListener(errorListener);
+//        recorder.setOnInfoListener(infoListener);
+//        try {
+//            recorder.prepare();
+//        } catch (IllegalStateException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    private void stopRecording() {
+//        try {
+//            recorder.stop();
+//        }catch (RuntimeException ex){
+//
+//        }
+//        recorder.release();
+//        recorder = null;
+//    }
+//
+//    private MediaRecorder.OnErrorListener errorListener = new MediaRecorder.OnErrorListener() {
+//        @Override
+//        public void onError(MediaRecorder mr, int what, int extra) {
+//            Toast.makeText(getContext(), "Error: " + what + ", " + extra, Toast.LENGTH_SHORT).show();
+//        }
+//    };
+//
+//    private MediaRecorder.OnInfoListener infoListener = new MediaRecorder.OnInfoListener() {
+//        @Override
+//        public void onInfo(MediaRecorder mr, int what, int extra) {
+//            Toast.makeText(getContext(), "Warning: " + what + ", " + extra, Toast.LENGTH_SHORT).show();
+//        }
+//    };
+//
+//    private View.OnClickListener btnClick = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//
+//            final Dialog dialog = new Dialog(getContext());
+//
+//                    Toast.makeText(getContext(), "Speak now !", Toast.LENGTH_SHORT).show();
+//                    dialog.setContentView(R.layout.recording_box);
+//                    dialog.setTitle("Recording...");
+//
+//                    recorder = new MediaRecorder();
+//                    startRecording();
+//                    recorder.start();
+//
+//                    // set the custom dialog components - text, image and button
+//                    TextView text = (TextView) dialog.findViewById(R.id.textId);
+//                    text.setText("Android custom dialog example!");
+//                    ImageView image = (ImageView) dialog.findViewById(R.id.imageId);
+//                    image.setImageResource(R.drawable.record_button);
+//
+//                    Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+//                    // if button is clicked, close the custom dialog
+//                    dialogButton.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            stopRecording();
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    dialog.show();
+//        }
+//    };
 
 }
