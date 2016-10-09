@@ -65,11 +65,11 @@ public class SoundFragment extends Fragment {
         rootView = inflater.inflate(R.layout.sound_view, container, false);
         btn = (ImageButton)rootView.findViewById(R.id.btnSoundId);
 
+        _sPref = new AppPreferences(getContext());
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                _sPref = new AppPreferences(getContext());
 
                 StringCharacterIterator characterIterator = new StringCharacterIterator(_sPref.getSmsBody("sound"));
                 char s = characterIterator.first();
@@ -238,7 +238,17 @@ public class SoundFragment extends Fragment {
     private View.OnClickListener btnUpload = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            new doFileUpload().execute();
+
+           // String ss =_sPref.getSmsBody("userId");
+
+            if(!_sPref.getAll().containsKey("userId")){
+
+                Intent redirect = new Intent(getContext(), LoginPlease.class);
+                startActivity(redirect);
+            }
+            else {
+                new doFileUpload().execute();
+            }
         }
     };
 

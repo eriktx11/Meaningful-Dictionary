@@ -34,8 +34,8 @@ private Context context;
         _prefsEditor.apply();
     }
 
-    public void saveSmsBody(String MovieId, String val) {
-        _prefsEditor.putString(MovieId, val);
+    public void saveSmsBody(String key, String val) {
+        _prefsEditor.putString(key, val);
         _prefsEditor.apply();
     }
 

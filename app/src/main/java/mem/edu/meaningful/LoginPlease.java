@@ -40,11 +40,15 @@ import android.widget.Toast;
 
 public class LoginPlease extends Activity {
 
+    private AppPreferences _sPref;
+
     @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sound_view);
+        setContentView(R.layout.save_accent);
+
+        _sPref = new AppPreferences(getBaseContext());
 
         // Permission StrictMode
         if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -175,6 +179,7 @@ public class LoginPlease extends Activity {
         }
         else
         {
+            _sPref.saveSmsBody( "userId",txtEmail.getText().toString() );
             Toast.makeText(LoginPlease.this, "Save Data Successfully", Toast.LENGTH_SHORT).show();
             txtUsername.setText("");
             txtPassword.setText("");
