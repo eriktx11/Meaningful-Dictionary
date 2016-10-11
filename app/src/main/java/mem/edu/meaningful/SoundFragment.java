@@ -19,9 +19,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.squareup.picasso.Picasso;
 
 import java.io.DataInputStream;
@@ -49,6 +54,10 @@ public class SoundFragment extends Fragment {
     private AppPreferences _sPref;
     ImageButton btn;
     ImageButton start;
+    EditText txtEmail;
+    TextView tvEmail;
+    TextView tvError;
+
     //ImageButton stop;
     View rootView;
 
@@ -98,7 +107,7 @@ public class SoundFragment extends Fragment {
                 .load("http://www.dia40.com/oodles/st-flag/al.png").resize(0, 70)
                 .into((ImageView) rootView.findViewById(R.id.imageView2));
 
-        image=(ImageView)rootView.findViewById(R.id.image);
+
         start=(ImageButton)rootView.findViewById(R.id.rcrbtn1);
         start.setOnClickListener(btnClick);
 
@@ -234,6 +243,7 @@ public class SoundFragment extends Fragment {
         }
     }
 
+    public Dialog dialog;
 
     private View.OnClickListener btnUpload = new View.OnClickListener() {
         @Override
@@ -243,12 +253,23 @@ public class SoundFragment extends Fragment {
 
             if(!_sPref.getAll().containsKey("userId")){
 
-                Intent redirect = new Intent(getContext(), LoginPlease.class);
-                startActivity(redirect);
+                LoginPlease login = new LoginPlease();
+                switch (login.SaveData(txtEmail.getText().toString()) ){
+                    case 0: tvEmail.setVisibility(View.VISIBLE);break;
+                    case 1: tvEmail.setText("Unknown Error");break;
+                    case 2:
+                    {
+                        tvEmail.setVisibility(View.INVISIBLE);
+                        tvError.setVisibility(View.INVISIBLE);
+                        txtEmail.setVisibility(View.INVISIBLE);
+                        _sPref.saveSmsBody("userId", txtEmail.getText().toString());
+                        new doFileUpload().execute();
+                        break;
+                    }
+                }
+                return;
             }
-            else {
-                new doFileUpload().execute();
-            }
+            new doFileUpload().execute();
         }
     };
 
@@ -257,15 +278,23 @@ public class SoundFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            final Dialog dialog = new Dialog(getContext());
-
-                    //Toast.makeText(getContext(), "Speak now !", Toast.LENGTH_SHORT).show();
+            dialog = new Dialog(getContext());
             dialog.setContentView(R.layout.recording_box);
             dialog.setTitle("upload");
 
-                    // set the custom dialog components - text, image and button
-//                    TextView text = (TextView) dialog.findViewById(R.id.textId);
-//                    text.setText("Android custom dialog example!");
+            image = (ImageView) dialog.findViewById(R.id.imageId);
+            txtEmail = (EditText) dialog.findViewById(R.id.txtEmail);
+            tvEmail = (TextView) dialog.findViewById(R.id.tvEmailId);
+            tvError = (TextView) dialog.findViewById(R.id.txtError);
+
+            if(!_sPref.getAll().containsKey("userId")) {
+
+                tvEmail.setVisibility(View.VISIBLE);
+                txtEmail.setVisibility(View.VISIBLE);
+                if (txtEmail.requestFocus()) {
+                    getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
+            }
 
             Button choose = (Button) dialog.findViewById(R.id.btn_choose);
             Button upload = (Button) dialog.findViewById(R.id.btn_upload);
