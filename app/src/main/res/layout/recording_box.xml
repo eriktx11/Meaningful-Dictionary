@@ -60,5 +60,6 @@
         android:id="@+id/btn_upload"
         android:layout_below="@id/image"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:enabled="false"/>
 </LinearLayout>

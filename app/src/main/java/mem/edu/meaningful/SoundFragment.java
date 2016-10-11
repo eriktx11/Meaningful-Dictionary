@@ -58,6 +58,9 @@ public class SoundFragment extends Fragment {
     TextView tvEmail;
     TextView tvError;
 
+    Button choose;
+    Button upload;
+
     //ImageButton stop;
     View rootView;
 
@@ -121,6 +124,7 @@ public class SoundFragment extends Fragment {
             // this will open gallery to choose image.
             Intent openGallery = new Intent(Intent.ACTION_PICK,MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(Intent.createChooser(openGallery, "Select Audio"), GALLEY_REQUEST_CODE);
+            upload.setEnabled(true);
         }
     };
 
@@ -296,8 +300,8 @@ public class SoundFragment extends Fragment {
                 }
             }
 
-            Button choose = (Button) dialog.findViewById(R.id.btn_choose);
-            Button upload = (Button) dialog.findViewById(R.id.btn_upload);
+            choose = (Button) dialog.findViewById(R.id.btn_choose);
+            upload = (Button) dialog.findViewById(R.id.btn_upload);
 
             choose.setOnClickListener(btnChoose);
             upload.setOnClickListener(btnUpload);

@@ -1,11 +1,19 @@
 package mem.edu.meaningful;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,18 +30,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.os.StrictMode;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
+
+import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
-import android.view.Menu;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+
 
 /**
  * Created by erikllerena on 9/29/16.
@@ -42,56 +42,24 @@ import android.widget.Toast;
 public class LoginPlease {
     //extends Activity {
 
-
     public String strStatusID;
+    public int postResult;
 
-    public int SaveData(String userInput)
-    {
+    public class getHttpPost extends AsyncTask<String, Void, String> {
 
-
-        // Check Email
-        if(userInput.length() == 0)
-        {
-            return 0;
-        }
+        @Override
+        protected String doInBackground(String... params) {
 
         String url = "http://www.dia40.com/oodles/meaning.php";
-
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("sEmail", userInput));
-
-        String resultServer  = getHttpPost(url,params);
-
-        /*** Default Value ***/
-        strStatusID = "0";
-        String strError = "Unknow Status!";
-
-        JSONObject c;
-        try {
-            c = new JSONObject(resultServer);
-            strStatusID = c.getString("StatusID");
-            strError = c.getString("Error");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        // Prepare Save Data
-        if(strStatusID.equals("0"))
-        {
-            return 1;
-        }
-
-        return 2;
-    }
-
-
-    public String getHttpPost(String url,List<NameValuePair> params) {
         StringBuilder str = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(url);
 
+        List<NameValuePair> paramx = new ArrayList<NameValuePair>();
+        paramx.add(new BasicNameValuePair("sUsername", params[0]));
+
         try {
-            httpPost.setEntity(new UrlEncodedFormEntity(params));
+            httpPost.setEntity(new UrlEncodedFormEntity(paramx));
             HttpResponse response = client.execute(httpPost);
             StatusLine statusLine = response.getStatusLine();
             int statusCode = statusLine.getStatusCode();
@@ -112,7 +80,50 @@ public class LoginPlease {
             e.printStackTrace();
         }
         return str.toString();
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            /*** Default Value ***/
+            strStatusID = "0";
+            String strError = "Unknow Status!";
+
+            JSONObject c;
+            try {
+                c = new JSONObject(result);
+                strStatusID = c.getString("StatusID");
+                strError = c.getString("Error");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            // Prepare Save Data
+            if (strStatusID.equals("0")) {
+
+                postResult = 1;
+            }
+
+            postResult = 2;
+        }
+
     }
+
+    public int SaveData(String userInput)
+    {
+
+        // Check Email
+        if(userInput.length() == 0)
+        {
+            return 0;
+        }
+
+        new getHttpPost().execute(userInput);
+
+        return postResult;
+    }
+
 
 }
 
@@ -121,8 +132,6 @@ public class LoginPlease {
 //    public void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.save_accent);
-//
-//        _sPref = new AppPreferences(getBaseContext());
 //
 //        // Permission StrictMode
 //        if (android.os.Build.VERSION.SDK_INT > 9) {
