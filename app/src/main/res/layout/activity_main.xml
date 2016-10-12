@@ -23,7 +23,7 @@
 
         <ImageView
             android:layout_width="235dp"
-            android:layout_height="55dp"
+            android:layout_height="53dp"
             android:src="@drawable/meaningful"
             android:contentDescription="@string/app_name"
             android:cropToPadding="false"
@@ -34,45 +34,50 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="67dp">
+        android:layout_marginTop="61dp"
+        >
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:id="@+id/editText"
             android:hint="Search Word"
             android:inputType="text"
-            android:layout_weight="2"/>
+            android:layout_weight="2"
+            android:layout_gravity="center_vertical"/>
 
         <ImageButton
-            android:layout_width="wrap_content"
+            android:layout_width="73dp"
             android:layout_height="wrap_content"
             android:id="@+id/button"
             android:src="@drawable/searchicon"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:padding="1dp"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            android:layout_gravity="center_vertical"
+            android:padding="1dp"/>
     </LinearLayout>
 
     <include layout="@layout/tab_layout"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:layout_marginTop="115dp"/>
+             android:layout_marginTop="105dp"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="135dp"
-        android:id="@+id/welcomeSVId">
+        android:layout_marginTop="136dp"
+        android:id="@+id/welcomeSVId"
+        >
 
         <ImageView
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:scaleType="centerCrop"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
             android:id="@+id/dictImgId"
             android:src="@drawable/dictionary"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            />
 
     </ScrollView>
 

@@ -63,6 +63,7 @@ public class SoundFragment extends Fragment {
 
     Button choose;
     Button upload;
+    Button logOut;
 
     //ImageButton stop;
     View rootView;
@@ -163,6 +164,8 @@ public class SoundFragment extends Fragment {
                         txtEmail.setVisibility(View.INVISIBLE);
                         _sPref.saveSmsBody("userId", txtEmail.getText().toString());
                         upload.setEnabled(true);
+                        logOut.setVisibility(View.VISIBLE);
+                        logOut.setOnClickListener(btnLogout);
                         // this will open audio folder to choose file.
                         Intent openGallery = new Intent(Intent.ACTION_PICK,MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(Intent.createChooser(openGallery, "Select Audio"), GALLEY_REQUEST_CODE);
@@ -313,8 +316,19 @@ public class SoundFragment extends Fragment {
             }
     };
 
+    private View.OnClickListener btnLogout = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
 
-    private View.OnClickListener btnClick = new View.OnClickListener() {
+            _sPref.removePref("userId");
+            logOut.setVisibility(View.INVISIBLE);
+            tvEmail.setVisibility(View.VISIBLE);
+            txtEmail.setVisibility(View.VISIBLE);
+            upload.setEnabled(false);
+        }
+    };
+
+        private View.OnClickListener btnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
@@ -326,11 +340,13 @@ public class SoundFragment extends Fragment {
             txtEmail = (EditText) dialog.findViewById(R.id.txtEmail);
             tvEmail = (TextView) dialog.findViewById(R.id.tvEmailId);
             tvError = (TextView) dialog.findViewById(R.id.txtError);
+            logOut = (Button) dialog.findViewById(R.id.logOutId);
 
             if(!_sPref.getAll().containsKey("userId")) {
 
                 tvEmail.setVisibility(View.VISIBLE);
                 txtEmail.setVisibility(View.VISIBLE);
+
                 if (txtEmail.requestFocus()) {
                     getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 }
@@ -341,6 +357,7 @@ public class SoundFragment extends Fragment {
 
             choose.setOnClickListener(btnChoose);
             upload.setOnClickListener(btnUpload);
+
             dialog.show();
         }
     };
