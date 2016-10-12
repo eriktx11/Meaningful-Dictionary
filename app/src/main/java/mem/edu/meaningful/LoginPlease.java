@@ -29,10 +29,21 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.NodeList;
 
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
@@ -42,87 +53,201 @@ import android.util.Log;
 public class LoginPlease {
     //extends Activity {
 
-    public String strStatusID;
-    public int postResult;
+    static String strStatusID;
+    static int postResult;
+    static ProgressDialog pDialog;
 
-    public class getHttpPost extends AsyncTask<String, Void, String> {
+    LoginPlease(Context c){
+        pDialog = new ProgressDialog(c);
+    }
+
+//    @Override
+//    public Context getApplicationContext() {
+//        return null;
+//    }
+
+
+//    @SuppressLint("NewApi")
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        //setContentView(R.layout.save_accent);
+//
+//        // Permission StrictMode
+////        if (android.os.Build.VERSION.SDK_INT > 9) {
+////            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+////            StrictMode.setThreadPolicy(policy);
+////        }
+//        pDialog = new ProgressDialog(LoginPlease.this);
+//    }
+
+
+//
+//    static int getHttpPost(String params) {
+//
+//        String url = "http://www.dia40.com/oodles/meaning.php";
+//        StringBuilder str = new StringBuilder();
+//        HttpClient client = new DefaultHttpClient();
+//        HttpPost httpPost = new HttpPost(url);
+//
+//        List<NameValuePair> paramx = new ArrayList<NameValuePair>();
+//        paramx.add(new BasicNameValuePair("sUsername", params));
+//
+//        try {
+//            httpPost.setEntity(new UrlEncodedFormEntity(paramx));
+//            HttpResponse response = client.execute(httpPost);
+//            StatusLine statusLine = response.getStatusLine();
+//            int statusCode = statusLine.getStatusCode();
+//            if (statusCode == 200) { // Status OK
+//                HttpEntity entity = response.getEntity();
+//                InputStream content = entity.getContent();
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+//                String line;
+//                while ((line = reader.readLine()) != null) {
+//                    str.append(line);
+//                }
+//            } else {
+//                Log.e("Log", "Failed to download result..");
+//            }
+//        } catch (ClientProtocolException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        String result= str.toString();
+//
+//
+//        /*** Default Value ***/
+//        strStatusID = "0";
+//        String strError = "Unknow Status!";
+//
+//        JSONObject c;
+//        try {
+//            c = new JSONObject(result);
+//            strStatusID = c.getString("StatusID");
+//            strError = c.getString("Error");
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        // Prepare Save Data
+//        if (strStatusID.equals("0")) {
+//            postResult = 1;
+//        }else {
+//            postResult = 2;
+//        }
+//
+//        return postResult;
+//
+//    }
+
+
+   //======================
+   static class getHttpPost extends AsyncTask<String, Void, String> {
+
+
+       @Override
+       protected void onPreExecute() {
+           super.onPreExecute();
+           // Create a progressbar
+
+           // Set progressbar title
+           pDialog.setTitle("Meaningful Dictionary");
+           // Set progressbar message
+           pDialog.setMessage("Loading...");
+           pDialog.setIndeterminate(false);
+           // Show progressbar
+           pDialog.show();
+       }
 
         @Override
         protected String doInBackground(String... params) {
 
-        String url = "http://www.dia40.com/oodles/meaning.php";
-        StringBuilder str = new StringBuilder();
-        HttpClient client = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(url);
+        if(params[0].equals("")){
+            return "";
+        } else {
 
-        List<NameValuePair> paramx = new ArrayList<NameValuePair>();
-        paramx.add(new BasicNameValuePair("sUsername", params[0]));
+            String url = "http://www.dia40.com/oodles/meaning.php";
+            StringBuilder str = new StringBuilder();
+            HttpClient client = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url);
 
-        try {
-            httpPost.setEntity(new UrlEncodedFormEntity(paramx));
-            HttpResponse response = client.execute(httpPost);
-            StatusLine statusLine = response.getStatusLine();
-            int statusCode = statusLine.getStatusCode();
-            if (statusCode == 200) { // Status OK
-                HttpEntity entity = response.getEntity();
-                InputStream content = entity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    str.append(line);
+            List<NameValuePair> paramx = new ArrayList<NameValuePair>();
+            paramx.add(new BasicNameValuePair("sUsername", params[0]));
+            try {
+                httpPost.setEntity(new UrlEncodedFormEntity(paramx));
+                HttpResponse response = client.execute(httpPost);
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+                if (statusCode == 200) { // Status OK
+                    HttpEntity entity = response.getEntity();
+                    InputStream content = entity.getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        str.append(line);
+                    }
+                } else {
+                    Log.e("Log", "Failed to download result..");
                 }
-            } else {
-                Log.e("Log", "Failed to download result..");
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return str.toString();
+            return str.toString();
+            }
+
         }
 
 
         @Override
         protected void onPostExecute(String result) {
 
-            /*** Default Value ***/
-            strStatusID = "0";
-            String strError = "Unknow Status!";
+            if(result.equals("")){
+                postResult = 0;
+            }else {
+                /*** Default Value ***/
+                strStatusID = "0";
+                String strError = "Unknow Status!";
 
-            JSONObject c;
-            try {
-                c = new JSONObject(result);
-                strStatusID = c.getString("StatusID");
-                strError = c.getString("Error");
-            } catch (JSONException e) {
-                e.printStackTrace();
+                JSONObject c;
+                try {
+                    c = new JSONObject(result);
+                    strStatusID = c.getString("StatusID");
+                    strError = c.getString("Error");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                // Prepare Save Data
+                if (strStatusID.equals("0")) {
+                    postResult = 1;
+                } else {
+                    postResult = 2;
+                }
             }
-
-            // Prepare Save Data
-            if (strStatusID.equals("0")) {
-
-                postResult = 1;
-            }
-
-            postResult = 2;
+            pDialog.dismiss();
         }
 
     }
 
-    public int SaveData(String userInput)
-    {
+    //==================================
 
-        // Check Email
-        if(userInput.length() == 0)
-        {
-            return 0;
-        }
 
-        new getHttpPost().execute(userInput);
-
-        return postResult;
-    }
+//    public class SaveData()
+//    {
+//
+//        // Check Email
+//        if(userInput.length() == 0)
+//        {
+//            postResult = 0;
+//        }
+//
+//        new getHttpPost().execute(userInput);
+//        //return null;
+//    }
 
 
 }

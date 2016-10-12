@@ -38,6 +38,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.StringCharacterIterator;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 
 /**
@@ -121,10 +124,48 @@ public class SoundFragment extends Fragment {
     public View.OnClickListener btnChoose = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // this will open gallery to choose image.
+
+        if(!_sPref.getAll().containsKey("userId")){
+
+            String email = txtEmail.getText().toString();
+            LoginPlease login = new LoginPlease(getContext());
+
+                try {
+                    new LoginPlease.getHttpPost().execute(email).get(3000, TimeUnit.MILLISECONDS);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (TimeoutException e) {
+                    e.printStackTrace();
+                }
+
+                switch (login.postResult) {
+                    case 0:
+                        tvError.setVisibility(View.VISIBLE);
+                        break;
+                    case 1:
+                        tvError.setVisibility(View.VISIBLE);
+                        tvError.setText("Unknown Error");
+                        break;
+                    case 2:
+                        tvEmail.setVisibility(View.INVISIBLE);
+                        tvError.setVisibility(View.INVISIBLE);
+                        txtEmail.setVisibility(View.INVISIBLE);
+                        _sPref.saveSmsBody("userId", txtEmail.getText().toString());
+                        upload.setEnabled(true);
+                        // this will open audio folder to choose file.
+                        Intent openGallery = new Intent(Intent.ACTION_PICK,MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(Intent.createChooser(openGallery, "Select Audio"), GALLEY_REQUEST_CODE);
+                        break;
+                    }
+                }
+             else {
+            // this will open audio folder to choose file.
             Intent openGallery = new Intent(Intent.ACTION_PICK,MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(Intent.createChooser(openGallery, "Select Audio"), GALLEY_REQUEST_CODE);
             upload.setEnabled(true);
+              }
         }
     };
 
@@ -253,28 +294,14 @@ public class SoundFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-           // String ss =_sPref.getSmsBody("userId");
+            //String ss =_sPref.getSmsBody("userId");
 
-            if(!_sPref.getAll().containsKey("userId")){
+            if(_sPref.getAll().containsKey("userId")){
 
-                LoginPlease login = new LoginPlease();
-                switch (login.SaveData(txtEmail.getText().toString()) ){
-                    case 0: tvEmail.setVisibility(View.VISIBLE);break;
-                    case 1: tvEmail.setText("Unknown Error");break;
-                    case 2:
-                    {
-                        tvEmail.setVisibility(View.INVISIBLE);
-                        tvError.setVisibility(View.INVISIBLE);
-                        txtEmail.setVisibility(View.INVISIBLE);
-                        _sPref.saveSmsBody("userId", txtEmail.getText().toString());
-                        new doFileUpload().execute();
-                        break;
-                    }
-                }
-                return;
+                new doFileUpload().execute();
             }
-            new doFileUpload().execute();
-        }
+                //return;
+            }
     };
 
 
