@@ -128,25 +128,34 @@ public class SoundFragment extends Fragment {
         if(!_sPref.getAll().containsKey("userId")){
 
             String email = txtEmail.getText().toString();
-            LoginPlease login = new LoginPlease(getContext());
+            LoginPlease login = new LoginPlease();
 
-                try {
-                    new LoginPlease.getHttpPost().execute(email).get(3000, TimeUnit.MILLISECONDS);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (TimeoutException e) {
-                    e.printStackTrace();
-                }
+            try{
+                new LoginPlease.getHttpPost().execute(email).get(3000, TimeUnit.MILLISECONDS);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (TimeoutException e) {
+                e.printStackTrace();
+            }
+
+               // while (!login.getFlag()) {
+
+                    try {Thread.sleep(2000);
+                    }
+                    catch (InterruptedException e) { e.printStackTrace(); }
+               // }
 
                 switch (login.postResult) {
                     case 0:
                         tvError.setVisibility(View.VISIBLE);
+                        tvError.setText(login.strError);
                         break;
                     case 1:
                         tvError.setVisibility(View.VISIBLE);
-                        tvError.setText("Unknown Error");
+                        tvError.setText(login.strError);
                         break;
                     case 2:
                         tvEmail.setVisibility(View.INVISIBLE);
