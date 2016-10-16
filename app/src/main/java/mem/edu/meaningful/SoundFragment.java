@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,15 +31,47 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.Header;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+
+
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FilterOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.text.StringCharacterIterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -207,98 +241,382 @@ public class SoundFragment extends Fragment {
         return cursor.getString(column_index);
     }
 
-    public class doFileUpload extends AsyncTask<Void, Void, Void> {
+
+    //            HttpClient client = new DefaultHttpClient();
+//            HttpPost post = new HttpPost(urlString);
+//            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+//            builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+//
+//            final File file = new File(existingFileName);
+//            FileBody fb = new FileBody(file);
+//
+//            builder.addPart("file", fb);
+//            builder.addTextBody("email", params[0]);
+//            final HttpEntity yourEntity = builder.build();
+//
+//
+//            class ProgressiveEntity implements HttpEntity {
+//                @Override
+//                public void consumeContent() throws IOException {
+//                    yourEntity.consumeContent();
+//                }
+//
+//                @Override
+//                public InputStream getContent() throws IOException,
+//                        IllegalStateException {
+//                    return yourEntity.getContent();
+//                }
+//
+//                @Override
+//                public org.apache.http.Header getContentEncoding() {
+//                    return yourEntity.getContentEncoding();
+//                }
+//
+//                @Override
+//                public long getContentLength() {
+//                    return yourEntity.getContentLength();
+//                }
+//
+//                @Override
+//                public org.apache.http.Header getContentType() {
+//                    return yourEntity.getContentType();
+//                }
+//
+//                @Override
+//                public boolean isChunked() {
+//                    return yourEntity.isChunked();
+//                }
+//
+//                @Override
+//                public boolean isRepeatable() {
+//                    return yourEntity.isRepeatable();
+//                }
+//
+//                @Override
+//                public boolean isStreaming() {
+//                    return yourEntity.isStreaming();
+//                }
+//
+//                @Override
+//                public void writeTo(OutputStream outstream) throws IOException {
+//
+//                    class ProxyOutputStream extends FilterOutputStream {
+//                        /**
+//                         * @author Stephen Colebourne
+//                         */
+//
+//                        public ProxyOutputStream(OutputStream proxy) {
+//                            super(proxy);
+//                        }
+//
+//                        public void write(int idx) throws IOException {
+//                            out.write(idx);
+//                        }
+//
+//                        public void write(byte[] bts) throws IOException {
+//                            out.write(bts);
+//                        }
+//
+//                        public void write(byte[] bts, int st, int end) throws IOException {
+//                            out.write(bts, st, end);
+//                        }
+//
+//                        public void flush() throws IOException {
+//                            out.flush();
+//                        }
+//
+//                        public void close() throws IOException {
+//                            out.close();
+//                        }
+//                    }
+//
+//                    class ProgressiveOutputStream extends ProxyOutputStream {
+//                        public ProgressiveOutputStream(OutputStream proxy) {
+//                            super(proxy);
+//                        }
+//
+//                        public void write(byte[] bts, int st, int end) throws IOException {
+//
+//                            // FIXME  Put your progress bar stuff here!
+//
+//                            out.write(bts, st, end);
+//                        }
+//                    }
+//
+//                    yourEntity.writeTo(new ProgressiveOutputStream(outstream));
+//                }
+//
+//            }
+//            ;
+//            ProgressiveEntity myEntity = new ProgressiveEntity();
+//            post.setEntity(myEntity);
+//
+//
+//            HttpResponse response = null;
+//            try {
+//                response = client.execute(post);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//
+//            BufferedReader rd = null;
+//            try {
+//                rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            String body = "";
+//            String content = "";
+//
+//            try {
+//                while ((body = rd.readLine()) != null) {
+//                    content += body + "\n";
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+
+    public class doFileUpload extends AsyncTask<String, Void, Void> {
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(String... params) {
 
-            HttpURLConnection conn = null;
-            DataOutputStream dos = null;
-            DataInputStream inStream = null;
-            String existingFileName = realUri.toString(); //Environment.getExternalStorageDirectory().getAbsolutePath() +
-            String lineEnd = "\r\n";
-            String twoHyphens = "--";
-            String boundary = "*****";
-            int bytesRead, bytesAvailable, bufferSize;
-            byte[] buffer;
-            int maxBufferSize = 1 * 1024 * 1024;
-            String responseFromServer = "";
-            String urlString = "http://www.dia40.com/oodles/fileUpload.php";
+
+//---file
+            String existingFileName = realUri.toString();
+//            FileInputStream fileInputStream = null;
+//            byte[] buffer;
+//            int maxBufferSize = 1 * 1024 * 1024;
+//            DataOutputStream dos = null;
+//            int bytesRead, bytesAvailable, bufferSize;
+//            try {
+//
+//                fileInputStream = new FileInputStream(new File(existingFileName));
+//
+//
+//                // create a buffer of maximum size
+//                bytesAvailable = fileInputStream.available();
+//                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+//                buffer = new byte[bufferSize];
+//                // read file and write it into form...
+//                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+//
+//                while (bytesRead > 0) {
+//
+//                    bytesAvailable = fileInputStream.available();
+//                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
+//                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+//
+//                }
+//
+//                // close streams
+//                Log.e("Debug", "File is written");
+//                fileInputStream.close();
+//
+//                        } catch (MalformedURLException ex) {
+//                Log.e("Debug", "error: " + ex.getMessage(), ex);
+//            } catch (IOException ioe) {
+//                Log.e("Debug", "error: " + ioe.getMessage(), ioe);
+//            }
+            //--
+
+
+            String urldata = "http://www.dia40.com/oodles/fileUpload.php";
+            StringBuilder strdata = new StringBuilder();
+            HttpClient client = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(urldata);
+            String result="null";
+
+
+
+//            List<NameValuePair> paramx = new ArrayList<NameValuePair>();
+//            paramx.add(new BasicNameValuePair("aWord", _sPref.getSmsBody("key")));
+//            paramx.add(new BasicNameValuePair("strUsername", _sPref.getSmsBody("userId")));
+            //paramx.add(new BasicNameValuePair("uploadedfile", fileInputStream));
 
             try {
+                //httpPost.setEntity(new UrlEncodedFormEntity(paramx));
+//                HttpResponse response = client.execute(httpPost);
+//                StatusLine statusLine = response.getStatusLine();
+//                int statusCode = statusLine.getStatusCode();
 
-                //------------------ CLIENT REQUEST
-                FileInputStream fileInputStream = new FileInputStream(new File(existingFileName));
-                // open a URL connection to the Servlet
-                URL url = new URL(urlString);
-                // Open a HTTP connection to the URL
-                conn = (HttpURLConnection) url.openConnection();
-                // Allow Inputs
-                conn.setDoInput(true);
-                // Allow Outputs
-                conn.setDoOutput(true);
-                // Don't use a cached copy.
-                conn.setUseCaches(false);
-                // Use a post method.
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Connection", "Keep-Alive");
-                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-                dos = new DataOutputStream(conn.getOutputStream());
-                dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=\"uploadedfile\";filename=\"" + existingFileName + "\"" + lineEnd);
-                dos.writeBytes(lineEnd);
-                // create a buffer of maximum size
-                bytesAvailable = fileInputStream.available();
-                bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                buffer = new byte[bufferSize];
-                // read file and write it into form...
-                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
 
-                while (bytesRead > 0) {
+                //--
 
-                    dos.write(buffer, 0, bufferSize);
-                    bytesAvailable = fileInputStream.available();
-                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+                MultipartEntity entityFile = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+                //entityFile.addPart("title", new StringBody(existingFileName, Charset.forName("UTF-8")));
+                File myFile = new File(existingFileName);
+                FileBody fileBody = new FileBody(myFile);
+                entityFile.addPart("uploadedfile", fileBody);
+                entityFile.addPart("aWord", new StringBody(_sPref.getSmsBody("key")));
+                entityFile.addPart("strUsername", new StringBody(_sPref.getSmsBody("userId")));
 
+                httpPost.setEntity(entityFile);
+                //paramx.add(new BasicNameValuePair("uploadedfile", fileBody.getFilename()));
+
+                //---
+
+                HttpResponse response = client.execute(httpPost);
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+
+                if (statusCode == 200) {
+
+                    HttpEntity entity = response.getEntity();
+                    InputStream content = entity.getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        strdata.append(line);
+                    }
+                } else {
+                    Log.e("Log", "Failed to insert...");
                 }
-
-                // send multipart form data necesssary after file data...
-                dos.writeBytes(lineEnd);
-                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-                // close streams
-                Log.e("Debug", "File is written");
-                fileInputStream.close();
-                dos.flush();
-                dos.close();
-
-            } catch (MalformedURLException ex) {
-                Log.e("Debug", "error: " + ex.getMessage(), ex);
-            } catch (IOException ioe) {
-                Log.e("Debug", "error: " + ioe.getMessage(), ioe);
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            result = strdata.toString();
 
-            //------------------ read the SERVER RESPONSE
-            try {
+            Log.e("Debug", result);
 
-                inStream = new DataInputStream(conn.getInputStream());
-                String str;
-
-                while ((str = inStream.readLine()) != null) {
-
-                    Log.e("Debug", "Server Response " + str);
-
-                }
-
-                inStream.close();
-
-            } catch (IOException ioex) {
-                Log.e("Debug", "error: " + ioex.getMessage(), ioex);
-            }
+//
+//            HttpURLConnection conn = null;
+//            DataOutputStream dos = null;
+//            DataInputStream inStream = null;
+//            String existingFileName = realUri.toString(); //Environment.getExternalStorageDirectory().getAbsolutePath() +
+//            String lineEnd = "\r\n";
+//            String twoHyphens = "--";
+//            String boundary = "*****";
+//            int bytesRead, bytesAvailable, bufferSize;
+//            byte[] buffer;
+//            int maxBufferSize = 1 * 1024 * 1024;
+//            String responseFromServer = "";
+//            String urlString = "http://www.dia40.com/oodles/fileUpload.php";
+//
+//
+//            try {
+//                //------------------ CLIENT REQUEST
+//
+//                FileInputStream fileInputStream = new FileInputStream(new File(existingFileName));
+//                // open a URL connection to the Servlet
+//                URL url = new URL(urlString);
+//                // Open a HTTP connection to the URL
+//                conn = (HttpURLConnection) url.openConnection();
+//                // Allow Inputs
+//                conn.setDoInput(true);
+//                // Allow Outputs
+//                conn.setDoOutput(true);
+//                // Don't use a cached copy.
+//                conn.setUseCaches(false);
+//                // Use a post method.
+//                conn.setRequestMethod("POST");
+//                conn.setRequestProperty("Connection", "Keep-Alive");
+//                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+//                dos = new DataOutputStream(conn.getOutputStream());
+//                dos.writeBytes(twoHyphens + boundary + lineEnd);
+//                dos.writeBytes("Content-Disposition: form-data; name=\"uploadedfile\";filename=\"" + existingFileName + "\"" + lineEnd);
+//                dos.writeBytes(lineEnd);
+//                // create a buffer of maximum size
+//                bytesAvailable = fileInputStream.available();
+//                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+//                buffer = new byte[bufferSize];
+//                // read file and write it into form...
+//                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+//
+//                while (bytesRead > 0) {
+//
+//                    dos.write(buffer, 0, bufferSize);
+//                    bytesAvailable = fileInputStream.available();
+//                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
+//                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+//
+//                }
+//
+//                // send multipart form data necesssary after file data...
+//                dos.writeBytes(lineEnd);
+//                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+//
+//                // close streams
+//                Log.e("Debug", "File is written");
+//                fileInputStream.close();
+//                dos.flush();
+//                dos.close();
+//
+//
+//            } catch (MalformedURLException ex) {
+//                Log.e("Debug", "error: " + ex.getMessage(), ex);
+//            } catch (IOException ioe) {
+//                Log.e("Debug", "error: " + ioe.getMessage(), ioe);
+//            }
+//
+//
+//            //------------------ read the SERVER RESPONSE
+//            try {
+//
+//                inStream = new DataInputStream(conn.getInputStream());
+//                String str;
+//
+//                while ((str = inStream.readLine()) != null) {
+//                    Log.e("Debug", "Server Response " + str);
+//                }
+//                inStream.close();
+//
+//            } catch (IOException ioex) {
+//                Log.e("Debug", "error: " + ioex.getMessage(), ioex);
+//            }
 
             return null;
         }
+
     }
+
+
+
+//    URL url = new URL("http://yoururl.com");
+//    HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+//    conn.setReadTimeout(10000);
+//    conn.setConnectTimeout(15000);
+//    conn.setRequestMethod("POST");
+//    conn.setDoInput(true);
+//    conn.setDoOutput(true);
+//
+//    List<NameValuePair> params = new ArrayList<NameValuePair>();
+//    params.add(new BasicNameValuePair("firstParam", paramValue1));
+//    params.add(new BasicNameValuePair("secondParam", paramValue2));
+//    params.add(new BasicNameValuePair("thirdParam", paramValue3));
+//
+//    OutputStream os = conn.getOutputStream();
+//    BufferedWriter writer = new BufferedWriter(
+//            new OutputStreamWriter(os, "UTF-8"));
+//    writer.write(getQuery(params));
+//    writer.flush();
+//    writer.close();
+//    os.close();
+//
+//    conn.connect();
+
+//    private String getQuery(List<NameValuePair> params) throws UnsupportedEncodingException
+//    {
+//        StringBuilder result = new StringBuilder();
+//        boolean first = true;
+//
+//        for (NameValuePair pair : params)
+//        {
+//            if (first)
+//                first = false;
+//            else
+//                result.append("&");
+//
+//            result.append(URLEncoder.encode(pair.getName(), "UTF-8"));
+//            result.append("=");
+//            result.append(URLEncoder.encode(pair.getValue(), "UTF-8"));
+//        }
+//
+//        return result.toString();
+//    }
 
     public Dialog dialog;
 
@@ -310,7 +628,7 @@ public class SoundFragment extends Fragment {
 
             if(_sPref.getAll().containsKey("userId")){
 
-                new doFileUpload().execute();
+                new doFileUpload().execute(_sPref.getSmsBody("userId"));
             }
                 //return;
             }
