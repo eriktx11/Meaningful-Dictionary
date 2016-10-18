@@ -80,7 +80,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Created by erikllerena on 9/27/16.
  */
-public class SoundFragment extends Fragment {
+public class SoundFragment extends Fragment implements View.OnClickListener {
 
     private static final String LOG_TAG = "AccentRecord";
     private static String mFileName = null;
@@ -98,6 +98,7 @@ public class SoundFragment extends Fragment {
     Button choose;
     Button upload;
     Button logOut;
+    String locationStr;
 
     //ImageButton stop;
     View rootView;
@@ -111,9 +112,9 @@ public class SoundFragment extends Fragment {
     private Uri realUri;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.sound_view, container, false);
-        btn = (ImageButton)rootView.findViewById(R.id.btnSoundId);
+        btn = (ImageButton) rootView.findViewById(R.id.btnSoundId);
 
         _sPref = new AppPreferences(getContext());
 
@@ -124,7 +125,7 @@ public class SoundFragment extends Fragment {
                 StringCharacterIterator characterIterator = new StringCharacterIterator(_sPref.getSmsBody("sound"));
                 char s = characterIterator.first();
                 String url;
-                url="http://media.merriam-webster.com/soundc11/"+s+"/"+_sPref.getSmsBody("sound");
+                url = "http://media.merriam-webster.com/soundc11/" + s + "/" + _sPref.getSmsBody("sound");
 
                 try {
                     MediaPlayer player = new MediaPlayer();
@@ -149,8 +150,8 @@ public class SoundFragment extends Fragment {
                 .into((ImageView) rootView.findViewById(R.id.imageView2));
 
 
-        start=(ImageButton)rootView.findViewById(R.id.rcrbtn1);
-        start.setOnClickListener(btnClick);
+        start = (ImageButton) rootView.findViewById(R.id.rcrbtn1);
+        start.setOnClickListener(SoundFragment.this);
 
         return rootView;
     }
@@ -160,28 +161,32 @@ public class SoundFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-        if(!_sPref.getAll().containsKey("userId")){
+            if (!_sPref.getAll().containsKey("userId")) {
 
-            String email = txtEmail.getText().toString();
-            LoginPlease login = new LoginPlease();
+                String[] strFirstTime=new String[2];
+                strFirstTime[0] =  txtEmail.getText().toString();
+                strFirstTime[1] = locationStr;
 
-            try{
-                new LoginPlease.getHttpPost().execute(email).get(3000, TimeUnit.MILLISECONDS);
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (TimeoutException e) {
-                e.printStackTrace();
-            }
+                LoginPlease login = new LoginPlease();
 
-               // while (!login.getFlag()) {
+                try {
+                    new LoginPlease.getHttpPost().execute(strFirstTime).get(3000, TimeUnit.MILLISECONDS);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (TimeoutException e) {
+                    e.printStackTrace();
+                }
 
-                    try {Thread.sleep(2000);
-                    }
-                    catch (InterruptedException e) { e.printStackTrace(); }
-               // }
+                // while (!login.getFlag()) {
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                // }
 
                 switch (login.postResult) {
                     case 0:
@@ -201,17 +206,18 @@ public class SoundFragment extends Fragment {
                         logOut.setVisibility(View.VISIBLE);
                         logOut.setOnClickListener(btnLogout);
                         // this will open audio folder to choose file.
-                        Intent openGallery = new Intent(Intent.ACTION_PICK,MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                        Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(Intent.createChooser(openGallery, "Select Audio"), GALLEY_REQUEST_CODE);
                         break;
-                    }
                 }
-             else {
-            // this will open audio folder to choose file.
-            Intent openGallery = new Intent(Intent.ACTION_PICK,MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(Intent.createChooser(openGallery, "Select Audio"), GALLEY_REQUEST_CODE);
-            upload.setEnabled(true);
-              }
+            } else {
+                logOut.setVisibility(View.VISIBLE);
+                logOut.setOnClickListener(btnLogout);
+                // this will open audio folder to choose file.
+                Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(Intent.createChooser(openGallery, "Select Audio"), GALLEY_REQUEST_CODE);
+                upload.setEnabled(true);
+            }
         }
     };
 
@@ -221,24 +227,60 @@ public class SoundFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLEY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             //image.setImageURI(data.getData()); // set image to image view
-            try{
+            try {
                 // Get real path to make File
                 realUri = Uri.parse(getPath(data.getData()));
-                Log.d(TAG,"Image path :- "+realUri);
-            }
-            catch (Exception e){
-                Log.e(TAG,e.getMessage());
+                Log.d(TAG, "Audio path :- " + realUri);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
             }
         }
     }
 
     private String getPath(Uri uri) throws Exception {
         // this method will be used to get real path of Image chosen from gallery.
-        String[] projection = { MediaStore.Images.Media.DATA };
+        String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContext().getContentResolver().query(uri, projection, null, null, null);
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
+    }
+
+    @Override
+    public void onClick(View v) {
+        dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.recording_box);
+        dialog.setTitle("upload");
+
+        switch (v.getId()){
+            case R.id.rcrbtn1:locationStr="ak";break;
+            case R.id.rcrbtn2:locationStr="al";break;
+        }
+
+
+        image = (ImageView) dialog.findViewById(R.id.imageId);
+        txtEmail = (EditText) dialog.findViewById(R.id.txtEmail);
+        tvEmail = (TextView) dialog.findViewById(R.id.tvEmailId);
+        tvError = (TextView) dialog.findViewById(R.id.txtError);
+        logOut = (Button) dialog.findViewById(R.id.logOutId);
+
+        if (!_sPref.getAll().containsKey("userId")) {
+
+            tvEmail.setVisibility(View.VISIBLE);
+            txtEmail.setVisibility(View.VISIBLE);
+
+            if (txtEmail.requestFocus()) {
+                getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            }
+        }else {logOut.setVisibility(View.VISIBLE);}
+
+        choose = (Button) dialog.findViewById(R.id.btn_choose);
+        upload = (Button) dialog.findViewById(R.id.btn_upload);
+
+        choose.setOnClickListener(btnChoose);
+        upload.setOnClickListener(btnUpload);
+
+        dialog.show();
     }
 
 
@@ -426,8 +468,7 @@ public class SoundFragment extends Fragment {
             StringBuilder strdata = new StringBuilder();
             HttpClient client = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(urldata);
-            String result="null";
-
+            String result = "null";
 
 
 //            List<NameValuePair> paramx = new ArrayList<NameValuePair>();
@@ -451,6 +492,7 @@ public class SoundFragment extends Fragment {
                 entityFile.addPart("uploadedfile", fileBody);
                 entityFile.addPart("aWord", new StringBody(_sPref.getSmsBody("key")));
                 entityFile.addPart("strUsername", new StringBody(_sPref.getSmsBody("userId")));
+                entityFile.addPart("strLocation", new StringBody(locationStr));
 
                 httpPost.setEntity(entityFile);
                 //paramx.add(new BasicNameValuePair("uploadedfile", fileBody.getFilename()));
@@ -574,7 +616,6 @@ public class SoundFragment extends Fragment {
     }
 
 
-
 //    URL url = new URL("http://yoururl.com");
 //    HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
 //    conn.setReadTimeout(10000);
@@ -619,19 +660,18 @@ public class SoundFragment extends Fragment {
 //    }
 
     public Dialog dialog;
-
     private View.OnClickListener btnUpload = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
             //String ss =_sPref.getSmsBody("userId");
 
-            if(_sPref.getAll().containsKey("userId")){
+            if (_sPref.getAll().containsKey("userId")) {
 
                 new doFileUpload().execute(_sPref.getSmsBody("userId"));
             }
-                //return;
-            }
+            //return;
+        }
     };
 
     private View.OnClickListener btnLogout = new View.OnClickListener() {
@@ -646,40 +686,44 @@ public class SoundFragment extends Fragment {
         }
     };
 
-        private View.OnClickListener btnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
 
-            dialog = new Dialog(getContext());
-            dialog.setContentView(R.layout.recording_box);
-            dialog.setTitle("upload");
+//    private View.OnClickListener btnClick = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//
+//            dialog = new Dialog(getContext());
+//            dialog.setContentView(R.layout.recording_box);
+//            dialog.setTitle("upload");
+//
+//            image = (ImageView) dialog.findViewById(R.id.imageId);
+//            txtEmail = (EditText) dialog.findViewById(R.id.txtEmail);
+//            tvEmail = (TextView) dialog.findViewById(R.id.tvEmailId);
+//            tvError = (TextView) dialog.findViewById(R.id.txtError);
+//            logOut = (Button) dialog.findViewById(R.id.logOutId);
+//
+//            if (!_sPref.getAll().containsKey("userId")) {
+//
+//                tvEmail.setVisibility(View.VISIBLE);
+//                txtEmail.setVisibility(View.VISIBLE);
+//
+//                if (txtEmail.requestFocus()) {
+//                    getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+//                }
+//            }
+//
+//            choose = (Button) dialog.findViewById(R.id.btn_choose);
+//            upload = (Button) dialog.findViewById(R.id.btn_upload);
+//
+//            choose.setOnClickListener(btnChoose);
+//            upload.setOnClickListener(btnUpload);
+//
+//            dialog.show();
+//        }
+//    };
 
-            image = (ImageView) dialog.findViewById(R.id.imageId);
-            txtEmail = (EditText) dialog.findViewById(R.id.txtEmail);
-            tvEmail = (TextView) dialog.findViewById(R.id.tvEmailId);
-            tvError = (TextView) dialog.findViewById(R.id.txtError);
-            logOut = (Button) dialog.findViewById(R.id.logOutId);
+}
 
-            if(!_sPref.getAll().containsKey("userId")) {
-
-                tvEmail.setVisibility(View.VISIBLE);
-                txtEmail.setVisibility(View.VISIBLE);
-
-                if (txtEmail.requestFocus()) {
-                    getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                }
-            }
-
-            choose = (Button) dialog.findViewById(R.id.btn_choose);
-            upload = (Button) dialog.findViewById(R.id.btn_upload);
-
-            choose.setOnClickListener(btnChoose);
-            upload.setOnClickListener(btnUpload);
-
-            dialog.show();
-        }
-    };
-
+//----recording voice - working code in case is needed.
 
 //    private static final String AUDIO_RECORDER_FILE_EXT_3GP = ".3gp";
 //    private static final String AUDIO_RECORDER_FILE_EXT_MP4 = ".mp4";
@@ -773,4 +817,4 @@ public class SoundFragment extends Fragment {
 //        }
 //    };
 
-}
+

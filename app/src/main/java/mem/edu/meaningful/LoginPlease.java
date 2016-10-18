@@ -138,6 +138,7 @@ public class LoginPlease {
 
             List<NameValuePair> paramx = new ArrayList<NameValuePair>();
             paramx.add(new BasicNameValuePair("sUsername", params[0]));
+            paramx.add(new BasicNameValuePair("sLocation", params[1]));
             try {
                 httpPost.setEntity(new UrlEncodedFormEntity(paramx));
                 HttpResponse response = client.execute(httpPost);

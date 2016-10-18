@@ -177,7 +177,8 @@
             android:scaleType="fitCenter"
             android:background="@null"
             android:src="@drawable/record"
-            android:paddingRight="5dp"/>
+            android:paddingRight="5dp"
+            />
 
 
     </LinearLayout>
@@ -329,7 +330,8 @@
             android:scaleType="fitCenter"
             android:background="@null"
             android:src="@drawable/record"
-            android:paddingRight="5dp"/>
+            android:paddingRight="5dp"
+            />
 
 
     </LinearLayout>
