@@ -29,7 +29,9 @@
         android:layout_gravity="center_horizontal"
         android:focusableInTouchMode="false"
         android:textColor="#f90202"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -40,7 +42,9 @@
         android:paddingBottom="5dp"
         android:visibility="invisible"
         android:id="@+id/tvEmailId"
-        android:paddingRight="10dp"/>
+        android:paddingRight="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"/>
 
     <EditText
         android:id="@+id/txtEmail"
@@ -48,7 +52,9 @@
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:visibility="invisible">
+        android:visibility="invisible"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
     </EditText>
     <Button
         android:layout_width="wrap_content"

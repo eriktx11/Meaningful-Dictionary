@@ -91,6 +91,7 @@ public class SoundFragment extends Fragment implements View.OnClickListener {
     private AppPreferences _sPref;
     ImageButton btn;
     ImageButton voteup_btn;
+    ImageButton votedown_btn;
     ImageButton start;
     EditText txtEmail;
     TextView tvEmail;
@@ -103,7 +104,6 @@ public class SoundFragment extends Fragment implements View.OnClickListener {
     Button logOut;
     String locationStr;
 
-    //ImageButton stop;
     View rootView;
 
     // gallery request code.
@@ -155,10 +155,12 @@ public class SoundFragment extends Fragment implements View.OnClickListener {
 
         start = (ImageButton) rootView.findViewById(R.id.rcrbtn1);
         voteup_btn = (ImageButton) rootView.findViewById(R.id.imageButtonl1a1);
+        votedown_btn = (ImageButton) rootView.findViewById(R.id.imageButtonl1a2);
 
         vote voting = new vote(getContext());
         start.setOnClickListener(SoundFragment.this);
         voteup_btn.setOnClickListener(voting);
+        votedown_btn.setOnClickListener(voting);
 
         return rootView;
     }
