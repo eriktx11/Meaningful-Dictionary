@@ -2,6 +2,7 @@ package mem.edu.meaningful;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -75,7 +76,6 @@ public class CoordinatorFragment extends Fragment {
     public static class SimpleStringRecyclerViewAdapter extends RecyclerView.Adapter<SimpleStringRecyclerViewAdapter.ViewHolder>{
         private List<String> mValues;
         private Context mContext;
-
         public static class ViewHolder extends RecyclerView.ViewHolder {
 
             public final View mView;
@@ -85,6 +85,7 @@ public class CoordinatorFragment extends Fragment {
                 super(view);
                 mView = view;
                 mTextView = (TextView) view.findViewById(android.R.id.text1);
+                mTextView.setTypeface(MainActivity.FONT_HEADINGS);
             }
         }
 
@@ -101,7 +102,6 @@ public class CoordinatorFragment extends Fragment {
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(android.R.layout.simple_list_item_1, parent, false);
-
             return new ViewHolder(view);
         }
 

@@ -1,6 +1,7 @@
 package mem.edu.meaningful;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.multidex.MultiDex;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     ScrollView welcomeSV;
     private AppPreferences _sPref;
     private ViewPager viewPager;
+    private MyTextView typeFace;
+    public static Typeface FONT_HEADINGS;
 
     View linearLayout;
 
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             boolean isConnected = activeNetwork != null &&
                     activeNetwork.isConnectedOrConnecting();
 
-            if(isConnected){//If not network don't run Google service
+            if(isConnected){//If not network don't run service
 
                 searchWord = editText.getText().toString();
                 _sPref = new AppPreferences(getBaseContext());
@@ -77,9 +80,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
+        FONT_HEADINGS = Typeface.createFromAsset(this.getAssets(), "MavenPro-Medium.ttf");//CaviarDreams.ttf
         setContentView(R.layout.activity_main);
         linearLayout =  findViewById(R.id.info);
         editText = (EditText) findViewById(R.id.editText);
+        editText.setTypeface(MainActivity.FONT_HEADINGS);
         button = (ImageButton) findViewById(R.id.button);
         button.setOnClickListener(SearchListener);
 
@@ -94,10 +99,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new CoordinatorFragment(), searchWord);
-        adapter.addFrag(new ImagesFragment(), "Images");
-        adapter.addFrag(new ConjugateFragment(), "Conjugation");
-        adapter.addFrag(new SoundFragment(), "Sound");
+        adapter.addFrag(new CoordinatorFragment(), searchWord.toUpperCase());
+        adapter.addFrag(new ImagesFragment(), "IMAGES");
+        adapter.addFrag(new ConjugateFragment(), "CONJUGATION");
+        adapter.addFrag(new SoundFragment(), "SOUND");
         viewPager.setAdapter(adapter);
     }
 

@@ -62,20 +62,12 @@
         android:layout_height="wrap_content"
         android:paddingBottom="10dp">
 
-        <LinearLayout
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView1"
-                android:padding="5dp"
-                android:layout_gravity="center"/>
-
-        </LinearLayout>
+            android:id="@+id/imageView1"
+            android:padding="5dp"
+            android:layout_gravity="center_vertical"/>
 
         <ImageButton
             android:layout_width="50dp"
@@ -96,13 +88,32 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl1a1"
+                android:src="@drawable/up"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageButtonl1a1"/>
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/textView3"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButtonl1a2"/>
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl1a2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
         </LinearLayout>
 
         <ImageButton

@@ -90,10 +90,13 @@ public class SoundFragment extends Fragment implements View.OnClickListener {
 
     private AppPreferences _sPref;
     ImageButton btn;
+    ImageButton voteup_btn;
     ImageButton start;
     EditText txtEmail;
     TextView tvEmail;
     TextView tvError;
+
+    public Dialog dialog;
 
     Button choose;
     Button upload;
@@ -151,11 +154,14 @@ public class SoundFragment extends Fragment implements View.OnClickListener {
 
 
         start = (ImageButton) rootView.findViewById(R.id.rcrbtn1);
+        voteup_btn = (ImageButton) rootView.findViewById(R.id.imageButtonl1a1);
+
+        vote voting = new vote(getContext());
         start.setOnClickListener(SoundFragment.this);
+        voteup_btn.setOnClickListener(voting);
 
         return rootView;
     }
-
 
     public View.OnClickListener btnChoose = new View.OnClickListener() {
         @Override
@@ -165,7 +171,7 @@ public class SoundFragment extends Fragment implements View.OnClickListener {
 
                 String[] strFirstTime=new String[2];
                 strFirstTime[0] =  txtEmail.getText().toString();
-                strFirstTime[1] = locationStr;
+                strFirstTime[1] = _sPref.getSmsBody("loc");
 
                 LoginPlease login = new LoginPlease();
 
@@ -248,15 +254,10 @@ public class SoundFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+
         dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.recording_box);
         dialog.setTitle("upload");
-
-        switch (v.getId()){
-            case R.id.rcrbtn1:locationStr="ak";break;
-            case R.id.rcrbtn2:locationStr="al";break;
-        }
-
 
         image = (ImageView) dialog.findViewById(R.id.imageId);
         txtEmail = (EditText) dialog.findViewById(R.id.txtEmail);
@@ -265,6 +266,12 @@ public class SoundFragment extends Fragment implements View.OnClickListener {
         logOut = (Button) dialog.findViewById(R.id.logOutId);
 
         if (!_sPref.getAll().containsKey("userId")) {
+
+
+            switch (v.getId()){
+                case R.id.rcrbtn1:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");break;
+                case R.id.rcrbtn2:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");break;
+            }
 
             tvEmail.setVisibility(View.VISIBLE);
             txtEmail.setVisibility(View.VISIBLE);
@@ -492,7 +499,7 @@ public class SoundFragment extends Fragment implements View.OnClickListener {
                 entityFile.addPart("uploadedfile", fileBody);
                 entityFile.addPart("aWord", new StringBody(_sPref.getSmsBody("key")));
                 entityFile.addPart("strUsername", new StringBody(_sPref.getSmsBody("userId")));
-                entityFile.addPart("strLocation", new StringBody(locationStr));
+                entityFile.addPart("strLocation", new StringBody(_sPref.getSmsBody("loc")));
 
                 httpPost.setEntity(entityFile);
                 //paramx.add(new BasicNameValuePair("uploadedfile", fileBody.getFilename()));
@@ -659,7 +666,6 @@ public class SoundFragment extends Fragment implements View.OnClickListener {
 //        return result.toString();
 //    }
 
-    public Dialog dialog;
     private View.OnClickListener btnUpload = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -667,7 +673,6 @@ public class SoundFragment extends Fragment implements View.OnClickListener {
             //String ss =_sPref.getSmsBody("userId");
 
             if (_sPref.getAll().containsKey("userId")) {
-
                 new doFileUpload().execute(_sPref.getSmsBody("userId"));
             }
             //return;
