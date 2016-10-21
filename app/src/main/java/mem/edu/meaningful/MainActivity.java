@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     ScrollView welcomeSV;
     private AppPreferences _sPref;
     private ViewPager viewPager;
-    private MyTextView typeFace;
     public static Typeface FONT_HEADINGS;
 
     View linearLayout;

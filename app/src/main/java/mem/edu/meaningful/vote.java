@@ -3,20 +3,34 @@ package mem.edu.meaningful;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -41,6 +55,12 @@ public class vote extends Activity implements View.OnClickListener {
     Button ok_log_vote;
     String loc;
     String voteLabel;
+
+    String strStatusID;
+    int postResult;
+    String strError;
+    boolean getFlag;
+    String vote;
 
     public vote(Context c){
         this.mContex=c;
@@ -127,6 +147,8 @@ public class vote extends Activity implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
+
+            new postVote().execute(_sPref.getSmsBody("key"), _sPref.getSmsBody("userId"), _sPref.getSmsBody("loc"), vote);
             cancel.setText("DONE");
             ok_log_vote.setEnabled(false);
         }
@@ -170,16 +192,15 @@ public class vote extends Activity implements View.OnClickListener {
 
         ok_log_vote = (Button) dialog.findViewById(R.id.btn_login);
 
-
             switch (v.getId()){
                 case R.id.imageButtonl1a1:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="UP VOTE";break;
+                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";break;
                 case R.id.imageButtonl1a2:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="DOWN VOTE";break;
+                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";break;
                 case R.id.imageButtonl1b1:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="UP VOTE";break;
+                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";break;
                 case R.id.imageButtonl1b2:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="DOWN VOTE";break;
+                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";break;
             }
 
         String labelText="Voting in: \n"+full_loc+", are you sure?\n_________________\nYou won\'t be able to change your vote";
@@ -188,6 +209,88 @@ public class vote extends Activity implements View.OnClickListener {
         cancel.setOnClickListener(btn_cancel);
 
         dialog.show();
+
+    }
+
+
+    //======================
+    public class postVote extends AsyncTask<String, Void, String> {
+
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String url = "http://www.dia40.com/oodles/vtvmean.php";
+            StringBuilder str = new StringBuilder();
+            HttpClient client = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url);
+
+            List<NameValuePair> paramx = new ArrayList<NameValuePair>();
+            paramx.add(new BasicNameValuePair("aWord", params[0]));
+            paramx.add(new BasicNameValuePair("sUsername", params[1]));
+            paramx.add(new BasicNameValuePair("sLocation", params[2]));
+            paramx.add(new BasicNameValuePair("sVote", params[3]));
+
+            try {
+                httpPost.setEntity(new UrlEncodedFormEntity(paramx));
+                HttpResponse response = client.execute(httpPost);
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+                if (statusCode == 200) { // Status OK
+                    HttpEntity entity = response.getEntity();
+                    InputStream content = entity.getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        str.append(line);
+                    }
+                } else {
+                    Log.e("Log", "Failed to connect to server...");
+                }
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //logging.setFlag(true);
+
+            String result = str.toString();
+
+            if(result.equals("")){
+                postResult=0;
+                strError="Please enter your email";
+//                logging.setPostResult(0);
+//                logging.setStrError("Please enter your email");
+            }else {
+                /*** Default Value ***/
+                strStatusID="0";
+                strError="Unknow Status!";
+//                logging.setStrStatusID("0");
+//                logging.setStrError("Unknow Status!");
+
+                JSONObject c;
+                try {
+                    c = new JSONObject(result);
+                    strStatusID=c.getString("StatusID");
+                    strError=c.getString("Error");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                // Prepare Save Data
+                if (strStatusID.equals("0")) {
+//                    logging.setPostResult(1);
+                    postResult=1;
+                } else {
+                    postResult=2;
+//                    logging.setPostResult(2);
+                }
+            }
+
+            return str.toString();
+            // }
+        }
 
     }
 }
