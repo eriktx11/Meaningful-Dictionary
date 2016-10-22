@@ -2,6 +2,7 @@ package mem.edu.meaningful;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,11 +25,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.helper.StringUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,27 +149,41 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
     @Override
     protected void onPostExecute(String[] recordingsURL) {
         super.onPostExecute(recordingsURL);
-            LinearLayout linearLayout;
-            linearLayout = (LinearLayout) mActivity.findViewById(R.id.l1);
 
-            for (int i = 0; i < linearLayout.getChildCount(); i++){
-                View v = linearLayout.getChildAt(i);
-                if (v instanceof ImageButton) {
-                   for (int j = 0; j < recordingsURL.length; j++) {
-                        if (recordingsURL[j].equals("ak")) {
-                            v.setVisibility(View.INVISIBLE);
+        LinearLayout childLayout;
 
+        String[] locations = new String[]{"ak","al"};
+        Integer[] ly_id = new Integer[]{R.id.l1, R.id.l2};
+        int index = 3;//walks through the array - critical to exit the while loop
+
+        for(int i=0; i<locations.length; i++) {
+            childLayout = (LinearLayout) mActivity.findViewById(ly_id[i]);
+            int l_counter = 0;
+
+            try {
+                View v;
+                while (!recordingsURL[index].isEmpty()) {
+
+                    v = childLayout.getChildAt(l_counter);
+                    if (v instanceof ImageButton) {
+
+                        if (recordingsURL[index].equals(locations[i])) {
+                            v.setVisibility(View.VISIBLE);
+                            index = index + 6;
+                            l_counter++;
+                            v = childLayout.getChildAt(l_counter);
                         }
-
                     }
+
+                    if (v instanceof LinearLayout) {
+                        v.setVisibility(View.VISIBLE);
+                    }
+                    l_counter++;
                 }
-                if(v instanceof LinearLayout){
-                    v.setVisibility(View.INVISIBLE);
-                }
+
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Log.e("Do", "null array");
             }
-
-
         }
-//    }
-
+    }
 }

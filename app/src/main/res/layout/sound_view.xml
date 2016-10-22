@@ -8,9 +8,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/snd_main_ly">
 
     <ImageButton
         android:layout_width="50dp"
@@ -79,13 +80,15 @@
             android:scaleType="fitCenter"
             android:background="@null"
             android:id="@+id/btnSoundId11"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -126,13 +129,15 @@
             android:scaleType="fitCenter"
             android:background="@null"
             android:id="@+id/btnSoundId12"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -154,13 +159,15 @@
             android:scaleType="fitCenter"
             android:background="@null"
             android:id="@+id/btnSoundId13"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -226,21 +233,15 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp">
+        android:paddingBottom="10dp"
+        android:id="@+id/l2">
 
-        <LinearLayout
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView2"
-                android:padding="5dp"
-                android:layout_gravity="center"/>
-
-        </LinearLayout>
+            android:id="@+id/imageView2"
+            android:padding="5dp"
+            android:layout_gravity="center"/>
 
         <ImageButton
             android:layout_width="50dp"
@@ -251,13 +252,15 @@
             android:scaleType="fitCenter"
             android:background="@null"
             android:id="@+id/btnSoundId21"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -279,13 +282,15 @@
             android:scaleType="fitCenter"
             android:background="@null"
             android:id="@+id/btnSoundId22"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -307,13 +312,15 @@
             android:scaleType="fitCenter"
             android:background="@null"
             android:id="@+id/btnSoundId23"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
 
             <ImageButton
                 android:layout_width="wrap_content"
