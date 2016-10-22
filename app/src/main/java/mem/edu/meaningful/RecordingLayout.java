@@ -34,6 +34,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by erikllerena on 10/20/16.
@@ -154,7 +155,7 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
 
         String[] locations = new String[]{"ak","al"};
         Integer[] ly_id = new Integer[]{R.id.l1, R.id.l2};
-        int index = 3;//walks through the array - critical to exit the while loop
+        int index = 3;//walks through the array
 
         for(int i=0; i<locations.length; i++) {
             childLayout = (LinearLayout) mActivity.findViewById(ly_id[i]);
@@ -162,7 +163,7 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
 
             try {
                 View v;
-                while (!recordingsURL[index].isEmpty()) {
+                while (!recordingsURL[index].isEmpty() && recordingsURL[index].equals(locations[i]) ) {
 
                     v = childLayout.getChildAt(l_counter);
                     if (v instanceof ImageButton) {
