@@ -29,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -55,15 +56,18 @@ public class vote extends Activity implements View.OnClickListener {
     Button ok_log_vote;
     String loc;
     String voteLabel;
+    RecordingLayout ci;
 
     String strStatusID;
     int postResult;
     String strError;
     boolean getFlag;
     String vote;
+    String email;
 
-    public vote(Context c){
+    public vote(Context c, String email){
         this.mContex=c;
+        this.email=email;
     }
 
 //    @Override

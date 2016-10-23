@@ -3,12 +3,14 @@ package mem.edu.meaningful;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -163,7 +165,7 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
 
             try {
                 View v;
-                while (!recordingsURL[index].isEmpty() && recordingsURL[index].equals(locations[i]) ) {
+                while ( !recordingsURL[index].isEmpty() && recordingsURL[index].equals(locations[i]) ) {
 
                     v = childLayout.getChildAt(l_counter);
                     if (v instanceof ImageButton) {
@@ -176,15 +178,35 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
                         }
                     }
 
+
                     if (v instanceof LinearLayout) {
                         v.setVisibility(View.VISIBLE);
+
+
+                        View cv = childLayout.getChildAt(0);
+                        if (index==9) {
+                            vote voting = new vote(mActivity.getWindow().getContext(), locations[i]);
+                            ImageButton voteup_btn = (ImageButton) mActivity.findViewById(R.id.imageButtonl1a1);
+//                        ImageButton voteup_btn = (ImageButton) v.findViewById(cv.getId());
+                            voteup_btn.setOnClickListener(voting);
+                        }
+//                        Button votedown_btn = (Button) v.findViewById(childLayout.getId());
+//                        votedown_btn.setOnClickListener(voting);
                     }
                     l_counter++;
                 }
 
             } catch (ArrayIndexOutOfBoundsException e) {
-                Log.e("Do", "null array");
+                Log.e("Done", "null array");
             }
         }
     }
+
+    public View.OnClickListener l = new View.OnClickListener(){
+
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 }

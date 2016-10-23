@@ -157,10 +157,10 @@ public class SoundFragment extends Fragment implements View.OnClickListener {
         voteup_btn = (ImageButton) rootView.findViewById(R.id.imageButtonl1a1);
         votedown_btn = (ImageButton) rootView.findViewById(R.id.imageButtonl1a2);
 
-        vote voting = new vote(getContext());
+//        vote voting = new vote(getContext());
         start.setOnClickListener(SoundFragment.this);
-        voteup_btn.setOnClickListener(voting);
-        votedown_btn.setOnClickListener(voting);
+//        voteup_btn.setOnClickListener(voting);
+//        votedown_btn.setOnClickListener(voting);
 
         new RecordingLayout(getActivity()).execute();
 
