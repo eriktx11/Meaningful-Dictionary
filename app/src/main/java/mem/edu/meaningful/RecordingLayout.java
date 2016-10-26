@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -170,6 +171,7 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
 
         };
         Integer[] audio_id=new Integer[]{R.id.rcrbtn1,R.id.rcrbtn2};
+        Integer[] audio_lb_id=new Integer[]{R.id.rectxt1,R.id.rectxt2};
 
         int index = 3;//walks through the array
         int vote_index=0;
@@ -205,19 +207,30 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
                         ImageButton voteup_down = (ImageButton) mActivity.findViewById(child_ly_id[vote_index]);
                         voteup_down.setOnClickListener(voting);
                         vote_index++;
-                    }
-
-                    if(xy_counter==0){
-                        recording=new record(mActivity.getWindow().getContext(), fragment, mActivity);//mActivity.getWindow().getContext(), mActivity
-                        ImageButton start = (ImageButton)mActivity.findViewById(audio_id[i]);
-                        start.setOnClickListener(recording);
+                        xy_counter++;
                     }
                     l_counter++;
-                    xy_counter++;
                 }
 
             } catch (ArrayIndexOutOfBoundsException e) {
                 Log.e("Done", "null array");
+            }
+
+            if(xy_counter!=3) {
+                recording = new record(mActivity.getWindow().getContext(), fragment, mActivity);//mActivity.getWindow().getContext(), mActivity
+                ImageButton start = (ImageButton) mActivity.findViewById(audio_id[i]);
+                start.setVisibility(View.VISIBLE);
+                TextView rcrlbl = (TextView) mActivity.findViewById(audio_lb_id[i]);
+                rcrlbl.setVisibility(View.VISIBLE);
+                start.setOnClickListener(recording);
+            }
+            else{
+                recording=new record(mActivity.getWindow().getContext(), fragment, mActivity);//mActivity.getWindow().getContext(), mActivity
+                ImageButton start = (ImageButton)mActivity.findViewById(audio_id[i]);
+                start.setVisibility(View.INVISIBLE);
+                TextView rcrlbl = (TextView)mActivity.findViewById(audio_lb_id[i]);
+                rcrlbl.setVisibility(View.INVISIBLE);
+                start.setOnClickListener(recording);
             }
 
             switch (xy_counter){
@@ -227,6 +240,7 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
                     vote_index++;vote_index++;xy_counter=0;break;
                 case 2:vote_index++;vote_index++;xy_counter=0;break;
                 case 3:xy_counter=0;break;
+                default:xy_counter=0;
             }
         }
     }

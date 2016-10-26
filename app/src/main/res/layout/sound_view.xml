@@ -54,7 +54,8 @@
             android:text="contribute"
             android:id="@+id/rectxt1"
             android:gravity="right"
-            android:paddingRight="5dp"/>
+            android:paddingRight="5dp"
+            android:visibility="invisible"/>
     </LinearLayout>
 
     <LinearLayout
@@ -197,7 +198,7 @@
             android:background="@null"
             android:src="@drawable/record"
             android:paddingRight="5dp"
-            />
+            android:visibility="invisible"/>
 
 
     </LinearLayout>
@@ -224,7 +225,8 @@
             android:text="contribute"
             android:id="@+id/rectxt2"
             android:gravity="right"
-            android:paddingRight="5dp"/>
+            android:paddingRight="5dp"
+            android:visibility="invisible"/>
     </LinearLayout>
 
     <!--start-->
@@ -350,7 +352,7 @@
             android:background="@null"
             android:src="@drawable/record"
             android:paddingRight="5dp"
-            />
+            android:visibility="invisible"/>
 
 
     </LinearLayout>
