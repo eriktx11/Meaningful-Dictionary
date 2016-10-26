@@ -1,6 +1,7 @@
 package mem.edu.meaningful;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -132,5 +133,10 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position){
             return mFragmentTitleList.get(position);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -1,11 +1,14 @@
 package mem.edu.meaningful;
 
 import android.app.Activity;
+//import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,11 +49,13 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
     //AsyncTask<String, Void, String[]>{
         //Activity {
     private Activity mActivity;
+    private Fragment fragment;
     private AppPreferences _sPref;
 
-    public RecordingLayout(Activity activity) {
+    public RecordingLayout(Activity activity, Fragment fg) {
         this.mActivity = activity;
         this._sPref = new AppPreferences(activity.getBaseContext());
+        this.fragment=fg;
     }
 
 
@@ -157,7 +162,20 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
 
         String[] locations = new String[]{"ak","al"};
         Integer[] ly_id = new Integer[]{R.id.l1, R.id.l2};
+        Integer[] child_ly_id =
+        new Integer[]
+        {
+        R.id.imageButtonl1a1, R.id.imageButtonl1a2, R.id.imageButtonl1b1, R.id.imageButtonl1b2, R.id.imageButtonl1c1, R.id.imageButtonl1c2,
+        R.id.imageButtonl2a1, R.id.imageButtonl2a2, R.id.imageButtonl2b1, R.id.imageButtonl2b2, R.id.imageButtonl2c1, R.id.imageButtonl2c2,
+
+        };
+        Integer[] audio_id=new Integer[]{R.id.rcrbtn1,R.id.rcrbtn2};
+
         int index = 3;//walks through the array
+        int vote_index=0;
+        int xy_counter = 0;
+        vote voting;
+        record recording;
 
         for(int i=0; i<locations.length; i++) {
             childLayout = (LinearLayout) mActivity.findViewById(ly_id[i]);
@@ -178,26 +196,37 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
                         }
                     }
 
-
                     if (v instanceof LinearLayout) {
                         v.setVisibility(View.VISIBLE);
+                        voting = new vote(mActivity.getWindow().getContext(), locations[i]);
+                        ImageButton voteup_btn = (ImageButton) mActivity.findViewById(child_ly_id[vote_index]);
+                        voteup_btn.setOnClickListener(voting);
+                        vote_index++;
+                        ImageButton voteup_down = (ImageButton) mActivity.findViewById(child_ly_id[vote_index]);
+                        voteup_down.setOnClickListener(voting);
+                        vote_index++;
+                    }
 
-
-                        View cv = childLayout.getChildAt(0);
-                        if (index==9) {
-                            vote voting = new vote(mActivity.getWindow().getContext(), locations[i]);
-                            ImageButton voteup_btn = (ImageButton) mActivity.findViewById(R.id.imageButtonl1a1);
-//                        ImageButton voteup_btn = (ImageButton) v.findViewById(cv.getId());
-                            voteup_btn.setOnClickListener(voting);
-                        }
-//                        Button votedown_btn = (Button) v.findViewById(childLayout.getId());
-//                        votedown_btn.setOnClickListener(voting);
+                    if(xy_counter==0){
+                        recording=new record(mActivity.getWindow().getContext(), fragment, mActivity);//mActivity.getWindow().getContext(), mActivity
+                        ImageButton start = (ImageButton)mActivity.findViewById(audio_id[i]);
+                        start.setOnClickListener(recording);
                     }
                     l_counter++;
+                    xy_counter++;
                 }
 
             } catch (ArrayIndexOutOfBoundsException e) {
                 Log.e("Done", "null array");
+            }
+
+            switch (xy_counter){
+                case 0:vote_index++;vote_index++;vote_index++;
+                    vote_index++;vote_index++;vote_index++;xy_counter=0;break;
+                case 1:vote_index++;vote_index++;
+                    vote_index++;vote_index++;xy_counter=0;break;
+                case 2:vote_index++;vote_index++;xy_counter=0;break;
+                case 3:xy_counter=0;break;
             }
         }
     }
