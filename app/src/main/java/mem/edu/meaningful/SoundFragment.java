@@ -64,9 +64,8 @@ public class SoundFragment extends Fragment {//
 
 
     private String getPath(Uri uri) throws Exception {
-        // this method will be used to get real path of Image chosen from gallery.
+        // this method will be used to get real path of audio chosen from device.
         String[] projection = {MediaStore.Images.Media.DATA};
-//        Cursor cursor = getContext().getContentResolver().query(uri, projection, null, null, null);
         Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
@@ -111,19 +110,7 @@ public class SoundFragment extends Fragment {//
                 .load("http://www.dia40.com/oodles/st-flag/al.png").resize(0, 70)
                 .into((ImageView) rootView.findViewById(R.id.imageView2));
 
-
-//        start = (ImageButton) rootView.findViewById(rc_id);
-        //voteup_btn = (ImageButton) rootView.findViewById(R.id.imageButtonl1a1);
-//        votedown_btn = (ImageButton) rootView.findViewById(R.id.imageButtonl1a2);
-
-//        vote voting = new vote(getContext());
-        //start.setOnClickListener(SoundFragment.this);
-//        voteup_btn.setOnClickListener(voting);
-//        votedown_btn.setOnClickListener(voting);
-
-
         new RecordingLayout(getActivity(), fragment).execute();
-
         return rootView;
     }
 

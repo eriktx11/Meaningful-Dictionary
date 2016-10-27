@@ -64,6 +64,7 @@ public class vote extends Activity implements View.OnClickListener {
     boolean getFlag;
     String vote;
     String email;
+    String candidate;
 
     public vote(Context c, String email){
         this.mContex=c;
@@ -75,7 +76,6 @@ public class vote extends Activity implements View.OnClickListener {
 //        super.onCreate(savedInstanceState);
 //
 //    }
-
 
     public View.OnClickListener btn_register = new View.OnClickListener(){
 
@@ -152,7 +152,14 @@ public class vote extends Activity implements View.OnClickListener {
         @Override
         public void onClick(View v) {
 
-            new postVote().execute(_sPref.getSmsBody("key"), _sPref.getSmsBody("userId"), _sPref.getSmsBody("loc"), vote);
+            String[] strFirstTime=new String[5];
+            strFirstTime[0] = _sPref.getSmsBody("key");
+            strFirstTime[1] = _sPref.getSmsBody("userId");
+            strFirstTime[2] = _sPref.getSmsBody("loc");
+            strFirstTime[3] = vote;
+            strFirstTime[4] = candidate;
+
+            new postVote().execute(strFirstTime);
             cancel.setText("DONE");
             ok_log_vote.setEnabled(false);
         }
@@ -195,33 +202,34 @@ public class vote extends Activity implements View.OnClickListener {
         cancel = (Button) dialog.findViewById(R.id.btn_cancel);
 
         ok_log_vote = (Button) dialog.findViewById(R.id.btn_login);
+        Integer id =v.getId();
 
-            switch (v.getId()){
+            switch (id){
                 case R.id.imageButtonl1a1:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";break;
+                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
                 case R.id.imageButtonl1a2:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";break;
+                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
                 case R.id.imageButtonl1b1:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";break;
+                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
                 case R.id.imageButtonl1b2:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";break;
+                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
                 case R.id.imageButtonl1c1:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";break;
+                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
                 case R.id.imageButtonl1c2:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";break;
+                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
 
                 case R.id.imageButtonl2a1:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="UP VOTE";vote="1";break;
+                    full_loc="Alabama";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
                 case R.id.imageButtonl2a2:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="DOWN VOTE";vote="-1";break;
+                    full_loc="Alabama";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
                 case R.id.imageButtonl2b1:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="UP VOTE";vote="1";break;
+                    full_loc="Alabama";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
                 case R.id.imageButtonl2b2:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="DOWN VOTE";vote="-1";break;
+                    full_loc="Alabama";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
                 case R.id.imageButtonl2c1:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="UP VOTE";vote="1";break;
+                    full_loc="Alabama";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
                 case R.id.imageButtonl2c2:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="DOWN VOTE";vote="-1";break;
+                    full_loc="Alabama";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
             }
 
         String labelText="Voting in: \n"+full_loc+", are you sure?\n_________________\nYou won\'t be able to change your vote";
@@ -251,6 +259,7 @@ public class vote extends Activity implements View.OnClickListener {
             paramx.add(new BasicNameValuePair("sUsername", params[1]));
             paramx.add(new BasicNameValuePair("sLocation", params[2]));
             paramx.add(new BasicNameValuePair("sVote", params[3]));
+            paramx.add(new BasicNameValuePair("sCandidate", params[4]));
 
             try {
                 httpPost.setEntity(new UrlEncodedFormEntity(paramx));
@@ -309,8 +318,7 @@ public class vote extends Activity implements View.OnClickListener {
                 }
             }
 
-            return str.toString();
-            // }
+            return null;
         }
 
     }

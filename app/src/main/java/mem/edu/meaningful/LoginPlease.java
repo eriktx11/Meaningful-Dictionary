@@ -53,12 +53,6 @@ import javax.xml.transform.stream.StreamResult;
  */
 
 public class LoginPlease {
-    //extends Activity {
-
-//    private
-//    private
-//    private
-//    private
 
     static String strStatusID;
     static int postResult;
@@ -111,25 +105,9 @@ public class LoginPlease {
    //======================
    static class getHttpPost extends AsyncTask<String, Void, String> {
 
-      // LoginPlease logging= new LoginPlease();
-//       @Override
-//       protected void onPreExecute() {
-//           super.onPreExecute();
-//           // Set progressbar title
-//           pDialog.setTitle("Meaningful Dictionary");
-//           // Set progressbar message
-//           pDialog.setMessage("Loading...");
-//           pDialog.setIndeterminate(false);
-//           // Show progressbar
-//           pDialog.show();
-//       }
-
         @Override
         protected String doInBackground(String... params) {
 
-//        if(params[0].equals("")){
-//            return "";
-//        } else {
 
             String url = "http://www.dia40.com/oodles/meaning.php";
             StringBuilder str = new StringBuilder();

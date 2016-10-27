@@ -29,6 +29,7 @@ private Context context;
     public int getIntBody() {
         return _sharedPrefs.getInt("selction", -1);
     }
+
     public void saveIntVal(int val) {
         _prefsEditor.putInt("selction", val);
         _prefsEditor.apply();
