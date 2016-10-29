@@ -146,13 +146,17 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
         new Integer[]
         {
         R.id.imageButtonl1a1, R.id.imageButtonl1a2, R.id.imageButtonl1b1, R.id.imageButtonl1b2, R.id.imageButtonl1c1, R.id.imageButtonl1c2,
-        R.id.imageButtonl2a1, R.id.imageButtonl2a2, R.id.imageButtonl2b1, R.id.imageButtonl2b2, R.id.imageButtonl2c1, R.id.imageButtonl2c2,
-
+        R.id.imageButtonl2a1, R.id.imageButtonl2a2, R.id.imageButtonl2b1, R.id.imageButtonl2b2, R.id.imageButtonl2c1, R.id.imageButtonl2c2
+        };
+        Integer[] vote_ly = new Integer[]
+        {
+        R.id.txtv1a,R.id.txtv1b,R.id.txtv1c,R.id.txtv2a,R.id.txtv2b,R.id.txtv2c
         };
         Integer[] audio_id=new Integer[]{R.id.rcrbtn1,R.id.rcrbtn2};
         Integer[] audio_lb_id=new Integer[]{R.id.rectxt1,R.id.rectxt2};
 
         int index = 3;//walks through the array
+        int vote_counter=0;
         int vote_index=0;
         int xy_counter = 0;
         vote voting;
@@ -161,7 +165,6 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
         for(int i=0; i<locations.length; i++) {
             childLayout = (LinearLayout) mActivity.findViewById(ly_id[i]);
             int l_counter = 0;
-
             try {
                 View v;
                 while ( !recordingsURL[index].isEmpty() && recordingsURL[index].equals(locations[i]) ) {
@@ -182,7 +185,10 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
 
                     if (v instanceof LinearLayout) {
                         v.setVisibility(View.VISIBLE);
-                        voting = new vote(mActivity.getWindow().getContext(), locations[i]);
+                        TextView txtVote = (TextView)v.findViewById(vote_ly[vote_counter]);
+                        vote_counter++;
+                        txtVote.setText(recordingsURL[index-5]);
+                        voting = new vote(mActivity.getWindow().getContext(), txtVote);
                         ImageButton voteup_btn = (ImageButton) mActivity.findViewById(child_ly_id[vote_index]);
                         voteup_btn.setOnClickListener(voting);
                         Integer id = child_ly_id[vote_index];
@@ -223,10 +229,12 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
 
             switch (xy_counter){
                 case 0:vote_index++;vote_index++;vote_index++;
-                    vote_index++;vote_index++;vote_index++;xy_counter=0;break;
+                    vote_index++;vote_index++;vote_index++;xy_counter=0;
+                    vote_counter++;vote_counter++;vote_counter++;break;
                 case 1:vote_index++;vote_index++;
-                    vote_index++;vote_index++;xy_counter=0;break;
-                case 2:vote_index++;vote_index++;xy_counter=0;break;
+                    vote_index++;vote_index++;xy_counter=0;
+                    vote_counter++;vote_counter++;break;
+                case 2:vote_index++;vote_index++;xy_counter=0;vote_counter++;break;
                 case 3:xy_counter=0;break;
                 default:xy_counter=0;
             }

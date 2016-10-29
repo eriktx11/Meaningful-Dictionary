@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="0"
-                android:id="@+id/textView3"
+                android:id="@+id/txtv1a"
                 android:layout_gravity="center"
                 android:padding="0dp"/>
 
@@ -145,6 +145,15 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/imageButtonl1b1"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv1b"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
+
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -174,6 +183,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageButtonl1c1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv1c"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -269,6 +287,15 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/imageButtonl2a1"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv2a"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
+
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -299,6 +326,15 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/imageButtonl2b1"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv2b"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
+
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -328,6 +364,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageButtonl2c1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv2c"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
 
             <ImageButton
                 android:layout_width="wrap_content"

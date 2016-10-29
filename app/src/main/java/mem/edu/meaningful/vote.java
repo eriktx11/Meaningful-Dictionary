@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
@@ -59,16 +60,20 @@ public class vote extends Activity implements View.OnClickListener {
     RecordingLayout ci;
 
     String strStatusID;
+    String strVote;
     int postResult;
     String strError;
     boolean getFlag;
     String vote;
-    String email;
+    //String email;
     String candidate;
+    static Integer txtv;
+    private TextView voteView;
 
-    public vote(Context c, String email){
+    public vote(Context c, TextView vote){
         this.mContex=c;
-        this.email=email;
+        //this.email=email;
+        this.voteView=vote;
     }
 
 //    @Override
@@ -206,30 +211,30 @@ public class vote extends Activity implements View.OnClickListener {
 
             switch (id){
                 case R.id.imageButtonl1a1:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());txtv=R.id.txtv1a;break;
                 case R.id.imageButtonl1a2:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());txtv=R.id.txtv1a;break;
                 case R.id.imageButtonl1b1:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());txtv=R.id.txtv1b;break;
                 case R.id.imageButtonl1b2:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());txtv=R.id.txtv1b;break;
                 case R.id.imageButtonl1c1:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());txtv=R.id.txtv1c;break;
                 case R.id.imageButtonl1c2:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());txtv=R.id.txtv1c;break;
 
                 case R.id.imageButtonl2a1:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                    full_loc="Alabama";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());txtv=R.id.txtv2a;break;
                 case R.id.imageButtonl2a2:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                    full_loc="Alabama";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());txtv=R.id.txtv2a;break;
                 case R.id.imageButtonl2b1:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                    full_loc="Alabama";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());txtv=R.id.txtv2b;break;
                 case R.id.imageButtonl2b2:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                    full_loc="Alabama";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());txtv=R.id.txtv2b;break;
                 case R.id.imageButtonl2c1:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                    full_loc="Alabama";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());txtv=R.id.txtv2c;break;
                 case R.id.imageButtonl2c2:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                    full_loc="Alabama";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());txtv=R.id.txtv2c;break;
             }
 
         String labelText="Voting in: \n"+full_loc+", are you sure?\n_________________\nYou won\'t be able to change your vote";
@@ -243,11 +248,11 @@ public class vote extends Activity implements View.OnClickListener {
 
 
     //======================
-    public class postVote extends AsyncTask<String, Void, String> {
+    public class postVote extends AsyncTask<String, Void, String[]> {
 
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String[] doInBackground(String... params) {
 
             String url = "http://www.dia40.com/oodles/vtvmean.php";
             StringBuilder str = new StringBuilder();
@@ -304,6 +309,7 @@ public class vote extends Activity implements View.OnClickListener {
                     c = new JSONObject(result);
                     strStatusID=c.getString("StatusID");
                     strError=c.getString("Error");
+                    strVote=c.getString("Vote");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -318,8 +324,26 @@ public class vote extends Activity implements View.OnClickListener {
                 }
             }
 
-            return null;
+            params[0] = strStatusID;
+            params[1] = strVote;
+
+            return params;
         }
 
+        @Override
+        protected void onPostExecute(String[] s) {
+            super.onPostExecute(s);
+
+            if(s[0].equals("0")){
+                String labelText="Your vote already exists for that word. No vote was registered. Thank you";
+                tvError.setTextColor(Color.parseColor("#FFFC0202"));
+                tvError.setText(labelText);
+            }
+            if(s[0].equals("1")){
+//                voteView = (TextView) findViewById(txtv);
+//                voteView.setId(txtv);
+                voteView.setText(s[1]);
+            }
+        }
     }
 }
