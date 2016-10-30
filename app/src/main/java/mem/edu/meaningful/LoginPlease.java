@@ -57,49 +57,6 @@ public class LoginPlease {
     static String strStatusID;
     static int postResult;
     static String strError;
-    static boolean getFlag;
-    //static ProgressDialog pDialog;
-    //static boolean flag=false;
-
-//    LoginPlease(){
-//        this.strError="";
-//        this.postResult=0;
-//        this.strStatusID="";
-//        this.getFlag=false;
-//        //pDialog = new ProgressDialog(c);
-//    }
-//
-//    public int getPostResult() {
-//        return this.postResult;
-//    }
-//
-//    public String getStrError() {
-//        return this.strError;
-//    }
-//
-//    public String getStrStatusID() {
-//        return this.strStatusID;
-//    }
-//
-//    public boolean getFlag(){
-//        return this.getFlag;
-//    }
-//
-//    public void setFlag(boolean flag){
-//        this.getFlag=flag;
-//    }
-//
-//    public void setPostResult(int result) {
-//        this.postResult=result;
-//    }
-//
-//    public void setStrError(String error) {
-//        this.strError=error;
-//    }
-//
-//    public void setStrStatusID(String status) {
-//        this.strStatusID=status;
-//    }
 
 
    //======================
@@ -146,14 +103,10 @@ public class LoginPlease {
             if(result.equals("")){
                 postResult=0;
                 strError="Please enter your email";
-//                logging.setPostResult(0);
-//                logging.setStrError("Please enter your email");
             }else {
                 /*** Default Value ***/
                 strStatusID="0";
                 strError="Unknow Status!";
-//                logging.setStrStatusID("0");
-//                logging.setStrError("Unknow Status!");
 
                 JSONObject c;
                 try {
@@ -166,49 +119,16 @@ public class LoginPlease {
 
                 // Prepare Save Data
                 if (strStatusID.equals("0")) {
-//                    logging.setPostResult(1);
                     postResult=1;
                 } else {
                     postResult=2;
-//                    logging.setPostResult(2);
                 }
             }
 
             return str.toString();
-           // }
+
+
         }
-
-//        @Override
-//        protected void onPostExecute(String result) {
-//            super.onPostExecute(result);
-//
-//            if(result.equals("")){
-//                loging.setPostResult(0);
-//                loging.setStrError("Please enter your email");
-//            }else {
-//                /*** Default Value ***/
-//                loging.setStrStatusID("0");
-//                loging.setStrError("Unknow Status!");
-//
-//                JSONObject c;
-//                try {
-//                    c = new JSONObject(result);
-//                    loging.setStrStatusID(c.getString("StatusID"));
-//                    loging.setStrError(c.getString("Error"));
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                // Prepare Save Data
-//                if (loging.getStrStatusID().equals("0")) {
-//                    loging.setPostResult(1);
-//                } else {
-//                    loging.setPostResult(2);
-//                }
-//            }
-//           // pDialog.dismiss();
-//        }
-
-    }
+   }
 }
 

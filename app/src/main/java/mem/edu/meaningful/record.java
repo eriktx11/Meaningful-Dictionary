@@ -2,6 +2,7 @@ package mem.edu.meaningful;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -19,21 +20,28 @@ import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -54,28 +62,31 @@ public class record extends Activity implements View.OnClickListener {
     int rc_id;
     private Context mContex;
     private Activity activity;
-    private Fragment fg;
+    public static Fragment fg;
 
     public record(Context c, Fragment a, Activity ac) {
         this.mContex=c;
         this.activity=ac;
-        this.fg=a;
+        fg=a;
     }
 
-    private AppPreferences _sPref;
+    public static AppPreferences _sPref;
 
-    EditText txtEmail;
-    TextView tvEmail;
-    TextView tvError;
+    public static EditText txtEmail;
+    public static TextView tvEmail;
+    public static TextView tvError;
 
     public Dialog dialog;
 
-    Button choose;
-    Button upload;
-    Button logOut;
-    String locationStr;
+    public static Button choose;
+    public static Button upload;
+    public static Button logOut;
 
-    public View.OnClickListener btnChoose = new View.OnClickListener() {
+    public static int postResult;
+    public static String strStatusID;
+    public static String strError;
+
+    public static View.OnClickListener btnChoose = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
@@ -85,50 +96,48 @@ public class record extends Activity implements View.OnClickListener {
                 strFirstTime[0] =  txtEmail.getText().toString();
                 strFirstTime[1] = _sPref.getSmsBody("loc");
 
-                LoginPlease login = new LoginPlease();
+             //   LoginPlease login = new LoginPlease();
 
-                try {
-                    new LoginPlease.getHttpPost().execute(strFirstTime).get(3000, TimeUnit.MILLISECONDS);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (TimeoutException e) {
-                    e.printStackTrace();
-                }
+//                try {
+                new getHttpPost().execute(strFirstTime);//.get(3000, TimeUnit.MILLISECONDS);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                } catch (TimeoutException e) {
+//                    e.printStackTrace();
+//                }
 
-                // while (!login.getFlag()) {
+//                try {
+//                    Thread.sleep(2000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
 
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                // }
-
-                switch (login.postResult) {
-                    case 0:
-                        tvError.setVisibility(View.VISIBLE);
-                        tvError.setText(login.strError);
-                        break;
-                    case 1:
-                        tvError.setVisibility(View.VISIBLE);
-                        tvError.setText(login.strError);
-                        break;
-                    case 2:
-                        tvEmail.setVisibility(View.INVISIBLE);
-                        tvError.setVisibility(View.INVISIBLE);
-                        txtEmail.setVisibility(View.INVISIBLE);
-                        _sPref.saveSmsBody("userId", txtEmail.getText().toString());
-                        upload.setEnabled(true);
-                        logOut.setVisibility(View.VISIBLE);
-                        logOut.setOnClickListener(btnLogout);
-                        // this will open audio folder to choose file.
-                        Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-                        fg.startActivityForResult(Intent.createChooser(openGallery, "Select Audio"), GALLEY_REQUEST_CODE);
-                        break;
-                }
+//                switch (login.postResult) {
+//                    case 0:
+//                        tvError.setVisibility(View.VISIBLE);
+//                        tvError.setText(login.strError);
+//                        break;
+//                    case 1:
+//                        tvError.setVisibility(View.VISIBLE);
+//                        tvError.setText(login.strError);
+//                        break;
+//                    case 2:
+//                        tvEmail.setVisibility(View.INVISIBLE);
+//                        tvError.setVisibility(View.INVISIBLE);
+//                        txtEmail.setVisibility(View.INVISIBLE);
+//                        _sPref.saveSmsBody("userId", txtEmail.getText().toString());
+//                        upload.setEnabled(true);
+//                        logOut.setVisibility(View.VISIBLE);
+//                        logOut.setOnClickListener(btnLogout);
+//                        // this will open audio folder to choose file.
+//                        Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+//                        fg.startActivityForResult(Intent.createChooser(openGallery, "Select Audio"), GALLEY_REQUEST_CODE);
+//                        break;
+//                }
             } else {
+                tvError.setVisibility(View.INVISIBLE);
                 logOut.setVisibility(View.VISIBLE);
                 logOut.setOnClickListener(btnLogout);
                 // this will open audio folder to choose file.
@@ -139,6 +148,101 @@ public class record extends Activity implements View.OnClickListener {
         }
     };
 
+
+    //======================
+    static class getHttpPost extends AsyncTask<String, Void, String[]> {
+
+        @Override
+        protected String[] doInBackground(String... params) {
+
+
+            String url = "http://www.dia40.com/oodles/meaning.php";
+            StringBuilder str = new StringBuilder();
+            HttpClient client = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url);
+
+            List<NameValuePair> paramx = new ArrayList<NameValuePair>();
+            paramx.add(new BasicNameValuePair("sUsername", params[0]));
+            paramx.add(new BasicNameValuePair("sLocation", params[1]));
+            try {
+                httpPost.setEntity(new UrlEncodedFormEntity(paramx));
+                HttpResponse response = client.execute(httpPost);
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+                if (statusCode == 200) { // Status OK
+                    HttpEntity entity = response.getEntity();
+                    InputStream content = entity.getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        str.append(line);
+                    }
+                } else {
+                    Log.e("Log", "Failed to download result..");
+                }
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String result = str.toString();
+
+            if(result.equals("")){
+                strStatusID="0";
+                strError="Unknown error";
+            }else {
+                /*** Default Value ***/
+                strStatusID="0";
+                strError="Unknown error";
+                JSONObject c;
+                try {
+                    c = new JSONObject(result);
+                    strStatusID=c.getString("StatusID");
+                    strError=c.getString("Error");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            params[0]=strStatusID;
+            params[1]=strError;
+
+            return params;
+        }
+
+        @Override
+        protected void onPostExecute(String[] s) {
+            super.onPostExecute(s);
+
+            if(s[0].equals("0")){
+                postResult=1;
+            }else {
+                postResult=2;
+            }
+
+            switch (postResult) {
+                case 1:
+                    tvError.setVisibility(View.VISIBLE);
+                    tvError.setTextColor(Color.parseColor("#FFF50B0B"));//red
+                    tvError.setText(s[1]);
+                    break;
+                case 2:
+                    tvEmail.setVisibility(View.INVISIBLE);
+                    tvError.setVisibility(View.INVISIBLE);
+                    txtEmail.setVisibility(View.INVISIBLE);
+                    _sPref.saveSmsBody("userId", txtEmail.getText().toString());
+                    upload.setEnabled(true);
+                    logOut.setVisibility(View.VISIBLE);
+                    logOut.setOnClickListener(btnLogout);
+                    // this will open audio folder to choose file.
+                    Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                    fg.startActivityForResult(Intent.createChooser(openGallery, "Select Audio"), GALLEY_REQUEST_CODE);
+                    break;
+            }
+        }
+    }
+
     @Override
     public void onClick(View v) {
 
@@ -146,6 +250,7 @@ public class record extends Activity implements View.OnClickListener {
         dialog.setContentView(R.layout.recording_box);
         dialog.setTitle("Upload");
 
+        SoundFragment.realUri=null;
         _sPref = new AppPreferences(mContex);
 
         image = (ImageView) dialog.findViewById(R.id.imageId);
@@ -165,8 +270,7 @@ public class record extends Activity implements View.OnClickListener {
             txtEmail.setVisibility(View.VISIBLE);
 
             if (txtEmail.requestFocus()) {
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-//                getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
             }
         }else {logOut.setVisibility(View.VISIBLE);}
 
@@ -315,14 +419,20 @@ public class record extends Activity implements View.OnClickListener {
 //                e.printStackTrace();
 //            }
 
-    public class doFileUpload extends AsyncTask<String, Void, Void> {
+    public static class doFileUpload extends AsyncTask<String, Void, String[]> {
 
         @Override
-        protected Void doInBackground(String... params) {
+        protected String[] doInBackground(String... params) {
 
+            params = new String[2];
+            params[0] = "0";
+            params[1] = "Error: Please select a file";
+            try {
 
-//---file
-            String existingFileName = SoundFragment.realUri.toString();
+                String existingFileName = SoundFragment.realUri.toString();
+                if(existingFileName==null){
+                  return params;
+               }
 //            FileInputStream fileInputStream = null;
 //            byte[] buffer;
 //            int maxBufferSize = 1 * 1024 * 1024;
@@ -358,31 +468,14 @@ public class record extends Activity implements View.OnClickListener {
 //                Log.e("Debug", "error: " + ioe.getMessage(), ioe);
 //            }
             //--
+                String urldata = "http://www.dia40.com/oodles/fileUpload.php";
+                StringBuilder strdata = new StringBuilder();
+                HttpClient client = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(urldata);
+                String result = "null";
 
-
-            String urldata = "http://www.dia40.com/oodles/fileUpload.php";
-            StringBuilder strdata = new StringBuilder();
-            HttpClient client = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(urldata);
-            String result = "null";
-
-
-//            List<NameValuePair> paramx = new ArrayList<NameValuePair>();
-//            paramx.add(new BasicNameValuePair("aWord", _sPref.getSmsBody("key")));
-//            paramx.add(new BasicNameValuePair("strUsername", _sPref.getSmsBody("userId")));
-            //paramx.add(new BasicNameValuePair("uploadedfile", fileInputStream));
-
-            try {
-                //httpPost.setEntity(new UrlEncodedFormEntity(paramx));
-//                HttpResponse response = client.execute(httpPost);
-//                StatusLine statusLine = response.getStatusLine();
-//                int statusCode = statusLine.getStatusCode();
-
-
-                //--
-
+              try {
                 MultipartEntity entityFile = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-                //entityFile.addPart("title", new StringBody(existingFileName, Charset.forName("UTF-8")));
                 File myFile = new File(existingFileName);
                 FileBody fileBody = new FileBody(myFile);
                 entityFile.addPart("uploadedfile", fileBody);
@@ -391,9 +484,6 @@ public class record extends Activity implements View.OnClickListener {
                 entityFile.addPart("strLocation", new StringBody(_sPref.getSmsBody("loc")));
 
                 httpPost.setEntity(entityFile);
-                //paramx.add(new BasicNameValuePair("uploadedfile", fileBody.getFilename()));
-
-                //---
 
                 HttpResponse response = client.execute(httpPost);
                 StatusLine statusLine = response.getStatusLine();
@@ -411,15 +501,35 @@ public class record extends Activity implements View.OnClickListener {
                 } else {
                     Log.e("Log", "Failed to insert...");
                 }
-            } catch (ClientProtocolException e) {
+              } catch (ClientProtocolException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
+              } catch (IOException e) {
                 e.printStackTrace();
-            }
-            result = strdata.toString();
+              }
 
-            Log.e("Debug", result);
+              result = strdata.toString();
+              Log.e("Debug", result);
 
+                if(result.equals("")){
+                    strStatusID="0";
+                    strError="Can not overwrite. File already exists\n" +
+                            "If down vote, it will be deleted";
+                    params[0] = strStatusID;
+                    params[1] = strError;
+                    return params;
+                }else {
+                    JSONObject c;
+                    try {
+                        c = new JSONObject(result);
+                        strStatusID=c.getString("StatusID");
+                        strError=c.getString("Error");
+                        params[0] = strStatusID;
+                        params[1] = strError;
+                        return params;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
 //
 //            HttpURLConnection conn = null;
 //            DataOutputStream dos = null;
@@ -506,11 +616,41 @@ public class record extends Activity implements View.OnClickListener {
 //                Log.e("Debug", "error: " + ioex.getMessage(), ioex);
 //            }
 
-            return null;
+              return params;
+
+              }catch (RuntimeException e){
+                e.printStackTrace();
+              }
+
+            return params;
+
         }
 
-    }
+        @Override
+        protected void onPostExecute(String[] val) {
+            super.onPostExecute(val);
 
+            if(val[0].equals("1")){
+                postResult=1;
+            }
+            else {
+                postResult=0;
+            }
+
+            switch (postResult){
+                case 0:
+                tvError.setVisibility(View.VISIBLE);
+                tvError.setTextColor(Color.parseColor("#FFF50B0B"));//red
+                tvError.setText(val[1]);//all kinds of errors
+                upload.setEnabled(false);break;
+                case 1:
+                tvError.setVisibility(View.VISIBLE);
+                tvError.setTextColor(Color.parseColor("#FF25E248"));//green color
+                tvError.setText(val[1]);//upload success
+                upload.setEnabled(false);break;
+            }
+        }
+    }
 
 //    URL url = new URL("http://yoururl.com");
 //    HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
@@ -555,20 +695,17 @@ public class record extends Activity implements View.OnClickListener {
 //        return result.toString();
 //    }
 
-    private View.OnClickListener btnUpload = new View.OnClickListener() {
+    public static View.OnClickListener btnUpload = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            //String ss =_sPref.getSmsBody("userId");
 
             if (_sPref.getAll().containsKey("userId")) {
                 new doFileUpload().execute(_sPref.getSmsBody("userId"));
             }
-            //return;
         }
     };
 
-    private View.OnClickListener btnLogout = new View.OnClickListener() {
+    public static View.OnClickListener btnLogout = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
@@ -576,7 +713,6 @@ public class record extends Activity implements View.OnClickListener {
             logOut.setVisibility(View.INVISIBLE);
             tvEmail.setVisibility(View.VISIBLE);
             txtEmail.setVisibility(View.VISIBLE);
-            upload.setEnabled(false);
         }
     };
 
