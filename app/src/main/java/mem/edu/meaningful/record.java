@@ -223,8 +223,9 @@ public class record extends Activity implements View.OnClickListener {
         @Override
         public void onClick(View v) {
 
-            new sendPassCodeTask().execute(txtEmail.getText().toString(),"");
-
+            _sPref.saveSmsBody("emailflaw",txtEmail.getText().toString());
+            String emailflaw = _sPref.getSmsBody("emailflaw");
+            new sendPassCodeTask().execute(emailflaw,"");
         }
     };
 
@@ -323,7 +324,9 @@ public class record extends Activity implements View.OnClickListener {
 
             try {
                 MultipartEntity entityFile = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+                String emailflaw = _sPref.getSmsBody("emailflaw");
                 entityFile.addPart("strPass", new StringBody(params[0]));
+                entityFile.addPart("strUser", new StringBody(emailflaw));
 
                 httpPost.setEntity(entityFile);
 
@@ -386,12 +389,21 @@ public class record extends Activity implements View.OnClickListener {
             switch (postResult){
                 case 0:tvError.setText("Wrong code");break;
                 case 1:
-                    txtEmail.setText("");
+                    txtEmail.setVisibility(View.INVISIBLE);
+                    logOut.setVisibility(View.VISIBLE);
+                    logOut.setOnClickListener(btnLogout);
+                    _sPref.saveSmsBody("userId",_sPref.getSmsBody("emailflaw"));
                     tvError.setVisibility(View.INVISIBLE);
                     tvEmail.setVisibility(View.VISIBLE);
-                    tvEmail.setText("Passcode sent! Check your email");
-                    choose.setText("OK");
-                    choose.setOnClickListener(validateCode);break;
+                    tvEmail.setText("Welcome back");
+                    choose.setText("CHOOSE AUDIO");
+                    choose.setOnClickListener(btnChoose);
+                    choose.setVisibility(View.VISIBLE);
+                    choose.setEnabled(true);
+                    upload.setText("UPLOAD");
+                    upload.setEnabled(false);
+                    upload.setOnClickListener(btnUpload);
+                    upload.setVisibility(View.VISIBLE);break;
             }
         }
     }
@@ -400,10 +412,8 @@ public class record extends Activity implements View.OnClickListener {
     public static View.OnClickListener validateCode = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(txtEmail.getText().toString().isEmpty()){
-                tvError.setText("Empty field");
-            }
-            else new validateCodeTask().execute(txtEmail.getText().toString(),"");
+
+            new validateCodeTask().execute(txtEmail.getText().toString(),"");
         }
     };
 
@@ -674,6 +684,8 @@ public class record extends Activity implements View.OnClickListener {
         public void onClick(View v) {
 
             _sPref.removePref("userId");
+            tvEmail.setText("User not detected. Please enter a valid email address");
+            txtEmail.setText("");
             logOut.setVisibility(View.INVISIBLE);
             tvEmail.setVisibility(View.VISIBLE);
             txtEmail.setVisibility(View.VISIBLE);
