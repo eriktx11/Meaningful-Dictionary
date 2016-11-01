@@ -191,6 +191,7 @@ public class record extends Activity implements View.OnClickListener {
                         tvError.setTextColor(Color.parseColor("#FFF50B0B"));//red
                         tvError.setText(s[1]+" request passcode");
                         tvEmail.setVisibility(View.INVISIBLE);
+                        txtEmail.setEnabled(false);
                         choose.setText("Email me passcode");
                         choose.setOnClickListener(sendCode);
                         upload.setEnabled(true);
@@ -303,6 +304,7 @@ public class record extends Activity implements View.OnClickListener {
                     tvEmail.setVisibility(View.VISIBLE);
                     tvEmail.setText("Passcode sent! Check your email");
                     choose.setText("OK");
+                    txtEmail.setEnabled(true);
                     choose.setOnClickListener(validateCode);
         }
     }
@@ -686,6 +688,7 @@ public class record extends Activity implements View.OnClickListener {
             _sPref.removePref("userId");
             tvEmail.setText("User not detected. Please enter a valid email address");
             txtEmail.setText("");
+            tvError.setText("");
             logOut.setVisibility(View.INVISIBLE);
             tvEmail.setVisibility(View.VISIBLE);
             txtEmail.setVisibility(View.VISIBLE);
