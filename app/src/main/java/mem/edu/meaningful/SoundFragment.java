@@ -38,7 +38,6 @@ public class SoundFragment extends Fragment {//
 
     // gallery request code.
     public static final int GALLEY_REQUEST_CODE = 10;
-    String ROOT_URL = "http://www.dia40.com";
     // tag to print logs.
     private String TAG = SoundFragment.class.getSimpleName();
     private ImageView image;
@@ -53,6 +52,9 @@ public class SoundFragment extends Fragment {//
             try {
                 // Get real path to make File
                 realUri = Uri.parse(getPath(data.getData()));
+                if(realUri.toString()!=null){
+                    record.upload.setEnabled(true);
+                }
                 Log.d(TAG, "Audio path :- " + realUri);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
@@ -60,8 +62,6 @@ public class SoundFragment extends Fragment {//
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-
 
     private String getPath(Uri uri) throws Exception {
         // this method will be used to get real path of audio chosen from device.

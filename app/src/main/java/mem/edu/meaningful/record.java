@@ -104,7 +104,6 @@ public class record extends Activity implements View.OnClickListener {
                 // this will open audio folder to choose file.
                 Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
                 fg.startActivityForResult(Intent.createChooser(openGallery, "Select Audio"), GALLEY_REQUEST_CODE);
-                upload.setEnabled(true);
             }
         }
     };
@@ -208,7 +207,7 @@ public class record extends Activity implements View.OnClickListener {
                     tvError.setVisibility(View.INVISIBLE);
                     txtEmail.setVisibility(View.INVISIBLE);
                     _sPref.saveSmsBody("userId", txtEmail.getText().toString());
-                    upload.setEnabled(true);
+//                    upload.setEnabled(true);
                     logOut.setVisibility(View.VISIBLE);
                     logOut.setOnClickListener(btnLogout);
                     // this will open audio folder to choose file.
@@ -587,7 +586,7 @@ public class record extends Activity implements View.OnClickListener {
         public void onClick(View v) {
 
             if (_sPref.getAll().containsKey("userId")) {
-                new doFileUpload().execute(_sPref.getSmsBody("userId"));
+                 new doFileUpload().execute(_sPref.getSmsBody("userId"));
             }
         }
     };

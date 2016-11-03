@@ -272,12 +272,4 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
             }
         }
     }
-
-    public View.OnClickListener l = new View.OnClickListener(){
-
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
 }
