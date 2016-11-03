@@ -61,12 +61,12 @@ public class record extends Activity implements View.OnClickListener {
 
     int rc_id;
     private Context mContex;
-    private Activity activity;
+    public static Activity activity;
     public static Fragment fg;
 
     public record(Context c, Fragment a, Activity ac) {
         this.mContex=c;
-        this.activity=ac;
+        activity=ac;
         fg=a;
     }
 
@@ -95,7 +95,6 @@ public class record extends Activity implements View.OnClickListener {
                 String[] strFirstTime=new String[2];
                 strFirstTime[0] =  txtEmail.getText().toString();
                 strFirstTime[1] = _sPref.getSmsBody("loc");
-
                 new getHttpPost().execute(strFirstTime);
 
             } else {
@@ -479,12 +478,12 @@ public class record extends Activity implements View.OnClickListener {
             params = new String[2];
             params[0] = "0";
             params[1] = "Error: Please select a file";
-            try {
+         try {
 
                 String existingFileName = SoundFragment.realUri.toString();
                 if(existingFileName==null){
-                  return params;
-               }
+                   return params;
+                  }
 
                 String urldata = "http://www.dia40.com/oodles/fileUpload.php";
                 StringBuilder strdata = new StringBuilder();
@@ -534,7 +533,6 @@ public class record extends Activity implements View.OnClickListener {
                             "If down vote, it will be deleted";
                     params[0] = strStatusID;
                     params[1] = strError;
-                    return params;
                 }else {
                     JSONObject c;
                     try {
@@ -543,102 +541,13 @@ public class record extends Activity implements View.OnClickListener {
                         strError=c.getString("Error");
                         params[0] = strStatusID;
                         params[1] = strError;
-                        return params;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-//
-//            HttpURLConnection conn = null;
-//            DataOutputStream dos = null;
-//            DataInputStream inStream = null;
-//            String existingFileName = realUri.toString(); //Environment.getExternalStorageDirectory().getAbsolutePath() +
-//            String lineEnd = "\r\n";
-//            String twoHyphens = "--";
-//            String boundary = "*****";
-//            int bytesRead, bytesAvailable, bufferSize;
-//            byte[] buffer;
-//            int maxBufferSize = 1 * 1024 * 1024;
-//            String responseFromServer = "";
-//            String urlString = "http://www.dia40.com/oodles/fileUpload.php";
-//
-//
-//            try {
-//                //------------------ CLIENT REQUEST
-//
-//                FileInputStream fileInputStream = new FileInputStream(new File(existingFileName));
-//                // open a URL connection to the Servlet
-//                URL url = new URL(urlString);
-//                // Open a HTTP connection to the URL
-//                conn = (HttpURLConnection) url.openConnection();
-//                // Allow Inputs
-//                conn.setDoInput(true);
-//                // Allow Outputs
-//                conn.setDoOutput(true);
-//                // Don't use a cached copy.
-//                conn.setUseCaches(false);
-//                // Use a post method.
-//                conn.setRequestMethod("POST");
-//                conn.setRequestProperty("Connection", "Keep-Alive");
-//                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
-//                dos = new DataOutputStream(conn.getOutputStream());
-//                dos.writeBytes(twoHyphens + boundary + lineEnd);
-//                dos.writeBytes("Content-Disposition: form-data; name=\"uploadedfile\";filename=\"" + existingFileName + "\"" + lineEnd);
-//                dos.writeBytes(lineEnd);
-//                // create a buffer of maximum size
-//                bytesAvailable = fileInputStream.available();
-//                bufferSize = Math.min(bytesAvailable, maxBufferSize);
-//                buffer = new byte[bufferSize];
-//                // read file and write it into form...
-//                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-//
-//                while (bytesRead > 0) {
-//
-//                    dos.write(buffer, 0, bufferSize);
-//                    bytesAvailable = fileInputStream.available();
-//                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
-//                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-//
-//                }
-//
-//                // send multipart form data necesssary after file data...
-//                dos.writeBytes(lineEnd);
-//                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-//
-//                // close streams
-//                Log.e("Debug", "File is written");
-//                fileInputStream.close();
-//                dos.flush();
-//                dos.close();
-//
-//
-//            } catch (MalformedURLException ex) {
-//                Log.e("Debug", "error: " + ex.getMessage(), ex);
-//            } catch (IOException ioe) {
-//                Log.e("Debug", "error: " + ioe.getMessage(), ioe);
-//            }
-//
-//
-//            //------------------ read the SERVER RESPONSE
-//            try {
-//
-//                inStream = new DataInputStream(conn.getInputStream());
-//                String str;
-//
-//                while ((str = inStream.readLine()) != null) {
-//                    Log.e("Debug", "Server Response " + str);
-//                }
-//                inStream.close();
-//
-//            } catch (IOException ioex) {
-//                Log.e("Debug", "error: " + ioex.getMessage(), ioex);
-//            }
-
-              return params;
-
-              }catch (RuntimeException e){
-                e.printStackTrace();
-              }
+          }catch (RuntimeException e){
+             e.printStackTrace();
+          }
 
             return params;
 
@@ -665,7 +574,9 @@ public class record extends Activity implements View.OnClickListener {
                 tvError.setVisibility(View.VISIBLE);
                 tvError.setTextColor(Color.parseColor("#FF25E248"));//green color
                 tvError.setText(val[1]);//upload success
-                upload.setEnabled(false);break;
+                upload.setEnabled(false);
+                new RecordingLayout(activity, fg).execute();
+                break;
             }
         }
     }

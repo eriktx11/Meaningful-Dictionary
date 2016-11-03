@@ -42,7 +42,7 @@ public class SoundFragment extends Fragment {//
     // tag to print logs.
     private String TAG = SoundFragment.class.getSimpleName();
     private ImageView image;
-    static Uri realUri;
+    public static Uri realUri;
     Fragment fragment=this;
 
     @Override
@@ -85,9 +85,7 @@ public class SoundFragment extends Fragment {//
 
                 StringCharacterIterator characterIterator = new StringCharacterIterator(_sPref.getSmsBody("sound"));
                 char s = characterIterator.first();
-                String url;
-                url = "http://media.merriam-webster.com/soundc11/" + s + "/" + _sPref.getSmsBody("sound");
-
+                String url="http://media.merriam-webster.com/soundc11/" + s + "/" + _sPref.getSmsBody("sound");
                 try {
                     MediaPlayer player = new MediaPlayer();
                     player.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -113,41 +111,6 @@ public class SoundFragment extends Fragment {//
         new RecordingLayout(getActivity(), fragment).execute();
         return rootView;
     }
-
-
-//    private View.OnClickListener btnClick = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//
-//            dialog = new Dialog(getContext());
-//            dialog.setContentView(R.layout.recording_box);
-//            dialog.setTitle("upload");
-//
-//            image = (ImageView) dialog.findViewById(R.id.imageId);
-//            txtEmail = (EditText) dialog.findViewById(R.id.txtEmail);
-//            tvEmail = (TextView) dialog.findViewById(R.id.tvEmailId);
-//            tvError = (TextView) dialog.findViewById(R.id.txtError);
-//            logOut = (Button) dialog.findViewById(R.id.logOutId);
-//
-//            if (!_sPref.getAll().containsKey("userId")) {
-//
-//                tvEmail.setVisibility(View.VISIBLE);
-//                txtEmail.setVisibility(View.VISIBLE);
-//
-//                if (txtEmail.requestFocus()) {
-//                    getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-//                }
-//            }
-//
-//            choose = (Button) dialog.findViewById(R.id.btn_choose);
-//            upload = (Button) dialog.findViewById(R.id.btn_upload);
-//
-//            choose.setOnClickListener(btnChoose);
-//            upload.setOnClickListener(btnUpload);
-//
-//            dialog.show();
-//        }
-//    };
 
 }
 
