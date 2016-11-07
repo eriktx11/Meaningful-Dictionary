@@ -1,5 +1,6 @@
 package mem.edu.meaningful;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -9,6 +10,7 @@ import android.support.multidex.MultiDex;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import android.os.Bundle;
 
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,20 +28,21 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView textview;
+
     EditText editText;
     ImageButton button;
-    String searchWord;
-    TextView tagWord;
-    ScrollView welcomeSV;
-    private AppPreferences _sPref;
-    private ViewPager viewPager;
+    public String searchWord="";
+    public AppPreferences _sPref;
+    public ViewPager viewPager;
     public static Typeface FONT_HEADINGS;
+    public static boolean deviceJustRotated = false;
+    public static boolean wordIsNull = false;
 
-    View linearLayout;
+    View v;
 
     private View.OnClickListener SearchListener = new View.OnClickListener() {
         public void onClick(View v) {
@@ -49,21 +53,19 @@ public class MainActivity extends AppCompatActivity {
             boolean isConnected = activeNetwork != null &&
                     activeNetwork.isConnectedOrConnecting();
 
-            if(isConnected){//If not network don't run service
+            if(isConnected) {//If not network don't run service
 
                 searchWord = editText.getText().toString();
-                _sPref = new AppPreferences(getBaseContext());
                 _sPref.saveSmsBody("key", searchWord);
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                linearLayout = findViewById(R.id.info);
-                imm.hideSoftInputFromWindow(linearLayout.getWindowToken(), 0);
-                viewPager = (ViewPager)findViewById(R.id.tab_viewpager);
-
-                if (viewPager != null){
-                    findViewById(R.id.welcomeSVId).setVisibility(View.GONE);
-                    findViewById(R.id.dictImgId).setVisibility(View.GONE);
-                    setupViewPager(viewPager);
-                }
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                v = findViewById(R.id.info);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                viewPager = (ViewPager) findViewById(R.id.tab_viewpager);
+                if (viewPager != null) {
+                        findViewById(R.id.welcomeSVId).setVisibility(View.GONE);
+                        findViewById(R.id.dictImgId).setVisibility(View.GONE);
+                        setupViewPager(viewPager);
+                    }
             }else {
                 Toast.makeText(getBaseContext(), getString(R.string.network_toast), Toast.LENGTH_LONG).show();
             }
@@ -82,31 +84,49 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         FONT_HEADINGS = Typeface.createFromAsset(this.getAssets(), "MavenPro-Medium.ttf");//CaviarDreams.ttf
         setContentView(R.layout.activity_main);
-        linearLayout =  findViewById(R.id.info);
+        v =  findViewById(R.id.info);
         editText = (EditText) findViewById(R.id.editText);
         editText.setTypeface(MainActivity.FONT_HEADINGS);
         button = (ImageButton) findViewById(R.id.button);
         button.setOnClickListener(SearchListener);
-
-        if (viewPager != null){
-            setupViewPager(viewPager);
-        }
+        _sPref = new AppPreferences(getBaseContext());
+        if (viewPager != null) {
+                setupViewPager(viewPager);
+            }
 
         PagerTitleStrip titleStrip = (PagerTitleStrip) findViewById(R.id.pager_title_strip);
         titleStrip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
     }
 
 
-    private void setupViewPager(ViewPager viewPager){
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new CoordinatorFragment(), searchWord.toUpperCase());
-        adapter.addFrag(new ImagesFragment(), "IMAGES");
-        adapter.addFrag(new ConjugateFragment(), "CONJUGATION");
-        adapter.addFrag(new SoundFragment(), "SOUND");
-        viewPager.setAdapter(adapter);
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("word", searchWord);
+        viewPager=null;
     }
 
-    static class ViewPagerAdapter extends FragmentPagerAdapter {
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        searchWord = savedInstanceState.getString("word");
+        editText.setText(searchWord);
+        viewPager = (ViewPager) findViewById(R.id.tab_viewpager);
+        findViewById(R.id.welcomeSVId).setVisibility(View.GONE);
+        findViewById(R.id.dictImgId).setVisibility(View.GONE);
+        setupViewPager(viewPager);
+    }
+
+    static ViewPagerAdapter adapter;
+
+    private void setupViewPager(ViewPager viewPage){
+
+            adapter = new ViewPagerAdapter(getSupportFragmentManager());
+            adapter.addFrag(new CoordinatorFragment(), searchWord.toUpperCase());
+            viewPage.setAdapter(adapter);
+    }
+
+    static class ViewPagerAdapter extends FragmentStatePagerAdapter {//FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
@@ -121,12 +141,24 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return mFragmentList.size();
+         return mFragmentTitleList.size();
+//            return mFragmentList.size();
         }
 
         public void addFrag(Fragment fragment, String title){
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
+        }
+
+
+        @Override
+        public int getItemPosition(Object object){
+                return POSITION_UNCHANGED;
+        }
+
+        public void rmFrag(Fragment fragment, String title){
+            mFragmentTitleList.remove(title);
+            mFragmentList.remove(fragment);
         }
 
         @Override
@@ -135,8 +167,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
 }

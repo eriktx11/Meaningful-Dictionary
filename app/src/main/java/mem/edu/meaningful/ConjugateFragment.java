@@ -39,6 +39,7 @@ public class ConjugateFragment extends Fragment{
     private AppPreferences _sPref;
     private WebView webView;
     private static final String LOG_TAG = ConjugateFragment.class.getSimpleName();
+    public static final String FGTAG = "conjugateFrag";
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

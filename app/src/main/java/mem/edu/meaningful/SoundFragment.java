@@ -29,6 +29,7 @@ public class SoundFragment extends Fragment {//
 // implements View.OnClickListener {
 
     private static final String LOG_TAG = "AccentRecord";
+    public static final String FGTAG = "soundFrag";
     private static String mFileName = null;
 
 
@@ -46,9 +47,7 @@ public class SoundFragment extends Fragment {//
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == GALLEY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
         if (requestCode == GALLEY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            //image.setImageURI(data.getData()); // set image to image view
             try {
                 // Get real path to make File
                 realUri = Uri.parse(getPath(data.getData()));

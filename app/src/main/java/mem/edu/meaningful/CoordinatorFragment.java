@@ -1,5 +1,6 @@
 package mem.edu.meaningful;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -8,6 +9,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -52,10 +55,12 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public class CoordinatorFragment extends Fragment {
 
-    RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
 
-    List<String> data = new ArrayList<>();
-    private AppPreferences _sPref;
+    public static List<String> data = new ArrayList<>();
+    private static AppPreferences _sPref;
+    public static final String FGTAG = "coordFrag";
+    private static Context mContext;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -75,7 +80,6 @@ public class CoordinatorFragment extends Fragment {
 
     public static class SimpleStringRecyclerViewAdapter extends RecyclerView.Adapter<SimpleStringRecyclerViewAdapter.ViewHolder>{
         private List<String> mValues;
-        private Context mContext;
         public static class ViewHolder extends RecyclerView.ViewHolder {
 
             public final View mView;
@@ -126,20 +130,18 @@ public class CoordinatorFragment extends Fragment {
 
     }
 
-    public class fetchData extends AsyncTask<String, Void, String> {
+    public static class fetchData extends AsyncTask<String, Void, String> {
 
         ProgressDialog pDialog;
         NodeList nodelist;
         NodeList nodeSound;
         NodeList nodeTitles;
-        View linearLayout;
-        TextView tagWord;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // Create a progressbar
-            pDialog = new ProgressDialog(getContext());
+            pDialog = new ProgressDialog(mContext);
             // Set progressbar title
             pDialog.setTitle("Meaningful Dictionary");
             // Set progressbar message
@@ -223,6 +225,7 @@ public class CoordinatorFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
+
             data.clear();
 
             for (int h = 0; h < nodeTitles.getLength(); h++) {
@@ -249,8 +252,18 @@ public class CoordinatorFragment extends Fragment {
                     }
                 }
             }
-            // Close progressbar
-            pDialog.dismiss();
+
+            if(!_sPref.getSmsBody("sound").equals("")) {
+                MainActivity.adapter.addFrag(new ImagesFragment(), "IMAGES");
+                MainActivity.adapter.addFrag(new ConjugateFragment(), "CONJUGATION");
+                MainActivity.adapter.addFrag(new SoundFragment(), "SOUND");
+                MainActivity.adapter.notifyDataSetChanged();
+            }
+
+            try {
+                pDialog.dismiss();
+            }catch (IllegalArgumentException e){}
+
             recyclerView.getAdapter().notifyDataSetChanged();
         }
     }

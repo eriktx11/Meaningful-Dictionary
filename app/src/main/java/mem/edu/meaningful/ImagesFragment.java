@@ -34,6 +34,7 @@ public class ImagesFragment extends Fragment {
     private AppPreferences _sPref;
 
     private static final String LOG_TAG = ImagesFragment.class.getSimpleName();
+    public static final String FGTAG = "imagesFrag";
 
     private PosterAdapter mGridAdapter;
     private GridView mGridView;

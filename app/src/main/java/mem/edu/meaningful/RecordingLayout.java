@@ -44,10 +44,10 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
         this._sPref = new AppPreferences(activity.getBaseContext());
         this.fragment=fg;
     }
-
-    static String strStatusID;
-    static int postResult;
-    static String strError;
+//
+//    static String strStatusID;
+//    static int postResult;
+//    static String strError;
 
     @Override
     protected String[] doInBackground(String... params) {
@@ -61,9 +61,6 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
 
         List<NameValuePair> paramx = new ArrayList<NameValuePair>();
         paramx.add(new BasicNameValuePair("aWord", wordkey));
-//        paramx.add(new BasicNameValuePair("sUsername", user));
-//        paramx.add(new BasicNameValuePair("sLocation", location));
-//        paramx.add(new BasicNameValuePair("sVote", params[3]));
 
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(paramx));
@@ -87,49 +84,11 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
             e.printStackTrace();
         }
 
-        //logging.setFlag(true);
-
         String result = str.toString();
         String[] myList = result.split("\\^");
 
 
         Log.e("Log", result);
-
-//        if(result.equals("")){
-//            postResult=0;
-//            strError="Please enter your email";
-////                logging.setPostResult(0);
-////                logging.setStrError("Please enter your email");
-//        }else {
-//            /*** Default Value ***/
-//            strStatusID="0";
-//            strError="Unknow Status!";
-////                logging.setStrStatusID("0");
-////                logging.setStrError("Unknow Status!");
-//
-//            JSONObject c;
-//            try {
-//                c = new JSONObject(result);
-//                strStatusID=c.getString("StatusID");
-//                strError=c.getString("Error");
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//
-//            // Prepare Save Data
-//            if (strStatusID.equals("0")) {
-////                    logging.setPostResult(1);
-//                postResult=1;
-//            } else {
-//                postResult=2;
-////                    logging.setPostResult(2);
-//            }
-//        }]
-
-//            params = new String[3];
-//            params[0]="on";
-//            params[1]="off";
-//            params[2]="on";
 
         params=myList;
 
