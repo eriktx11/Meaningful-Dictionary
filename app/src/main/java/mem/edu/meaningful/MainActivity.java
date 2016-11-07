@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         searchWord = savedInstanceState.getString("word");
         editText.setText(searchWord);
+        _sPref.saveSmsBody("key", searchWord);
         viewPager = (ViewPager) findViewById(R.id.tab_viewpager);
         findViewById(R.id.welcomeSVId).setVisibility(View.GONE);
         findViewById(R.id.dictImgId).setVisibility(View.GONE);
