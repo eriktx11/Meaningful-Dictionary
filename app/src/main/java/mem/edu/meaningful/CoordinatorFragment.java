@@ -61,6 +61,7 @@ public class CoordinatorFragment extends Fragment {
     private static AppPreferences _sPref;
     public static final String FGTAG = "coordFrag";
     private static Context mContext;
+    public static ProgressDialog pDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -132,7 +133,7 @@ public class CoordinatorFragment extends Fragment {
 
     public static class fetchData extends AsyncTask<String, Void, String> {
 
-        ProgressDialog pDialog;
+
         NodeList nodelist;
         NodeList nodeSound;
         NodeList nodeTitles;

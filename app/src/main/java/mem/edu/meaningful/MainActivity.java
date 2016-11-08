@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.multidex.MultiDex;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
     public AppPreferences _sPref;
     public ViewPager viewPager;
     public static Typeface FONT_HEADINGS;
-    public static boolean deviceJustRotated = false;
-    public static boolean wordIsNull = false;
 
     View v;
 
@@ -98,6 +97,11 @@ public class MainActivity extends AppCompatActivity {
         titleStrip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        CoordinatorFragment.pDialog.dismiss();
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

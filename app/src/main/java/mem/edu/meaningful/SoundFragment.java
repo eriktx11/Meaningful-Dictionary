@@ -45,6 +45,13 @@ public class SoundFragment extends Fragment {//
     public static Uri realUri;
     Fragment fragment=this;
 
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        RecordingLayout.pDialog.dismiss();
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == GALLEY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
@@ -75,7 +82,6 @@ public class SoundFragment extends Fragment {//
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.sound_view, container, false);
         btn = (ImageButton) rootView.findViewById(R.id.btnSoundId);
-
         _sPref = new AppPreferences(getContext());
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +103,6 @@ public class SoundFragment extends Fragment {//
 //http://media.merriam-webster.com/soundc11/s/seat0001.wav
             }
         });
-
 
         Picasso.with(getContext())
                 .load("http://www.dia40.com/oodles/st-flag/ak.png").resize(0, 70)
