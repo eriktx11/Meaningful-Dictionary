@@ -15,7 +15,6 @@ public class AppPreferences {
     private static final String APP_SHARED_PREFS = AppPreferences.class.getSimpleName(); //  Name of the file -.xml
     private SharedPreferences _sharedPrefs;
     private SharedPreferences.Editor _prefsEditor;
-private Context context;
 
     public AppPreferences(Context context) {
         this._sharedPrefs = context.getSharedPreferences(APP_SHARED_PREFS, Activity.MODE_PRIVATE);
@@ -27,11 +26,11 @@ private Context context;
     }
 
     public int getIntBody() {
-        return _sharedPrefs.getInt("selction", -1);
+        return _sharedPrefs.getInt("selection", -1);
     }
 
     public void saveIntVal(int val) {
-        _prefsEditor.putInt("selction", val);
+        _prefsEditor.putInt("selection", val);
         _prefsEditor.apply();
     }
 

@@ -119,29 +119,35 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
 
         LinearLayout childLayout;
 
-        String[] locations = new String[]{"ak", "al"};//world Geo locations
+        String[] locations = new String[]{"ca", "ny", "tn", "tx"};//world Geo locations
 
-        Integer[] ly_id = new Integer[]{R.id.l1, R.id.l2};//horizontal layouts
+        Integer[] ly_id = new Integer[]{R.id.l1, R.id.l2,R.id.l3, R.id.l4};//horizontal layouts
 
         Integer[] AudioButtons = new Integer[]
                 {
-                        R.id.btnSoundId11, R.id.btnSoundId12, R.id.btnSoundId13, R.id.btnSoundId21, R.id.btnSoundId22, R.id.btnSoundId23
+                        R.id.btnSoundId11, R.id.btnSoundId12, R.id.btnSoundId13, R.id.btnSoundId21, R.id.btnSoundId22, R.id.btnSoundId23,
+                        R.id.btnSoundId31, R.id.btnSoundId32, R.id.btnSoundId33, R.id.btnSoundId41, R.id.btnSoundId42, R.id.btnSoundId43
                 };
 
         Integer[] child_ly_id =
                 new Integer[]
                         {
                                 R.id.imageButtonl1a1, R.id.imageButtonl1a2, R.id.imageButtonl1b1, R.id.imageButtonl1b2, R.id.imageButtonl1c1, R.id.imageButtonl1c2,
-                                R.id.imageButtonl2a1, R.id.imageButtonl2a2, R.id.imageButtonl2b1, R.id.imageButtonl2b2, R.id.imageButtonl2c1, R.id.imageButtonl2c2
+                                R.id.imageButtonl2a1, R.id.imageButtonl2a2, R.id.imageButtonl2b1, R.id.imageButtonl2b2, R.id.imageButtonl2c1, R.id.imageButtonl2c2,
+                                R.id.imageButtonl3a1, R.id.imageButtonl3a2, R.id.imageButtonl3b1, R.id.imageButtonl3b2, R.id.imageButtonl3c1, R.id.imageButtonl3c2,
+                                R.id.imageButtonl4a1, R.id.imageButtonl4a2, R.id.imageButtonl4b1, R.id.imageButtonl4b2, R.id.imageButtonl4c1, R.id.imageButtonl4c2
                         };//up vote and down vote arrows
 
         Integer[] vote_ly = new Integer[]
                 {
-                        R.id.txtv1a, R.id.txtv1b, R.id.txtv1c, R.id.txtv2a, R.id.txtv2b, R.id.txtv2c
+                        R.id.txtv1a, R.id.txtv1b, R.id.txtv1c, R.id.txtv2a, R.id.txtv2b, R.id.txtv2c,
+                        R.id.txtv3a, R.id.txtv3b, R.id.txtv3c, R.id.txtv4a, R.id.txtv4b, R.id.txtv4c
                 };//vote numbers per sound icon
 
-        Integer[] audio_id = new Integer[]{R.id.rcrbtn1, R.id.rcrbtn2};//record icons
-        Integer[] audio_lb_id = new Integer[]{R.id.rectxt1, R.id.rectxt2};//"contribute" labels
+        Integer[] audio_id = new Integer[]{R.id.rcrbtn1, R.id.rcrbtn2,
+                R.id.rcrbtn3, R.id.rcrbtn4};//record icons
+        Integer[] audio_lb_id = new Integer[]{R.id.rectxt1, R.id.rectxt2,
+                R.id.rectxt3, R.id.rectxt4};//"contribute" labels
 
         //int index = 3;//walks through the array
         int vote_counter = 0;//array index for TextView to display current votes in each ocurrence

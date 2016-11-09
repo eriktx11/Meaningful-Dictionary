@@ -105,12 +105,20 @@ public class SoundFragment extends Fragment {//
         });
 
         Picasso.with(getContext())
-                .load("http://www.dia40.com/oodles/st-flag/ak.png").resize(0, 70)
+                .load("http://www.dia40.com/oodles/st-flag/ca.png").resize(0, 70)
                 .into((ImageView) rootView.findViewById(R.id.imageView1));
 
         Picasso.with(getContext())
-                .load("http://www.dia40.com/oodles/st-flag/al.png").resize(0, 70)
+                .load("http://www.dia40.com/oodles/st-flag/ny.png").resize(0, 55)
                 .into((ImageView) rootView.findViewById(R.id.imageView2));
+
+        Picasso.with(getContext())
+                .load("http://www.dia40.com/oodles/st-flag/tn.png").resize(0, 70)
+                .into((ImageView) rootView.findViewById(R.id.imageView3));
+
+        Picasso.with(getContext())
+                .load("http://www.dia40.com/oodles/st-flag/tx.png").resize(0, 70)
+                .into((ImageView) rootView.findViewById(R.id.imageView4));
 
         new RecordingLayout(getActivity(), fragment).execute();
         return rootView;

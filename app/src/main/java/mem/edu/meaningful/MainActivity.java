@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 v = findViewById(R.id.info);
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                editText.clearFocus();
                 viewPager = (ViewPager) findViewById(R.id.tab_viewpager);
                 if (viewPager != null) {
                         findViewById(R.id.welcomeSVId).setVisibility(View.GONE);
@@ -95,12 +96,15 @@ public class MainActivity extends AppCompatActivity {
 
         PagerTitleStrip titleStrip = (PagerTitleStrip) findViewById(R.id.pager_title_strip);
         titleStrip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        CoordinatorFragment.pDialog.dismiss();
+        if(!searchWord.equals("")){
+            CoordinatorFragment.pDialog.dismiss();
+        }
     }
 
     @Override
@@ -120,12 +124,15 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.welcomeSVId).setVisibility(View.GONE);
         findViewById(R.id.dictImgId).setVisibility(View.GONE);
         setupViewPager(viewPager);
+
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        v = findViewById(R.id.info);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     static ViewPagerAdapter adapter;
 
     private void setupViewPager(ViewPager viewPage){
-
             adapter = new ViewPagerAdapter(getSupportFragmentManager());
             adapter.addFrag(new CoordinatorFragment(), searchWord.toUpperCase());
             viewPage.setAdapter(adapter);
@@ -155,15 +162,9 @@ public class MainActivity extends AppCompatActivity {
             mFragmentTitleList.add(title);
         }
 
-
         @Override
         public int getItemPosition(Object object){
                 return POSITION_UNCHANGED;
-        }
-
-        public void rmFrag(Fragment fragment, String title){
-            mFragmentTitleList.remove(title);
-            mFragmentList.remove(fragment);
         }
 
         @Override
@@ -171,9 +172,4 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
 }

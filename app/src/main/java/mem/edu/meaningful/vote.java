@@ -198,31 +198,57 @@ public class vote extends Activity implements View.OnClickListener {
         Integer id =v.getId();
 
             switch (id){
-                case R.id.imageButtonl1a1:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl1a2:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl1b1:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl1b2:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl1c1:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl1c2:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");
-                    full_loc="Alaska";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl1a1:_sPref.saveSmsBody("loc", "ca");_sPref.saveSmsBody("full_loc", "California");
+                    full_loc="California";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl1a2:_sPref.saveSmsBody("loc", "ca");_sPref.saveSmsBody("full_loc", "California");
+                    full_loc="California";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl1b1:_sPref.saveSmsBody("loc", "ca");_sPref.saveSmsBody("full_loc", "California");
+                    full_loc="California";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl1b2:_sPref.saveSmsBody("loc", "ca");_sPref.saveSmsBody("full_loc", "California");
+                    full_loc="California";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl1c1:_sPref.saveSmsBody("loc", "ca");_sPref.saveSmsBody("full_loc", "California");
+                    full_loc="California";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl1c2:_sPref.saveSmsBody("loc", "ca");_sPref.saveSmsBody("full_loc", "California");
+                    full_loc="California";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
 
-                case R.id.imageButtonl2a1:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl2a2:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl2b1:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl2b2:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl2c1:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl2c2:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");
-                    full_loc="Alabama";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl2a1:_sPref.saveSmsBody("loc", "ny");_sPref.saveSmsBody("full_loc", "New York");
+                    full_loc="New York";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl2a2:_sPref.saveSmsBody("loc", "ny");_sPref.saveSmsBody("full_loc", "New York");
+                    full_loc="New York";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl2b1:_sPref.saveSmsBody("loc", "ny");_sPref.saveSmsBody("full_loc", "New York");
+                    full_loc="New York";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl2b2:_sPref.saveSmsBody("loc", "ny");_sPref.saveSmsBody("full_loc", "New York");
+                    full_loc="New York";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl2c1:_sPref.saveSmsBody("loc", "ny");_sPref.saveSmsBody("full_loc", "New York");
+                    full_loc="New York";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl2c2:_sPref.saveSmsBody("loc", "ny");_sPref.saveSmsBody("full_loc", "New York");
+                    full_loc="New York";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+
+                case R.id.imageButtonl3a1:_sPref.saveSmsBody("loc", "tn");_sPref.saveSmsBody("full_loc", "Tennessee");
+                    full_loc="Tennessee";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl3a2:_sPref.saveSmsBody("loc", "tn");_sPref.saveSmsBody("full_loc", "Tennessee");
+                    full_loc="Tennessee";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl3b1:_sPref.saveSmsBody("loc", "tn");_sPref.saveSmsBody("full_loc", "Tennessee");
+                    full_loc="Tennessee";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl3b2:_sPref.saveSmsBody("loc", "tn");_sPref.saveSmsBody("full_loc", "Tennessee");
+                    full_loc="Tennessee";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl3c1:_sPref.saveSmsBody("loc", "tn");_sPref.saveSmsBody("full_loc", "Tennessee");
+                    full_loc="Tennessee";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl3c2:_sPref.saveSmsBody("loc", "tn");_sPref.saveSmsBody("full_loc", "Tennessee");
+                    full_loc="Tennessee";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+
+                case R.id.imageButtonl4a1:_sPref.saveSmsBody("loc", "tx");_sPref.saveSmsBody("full_loc", "Texas");
+                    full_loc="Texas";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl4a2:_sPref.saveSmsBody("loc", "tx");_sPref.saveSmsBody("full_loc", "Texas");
+                    full_loc="Texas";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl4b1:_sPref.saveSmsBody("loc", "tx");_sPref.saveSmsBody("full_loc", "Texas");
+                    full_loc="Texas";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl4b2:_sPref.saveSmsBody("loc", "tx");_sPref.saveSmsBody("full_loc", "Texas");
+                    full_loc="Texas";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl4c1:_sPref.saveSmsBody("loc", "tx");_sPref.saveSmsBody("full_loc", "Texas");
+                    full_loc="Texas";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl4c2:_sPref.saveSmsBody("loc", "tx");_sPref.saveSmsBody("full_loc", "Texas");
+                    full_loc="Texas";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
             }
 
         String labelText="Voting in: \n"+full_loc+", are you sure?\n_________________\nYou won\'t be able to change your vote";

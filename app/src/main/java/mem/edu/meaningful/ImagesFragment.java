@@ -41,13 +41,6 @@ public class ImagesFragment extends Fragment {
     private ArrayList<GridItem> mGridData;
 
 
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//    }
-
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 

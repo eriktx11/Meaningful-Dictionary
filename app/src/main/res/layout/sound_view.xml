@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Alaska"
+            android:text="California"
             android:id="@+id/textView1"
             android:textAlignment="center"
             android:paddingLeft="8dp"
@@ -142,8 +142,13 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButtonl1b1"/>
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl1b1"
+                android:src="@drawable/up"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -156,8 +161,13 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButtonl1b2"/>
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl1b2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
         </LinearLayout>
 
         <ImageButton
@@ -181,8 +191,13 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButtonl1c1"/>
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl1c1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -195,8 +210,13 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButtonl1c2"/>
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl1c2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
         </LinearLayout>
 
         <View
@@ -230,7 +250,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Alabama"
+            android:text="New York"
             android:id="@+id/textView2"
             android:textAlignment="center"
             android:paddingLeft="8dp"
@@ -284,8 +304,13 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButtonl2a1"/>
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl2a1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -298,8 +323,13 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButtonl2a2"/>
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl2a2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
         </LinearLayout>
 
         <ImageButton
@@ -323,8 +353,13 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButtonl2b1"/>
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl2b1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -337,8 +372,13 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButtonl2b2"/>
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl2b2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
         </LinearLayout>
 
         <ImageButton
@@ -362,8 +402,13 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButtonl2c1"/>
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl2c1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -376,8 +421,13 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButtonl2c2"/>
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl2c2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
         </LinearLayout>
 
         <View
@@ -402,7 +452,430 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Tennessee"
+            android:id="@+id/textView3"
+            android:textAlignment="center"
+            android:paddingLeft="8dp"
+            android:paddingTop="6dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="contribute"
+            android:id="@+id/rectxt3"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:visibility="invisible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:id="@+id/l3">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView3"
+            android:padding="5dp"
+            android:layout_gravity="center"/>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId31"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl3a1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv3a"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl3a2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId32"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl3b1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv3b"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl3b2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId33"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl3c1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv3c"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl3c2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/rcrbtn3"
+            android:layout_gravity="center_vertical"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:src="@drawable/record"
+            android:paddingRight="5dp"
+            android:visibility="invisible"/>
+
+
+    </LinearLayout>
+
     <!--end-->
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Texas"
+            android:id="@+id/textView4"
+            android:textAlignment="center"
+            android:paddingLeft="8dp"
+            android:paddingTop="6dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="contribute"
+            android:id="@+id/rectxt4"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:visibility="invisible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:id="@+id/l4">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView4"
+            android:padding="5dp"
+            android:layout_gravity="center"/>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId41"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl4a1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv4a"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl4a2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId42"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl4b1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv4b"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl4b2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId43"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl4c1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv4c"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl4c2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/rcrbtn4"
+            android:layout_gravity="center_vertical"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:src="@drawable/record"
+            android:paddingRight="5dp"
+            android:visibility="invisible"/>
+
+
+    </LinearLayout>
+
+
+
+
 
 </LinearLayout>
 
