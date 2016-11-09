@@ -249,6 +249,32 @@ public class vote extends Activity implements View.OnClickListener {
                     full_loc="Texas";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
                 case R.id.imageButtonl4c2:_sPref.saveSmsBody("loc", "tx");_sPref.saveSmsBody("full_loc", "Texas");
                     full_loc="Texas";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+
+                case R.id.imageButtonl5a1:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
+                    full_loc="Jamaica";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl5a2:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
+                    full_loc="Jamaica";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl5b1:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
+                    full_loc="Jamaica";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl5b2:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
+                    full_loc="Jamaica";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl5c1:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
+                    full_loc="Jamaica";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl5c2:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
+                    full_loc="Jamaica";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+
+                case R.id.imageButtonl6a1:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
+                    full_loc="Nigeria";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl6a2:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
+                    full_loc="Nigeria";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl6b1:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
+                    full_loc="Nigeria";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl6b2:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
+                    full_loc="Nigeria";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl6c1:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
+                    full_loc="Nigeria";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl6c2:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
+                    full_loc="Nigeria";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
             }
 
         String labelText="Voting in: \n"+full_loc+", are you sure?\n_________________\nYou won\'t be able to change your vote";

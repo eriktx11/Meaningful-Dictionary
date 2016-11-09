@@ -664,6 +664,7 @@
     <!--end-->
 
 
+    <!-- start copy here -->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -872,8 +873,431 @@
 
 
     </LinearLayout>
+    <!--end of block to copy-->
 
 
+    <!-- start copy here -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Jamaica"
+            android:id="@+id/textView5"
+            android:textAlignment="center"
+            android:paddingLeft="8dp"
+            android:paddingTop="6dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="contribute"
+            android:id="@+id/rectxt5"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:visibility="invisible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:id="@+id/l5">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView5"
+            android:padding="5dp"
+            android:layout_gravity="center"/>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId51"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl5a1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv5a"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl5a2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId52"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl5b1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv5b"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl5b2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId53"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl5c1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv5c"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl5c2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/rcrbtn5"
+            android:layout_gravity="center_vertical"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:src="@drawable/record"
+            android:paddingRight="5dp"
+            android:visibility="invisible"/>
+
+
+    </LinearLayout>
+    <!--end of block to copy-->
+
+
+    <!-- start copy here -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Nigeria"
+            android:id="@+id/textView6"
+            android:textAlignment="center"
+            android:paddingLeft="8dp"
+            android:paddingTop="6dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="contribute"
+            android:id="@+id/rectxt6"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:visibility="invisible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:id="@+id/l6">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView6"
+            android:padding="5dp"
+            android:layout_gravity="center"/>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId61"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl6a1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv6a"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl6a2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId62"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl6b1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv6b"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl6b2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/playico"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/btnSoundId63"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl6c1"
+                android:src="@drawable/up"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="0"
+                android:id="@+id/txtv6c"
+                android:layout_gravity="center"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:id="@+id/imageButtonl6c2"
+                android:src="@drawable/down"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00ffffff"
+                android:padding="0dp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/rcrbtn6"
+            android:layout_gravity="center_vertical"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:src="@drawable/record"
+            android:paddingRight="5dp"
+            android:visibility="invisible"/>
+
+
+    </LinearLayout>
+    <!--end of block to copy-->
 
 
 

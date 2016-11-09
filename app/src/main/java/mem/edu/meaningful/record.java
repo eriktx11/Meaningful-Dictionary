@@ -454,9 +454,13 @@ public class record extends Activity implements View.OnClickListener {
             logOut.setOnClickListener(btnLogout);
         }
 
-        switch (v.getId()){
-            case R.id.rcrbtn1:_sPref.saveSmsBody("loc", "ak");_sPref.saveSmsBody("full_loc", "Alaska");break;
-            case R.id.rcrbtn2:_sPref.saveSmsBody("loc", "al");_sPref.saveSmsBody("full_loc", "Alabama");break;
+        switch (v.getId()){//{"ca", "ny", "tn", "tx", "jm", "ng"}
+            case R.id.rcrbtn1:_sPref.saveSmsBody("loc", "ca");_sPref.saveSmsBody("full_loc", "California");break;
+            case R.id.rcrbtn2:_sPref.saveSmsBody("loc", "ny");_sPref.saveSmsBody("full_loc", "New York");break;
+            case R.id.rcrbtn3:_sPref.saveSmsBody("loc", "tn");_sPref.saveSmsBody("full_loc", "Tennessee");break;
+            case R.id.rcrbtn4:_sPref.saveSmsBody("loc", "tx");_sPref.saveSmsBody("full_loc", "Texas");break;
+            case R.id.rcrbtn5:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");break;
+            case R.id.rcrbtn6:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");break;
         }
 
         choose = (Button) dialog.findViewById(R.id.btn_choose);

@@ -120,6 +120,14 @@ public class SoundFragment extends Fragment {//
                 .load("http://www.dia40.com/oodles/st-flag/tx.png").resize(0, 70)
                 .into((ImageView) rootView.findViewById(R.id.imageView4));
 
+        Picasso.with(getContext())
+                .load("http://www.dia40.com/oodles/wd-flag/jm.png").resize(0, 55)
+                .into((ImageView) rootView.findViewById(R.id.imageView5));
+
+        Picasso.with(getContext())
+                .load("http://www.dia40.com/oodles/wd-flag/ng.png").resize(0, 55)
+                .into((ImageView) rootView.findViewById(R.id.imageView6));
+
         new RecordingLayout(getActivity(), fragment).execute();
         return rootView;
     }
