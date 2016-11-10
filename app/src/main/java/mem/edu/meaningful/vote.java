@@ -2,9 +2,15 @@ package mem.edu.meaningful;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -82,7 +89,8 @@ public class vote extends Activity implements View.OnClickListener {
             LoginPlease login = new LoginPlease();
 
             try {
-                new LoginPlease.getHttpPost().execute(strFirstTime).get(3000, TimeUnit.MILLISECONDS);
+                 new LoginPlease.getHttpPost().execute(strFirstTime).get(3000, TimeUnit.MILLISECONDS);
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -153,6 +161,7 @@ public class vote extends Activity implements View.OnClickListener {
             strFirstTime[4] = candidate;
 
             new postVote().execute(strFirstTime);
+
             cancel.setText("DONE");
             ok_log_vote.setEnabled(false);
         }
@@ -250,42 +259,147 @@ public class vote extends Activity implements View.OnClickListener {
                 case R.id.imageButtonl4c2:_sPref.saveSmsBody("loc", "tx");_sPref.saveSmsBody("full_loc", "Texas");
                     full_loc="Texas";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
 
-                case R.id.imageButtonl5a1:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
+                case R.id.imageButtonl5a1:_sPref.saveSmsBody("loc", "au");_sPref.saveSmsBody("full_loc", "Australia");
+                    full_loc="Australia";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl5a2:_sPref.saveSmsBody("loc", "au");_sPref.saveSmsBody("full_loc", "Australia");
+                    full_loc="Australia";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl5b1:_sPref.saveSmsBody("loc", "au");_sPref.saveSmsBody("full_loc", "Australia");
+                    full_loc="Australia";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl5b2:_sPref.saveSmsBody("loc", "au");_sPref.saveSmsBody("full_loc", "Australia");
+                    full_loc="Australia";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl5c1:_sPref.saveSmsBody("loc", "au");_sPref.saveSmsBody("full_loc", "Australia");
+                    full_loc="Australia";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl5c2:_sPref.saveSmsBody("loc", "au");_sPref.saveSmsBody("full_loc", "Australia");
+                    full_loc="Australia";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+
+                case R.id.imageButtonl6a1:_sPref.saveSmsBody("loc", "cca");_sPref.saveSmsBody("full_loc", "Canada");
+                    full_loc="Canada";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl6a2:_sPref.saveSmsBody("loc", "cca");_sPref.saveSmsBody("full_loc", "Canada");
+                    full_loc="Canada";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl6b1:_sPref.saveSmsBody("loc", "cca");_sPref.saveSmsBody("full_loc", "Canada");
+                    full_loc="Canada";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl6b2:_sPref.saveSmsBody("loc", "cca");_sPref.saveSmsBody("full_loc", "Canada");
+                    full_loc="Canada";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl6c1:_sPref.saveSmsBody("loc", "cca");_sPref.saveSmsBody("full_loc", "Canada");
+                    full_loc="Canada";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl6c2:_sPref.saveSmsBody("loc", "cca");_sPref.saveSmsBody("full_loc", "Canada");
+                    full_loc="Canada";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+
+                case R.id.imageButtonl7a1:_sPref.saveSmsBody("loc", "in");_sPref.saveSmsBody("full_loc", "India");
+                    full_loc="India";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl7a2:_sPref.saveSmsBody("loc", "in");_sPref.saveSmsBody("full_loc", "India");
+                    full_loc="India";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl7b1:_sPref.saveSmsBody("loc", "in");_sPref.saveSmsBody("full_loc", "India");
+                    full_loc="India";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl7b2:_sPref.saveSmsBody("loc", "in");_sPref.saveSmsBody("full_loc", "India");
+                    full_loc="India";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl7c1:_sPref.saveSmsBody("loc", "in");_sPref.saveSmsBody("full_loc", "India");
+                    full_loc="India";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl7c2:_sPref.saveSmsBody("loc", "in");_sPref.saveSmsBody("full_loc", "India");
+                    full_loc="India";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+
+                case R.id.imageButtonl8a1:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
                     full_loc="Jamaica";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl5a2:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
+                case R.id.imageButtonl8a2:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
                     full_loc="Jamaica";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl5b1:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
+                case R.id.imageButtonl8b1:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
                     full_loc="Jamaica";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl5b2:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
+                case R.id.imageButtonl8b2:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
                     full_loc="Jamaica";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl5c1:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
+                case R.id.imageButtonl8c1:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
                     full_loc="Jamaica";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl5c2:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
+                case R.id.imageButtonl8c2:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");
                     full_loc="Jamaica";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
 
-                case R.id.imageButtonl6a1:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
+                case R.id.imageButtonl9a1:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
                     full_loc="Nigeria";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl6a2:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
+                case R.id.imageButtonl9a2:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
                     full_loc="Nigeria";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl6b1:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
+                case R.id.imageButtonl9b1:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
                     full_loc="Nigeria";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl6b2:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
+                case R.id.imageButtonl9b2:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
                     full_loc="Nigeria";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl6c1:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
+                case R.id.imageButtonl9c1:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
                     full_loc="Nigeria";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
-                case R.id.imageButtonl6c2:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
+                case R.id.imageButtonl9c2:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");
                     full_loc="Nigeria";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+
+                case R.id.imageButtonl10a1:_sPref.saveSmsBody("loc", "sg");_sPref.saveSmsBody("full_loc", "Singapore");
+                    full_loc="Singapore";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl10a2:_sPref.saveSmsBody("loc", "sg");_sPref.saveSmsBody("full_loc", "Singapore");
+                    full_loc="Singapore";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl10b1:_sPref.saveSmsBody("loc", "sg");_sPref.saveSmsBody("full_loc", "Singapore");
+                    full_loc="Singapore";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl10b2:_sPref.saveSmsBody("loc", "sg");_sPref.saveSmsBody("full_loc", "Singapore");
+                    full_loc="Singapore";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl10c1:_sPref.saveSmsBody("loc", "sg");_sPref.saveSmsBody("full_loc", "Singapore");
+                    full_loc="Singapore";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl10c2:_sPref.saveSmsBody("loc", "sg");_sPref.saveSmsBody("full_loc", "Singapore");
+                    full_loc="Singapore";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+
+                case R.id.imageButtonl11a1:_sPref.saveSmsBody("loc", "za");_sPref.saveSmsBody("full_loc", "South Africa");
+                    full_loc="South Africa";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl11a2:_sPref.saveSmsBody("loc", "za");_sPref.saveSmsBody("full_loc", "South Africa");
+                    full_loc="South Africa";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl11b1:_sPref.saveSmsBody("loc", "za");_sPref.saveSmsBody("full_loc", "South Africa");
+                    full_loc="South Africa";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl11b2:_sPref.saveSmsBody("loc", "za");_sPref.saveSmsBody("full_loc", "South Africa");
+                    full_loc="South Africa";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl11c1:_sPref.saveSmsBody("loc", "za");_sPref.saveSmsBody("full_loc", "South Africa");
+                    full_loc="South Africa";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl11c2:_sPref.saveSmsBody("loc", "za");_sPref.saveSmsBody("full_loc", "South Africa");
+                    full_loc="South Africa";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+
+                case R.id.imageButtonl12a1:_sPref.saveSmsBody("loc", "tt");_sPref.saveSmsBody("full_loc", "Trinidad and Tobago");
+                    full_loc="Trinidad and Tobago";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl12a2:_sPref.saveSmsBody("loc", "tt");_sPref.saveSmsBody("full_loc", "Trinidad and Tobago");
+                    full_loc="Trinidad and Tobago";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl12b1:_sPref.saveSmsBody("loc", "tt");_sPref.saveSmsBody("full_loc", "Trinidad and Tobago");
+                    full_loc="Trinidad and Tobago";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl12b2:_sPref.saveSmsBody("loc", "tt");_sPref.saveSmsBody("full_loc", "Trinidad and Tobago");
+                    full_loc="Trinidad and Tobago";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl12c1:_sPref.saveSmsBody("loc", "tt");_sPref.saveSmsBody("full_loc", "Trinidad and Tobago");
+                    full_loc="Trinidad and Tobago";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl12c2:_sPref.saveSmsBody("loc", "tt");_sPref.saveSmsBody("full_loc", "Trinidad and Tobago");
+                    full_loc="Trinidad and Tobago";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+
+                case R.id.imageButtonl13a1:_sPref.saveSmsBody("loc", "uk");_sPref.saveSmsBody("full_loc", "United Kingdom");
+                    full_loc="United Kingdom";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl13a2:_sPref.saveSmsBody("loc", "uk");_sPref.saveSmsBody("full_loc", "United Kingdom");
+                    full_loc="United Kingdom";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl13b1:_sPref.saveSmsBody("loc", "uk");_sPref.saveSmsBody("full_loc", "United Kingdom");
+                    full_loc="United Kingdom";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl13b2:_sPref.saveSmsBody("loc", "uk");_sPref.saveSmsBody("full_loc", "United Kingdom");
+                    full_loc="United Kingdom";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl13c1:_sPref.saveSmsBody("loc", "uk");_sPref.saveSmsBody("full_loc", "United Kingdom");
+                    full_loc="United Kingdom";voteLabel="UP VOTE";vote="1";candidate=_sPref.getSmsBody(id.toString());break;
+                case R.id.imageButtonl13c2:_sPref.saveSmsBody("loc", "uk");_sPref.saveSmsBody("full_loc", "United Kingdom");
+                    full_loc="United Kingdom";voteLabel="DOWN VOTE";vote="-1";candidate=_sPref.getSmsBody(id.toString());break;
             }
+
+        //Australia au
+//        Canada ca use-> cca for android
+//        India in
+        //Jamaica jm
+        //Nigeria ng
+//        Singapore sg
+//        South Africa za
+//        Trinidad and Tobago tt
+//        United Kingdom uk
 
         String labelText="Voting in: \n"+full_loc+", are you sure?\n_________________\nYou won\'t be able to change your vote";
         tvError.setText(labelText);
         ok_log_vote.setOnClickListener(btn_login_stat);
         cancel.setOnClickListener(btn_cancel);
 
-        dialog.show();
+
+        if(MainActivity.network) {
+            dialog.show();
+        }else {
+            Toast.makeText(mContex, "No Network connexion", Toast.LENGTH_LONG).show();
+        }
 
     }
-
 
     //======================
     public class postVote extends AsyncTask<String, Void, String[]> {

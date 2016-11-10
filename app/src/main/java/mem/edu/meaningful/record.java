@@ -3,6 +3,8 @@ package mem.edu.meaningful;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -63,6 +66,7 @@ public class record extends Activity implements View.OnClickListener {
     private Context mContex;
     public static Activity activity;
     public static Fragment fg;
+
 
     public record(Context c, Fragment a, Activity ac) {
         this.mContex=c;
@@ -459,9 +463,27 @@ public class record extends Activity implements View.OnClickListener {
             case R.id.rcrbtn2:_sPref.saveSmsBody("loc", "ny");_sPref.saveSmsBody("full_loc", "New York");break;
             case R.id.rcrbtn3:_sPref.saveSmsBody("loc", "tn");_sPref.saveSmsBody("full_loc", "Tennessee");break;
             case R.id.rcrbtn4:_sPref.saveSmsBody("loc", "tx");_sPref.saveSmsBody("full_loc", "Texas");break;
-            case R.id.rcrbtn5:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");break;
-            case R.id.rcrbtn6:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");break;
+
+            case R.id.rcrbtn5:_sPref.saveSmsBody("loc", "au");_sPref.saveSmsBody("full_loc", "Australia");break;
+            case R.id.rcrbtn6:_sPref.saveSmsBody("loc", "cca");_sPref.saveSmsBody("full_loc", "Canada");break;
+            case R.id.rcrbtn7:_sPref.saveSmsBody("loc", "in");_sPref.saveSmsBody("full_loc", "India");break;
+            case R.id.rcrbtn8:_sPref.saveSmsBody("loc", "jm");_sPref.saveSmsBody("full_loc", "Jamaica");break;
+            case R.id.rcrbtn9:_sPref.saveSmsBody("loc", "ng");_sPref.saveSmsBody("full_loc", "Nigeria");break;
+            case R.id.rcrbtn10:_sPref.saveSmsBody("loc", "sg");_sPref.saveSmsBody("full_loc", "Singapore");break;
+            case R.id.rcrbtn11:_sPref.saveSmsBody("loc", "za");_sPref.saveSmsBody("full_loc", "South Africa");break;
+            case R.id.rcrbtn12:_sPref.saveSmsBody("loc", "tt");_sPref.saveSmsBody("full_loc", "Trinidad and Tobago");break;
+            case R.id.rcrbtn13:_sPref.saveSmsBody("loc", "uk");_sPref.saveSmsBody("full_loc", "United Kingdom");break;
         }
+
+        //Australia au
+//        Canada ca use-> cca for android
+//        India in
+        //Jamaica jm
+        //Nigeria ng
+//        Singapore sg
+//        South Africa za
+//        Trinidad and Tobago tt
+//        United Kingdom uk
 
         choose = (Button) dialog.findViewById(R.id.btn_choose);
         upload = (Button) dialog.findViewById(R.id.btn_upload);
@@ -469,7 +491,11 @@ public class record extends Activity implements View.OnClickListener {
         choose.setOnClickListener(btnChoose);
         upload.setOnClickListener(btnUpload);
 
-        dialog.show();
+        if(MainActivity.network) {
+            dialog.show();
+        }else {
+            Toast.makeText(mContex, "No Network connexion", Toast.LENGTH_LONG).show();
+        }
     }
 
 

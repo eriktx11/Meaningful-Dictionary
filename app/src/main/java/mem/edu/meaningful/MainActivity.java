@@ -1,8 +1,10 @@
 package mem.edu.meaningful;
 
 import android.app.ActionBar;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public AppPreferences _sPref;
     public ViewPager viewPager;
     public static Typeface FONT_HEADINGS;
+    public static boolean network;
 
     View v;
 
@@ -97,6 +100,22 @@ public class MainActivity extends AppCompatActivity {
         PagerTitleStrip titleStrip = (PagerTitleStrip) findViewById(R.id.pager_title_strip);
         titleStrip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
 
+        network = isDataConnected();
+        registerReceiver(new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                network = isDataConnected();
+            }
+        }, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+
+    }
+
+    private boolean isDataConnected() {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            return cm.getActiveNetworkInfo().isConnectedOrConnecting();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override

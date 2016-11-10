@@ -2,23 +2,36 @@ package mem.edu.meaningful;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.apache.http.client.utils.URIBuilder;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.text.StringCharacterIterator;
 
 
@@ -78,6 +91,7 @@ public class SoundFragment extends Fragment {//
         return cursor.getString(column_index);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.sound_view, container, false);
@@ -104,32 +118,86 @@ public class SoundFragment extends Fragment {//
             }
         });
 
+
+        //list of USA states (total 4) //.resize(115, 0)
         Picasso.with(getContext())
-                .load("http://www.dia40.com/oodles/st-flag/ca.png").resize(0, 70)
+                .load("http://www.dia40.com/oodles/st-flag/ca.png").resize(105, 0)
                 .into((ImageView) rootView.findViewById(R.id.imageView1));
 
         Picasso.with(getContext())
-                .load("http://www.dia40.com/oodles/st-flag/ny.png").resize(0, 55)
+                .load("http://www.dia40.com/oodles/st-flag/ny.png").resize(105, 0)
                 .into((ImageView) rootView.findViewById(R.id.imageView2));
 
         Picasso.with(getContext())
-                .load("http://www.dia40.com/oodles/st-flag/tn.png").resize(0, 70)
+                .load("http://www.dia40.com/oodles/st-flag/tn.png").resize(105, 0)
                 .into((ImageView) rootView.findViewById(R.id.imageView3));
 
         Picasso.with(getContext())
-                .load("http://www.dia40.com/oodles/st-flag/tx.png").resize(0, 70)
+                .load("http://www.dia40.com/oodles/st-flag/tx.png").resize(105, 0)
                 .into((ImageView) rootView.findViewById(R.id.imageView4));
+        //end of states
 
+
+
+        //list of countries
         Picasso.with(getContext())
-                .load("http://www.dia40.com/oodles/wd-flag/jm.png").resize(0, 55)
+                .load("http://www.dia40.com/oodles/wd-flag/au.png").resize(105, 0)
                 .into((ImageView) rootView.findViewById(R.id.imageView5));
+        Picasso.with(getContext())
+                .load("http://www.dia40.com/oodles/wd-flag/ca.png").resize(105, 0)
+                .into((ImageView) rootView.findViewById(R.id.imageView6));
+        Picasso.with(getContext())
+                .load("http://www.dia40.com/oodles/wd-flag/in.png").resize(105, 0)
+                .into((ImageView) rootView.findViewById(R.id.imageView7));
 
         Picasso.with(getContext())
-                .load("http://www.dia40.com/oodles/wd-flag/ng.png").resize(0, 55)
-                .into((ImageView) rootView.findViewById(R.id.imageView6));
+                .load("http://www.dia40.com/oodles/wd-flag/jm.png").resize(105, 0)
+                .into((ImageView) rootView.findViewById(R.id.imageView8));
 
-        new RecordingLayout(getActivity(), fragment).execute();
-        return rootView;
+        Picasso.with(getContext())
+                .load("http://www.dia40.com/oodles/wd-flag/ng.png").resize(105, 0)
+                .into((ImageView) rootView.findViewById(R.id.imageView9));
+
+        Picasso.with(getContext())
+                .load("http://www.dia40.com/oodles/wd-flag/sg.png").resize(105, 0)
+                .into((ImageView) rootView.findViewById(R.id.imageView10));
+        Picasso.with(getContext())
+                .load("http://www.dia40.com/oodles/wd-flag/za.png").resize(105, 0)
+                .into((ImageView) rootView.findViewById(R.id.imageView11));
+        Picasso.with(getContext())
+                .load("http://www.dia40.com/oodles/wd-flag/tt.png").resize(105, 0)
+                .into((ImageView) rootView.findViewById(R.id.imageView12));
+        Picasso.with(getContext())
+                .load("http://www.dia40.com/oodles/wd-flag/gb.png").resize(105, 0)
+                .into((ImageView) rootView.findViewById(R.id.imageView13));
+
+
+
+
+//        Australia au
+//        Canada ca use-> cca for android
+//        India in
+        //Jamaica jm
+        //Nigeria ng
+//        Singapore sg
+//        South Africa za
+//        Trinidad and Tobago tt
+//        The United Kingdom uk
+
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        if(isConnected) {
+            new RecordingLayout(getActivity(), fragment).execute();
+            return rootView;
+        }else {
+            Toast.makeText(getContext(), getString(R.string.network_toast), Toast.LENGTH_LONG).show();
+            return null;
+        }
+
     }
 
 }

@@ -233,43 +233,46 @@ public class CoordinatorFragment extends Fragment {
 
             data.clear();
 
-            for (int h = 0; h < nodeTitles.getLength(); h++) {
+            if (nodeTitles!=null) {
 
-                NodeList childTitle = nodeTitles.item(h).getChildNodes();
+                for (int h = 0; h < nodeTitles.getLength(); h++) {
 
-                for (int i = 0; i < childTitle.getLength(); i++) {
+                    NodeList childTitle = nodeTitles.item(h).getChildNodes();
 
-                    Node tNode = childTitle.item(i);
-                    if ("ew".equals(tNode.getNodeName())) {
-                        data.add("<br><h2>"+childTitle.item(i).getTextContent()
-                                .trim().replace("-"," ")+"</h2>");
-                    }
+                    for (int i = 0; i < childTitle.getLength(); i++) {
 
-                    if ("def".equals(tNode.getNodeName())) {
-                        NodeList childList = childTitle.item(i).getChildNodes();
-                        for (int j = 0; j < childList.getLength(); j++) {
-                        Node childNode = childList.item(j);
-                        if ("dt".equals(childNode.getNodeName())) {
-                            data.add(childList.item(j).getTextContent()
-                                    .trim());
+                        Node tNode = childTitle.item(i);
+                        if ("ew".equals(tNode.getNodeName())) {
+                            data.add("<br><h2>" + childTitle.item(i).getTextContent()
+                                    .trim().replace("-", " ") + "</h2>");
+                        }
+
+                        if ("def".equals(tNode.getNodeName())) {
+                            NodeList childList = childTitle.item(i).getChildNodes();
+                            for (int j = 0; j < childList.getLength(); j++) {
+                                Node childNode = childList.item(j);
+                                if ("dt".equals(childNode.getNodeName())) {
+                                    data.add(childList.item(j).getTextContent()
+                                            .trim());
+                                }
+                            }
                         }
                     }
-                    }
                 }
-            }
 
-            if(!_sPref.getSmsBody("sound").equals("")) {
-                MainActivity.adapter.addFrag(new ImagesFragment(), "IMAGES");
-                MainActivity.adapter.addFrag(new ConjugateFragment(), "CONJUGATION");
-                MainActivity.adapter.addFrag(new SoundFragment(), "SOUND");
-                MainActivity.adapter.notifyDataSetChanged();
-            }
+                if (!_sPref.getSmsBody("sound").equals("")) {
+                    MainActivity.adapter.addFrag(new ImagesFragment(), "IMAGES");
+                    MainActivity.adapter.addFrag(new ConjugateFragment(), "CONJUGATION");
+                    MainActivity.adapter.addFrag(new SoundFragment(), "SOUND");
+                    MainActivity.adapter.notifyDataSetChanged();
+                }
 
+                recyclerView.getAdapter().notifyDataSetChanged();
+            }
             try {
                 pDialog.dismiss();
-            }catch (IllegalArgumentException e){}
-
-            recyclerView.getAdapter().notifyDataSetChanged();
+            } catch (IllegalArgumentException e) {
+            }
         }
     }
 

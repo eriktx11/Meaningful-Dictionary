@@ -1,5 +1,8 @@
 package mem.edu.meaningful;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +14,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,14 +47,26 @@ public class ConjugateFragment extends Fragment{
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.conjugate_page, container, false);
-        webView = (WebView) v.findViewById(R.id.webView);
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
 
-        _sPref = new AppPreferences(getContext());
-        if(_sPref.getSmsBody("sound")!=""){
-            new FetchImgList().execute(_sPref.getSmsBody("key"));
+        if(isConnected) {
+            View v = inflater.inflate(R.layout.conjugate_page, container, false);
+            webView = (WebView) v.findViewById(R.id.webView);
+
+            _sPref = new AppPreferences(getContext());
+            if (_sPref.getSmsBody("sound") != "") {
+                new FetchImgList().execute(_sPref.getSmsBody("key"));
+            }
+            return v;
         }
-        return v;
+        else {
+            Toast.makeText(getContext(), getString(R.string.network_toast), Toast.LENGTH_LONG).show();
+            return null;
+        }
     }
 
     public class FetchImgList extends AsyncTask<String, Void, String> {

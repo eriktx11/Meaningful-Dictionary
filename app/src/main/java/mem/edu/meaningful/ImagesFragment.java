@@ -1,7 +1,10 @@
 package mem.edu.meaningful;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,7 +47,13 @@ public class ImagesFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
 
+        if(isConnected) {
         View v = inflater.inflate(R.layout.imgs_grid, container, false);
         mGridView = (GridView) v.findViewById(R.id.imgsGridId);
         _sPref = new AppPreferences(getContext());
@@ -60,6 +70,11 @@ public class ImagesFragment extends Fragment {
         new FetchImgList().execute(_sPref.getSmsBody("key"));
 
         return v;
+        }
+        else {
+            Toast.makeText(getContext(), getString(R.string.network_toast), Toast.LENGTH_LONG).show();
+            return null;
+        }
     }
 
     public class FetchImgList extends AsyncTask<String, Void, String[]> {
