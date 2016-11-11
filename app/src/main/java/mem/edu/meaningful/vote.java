@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -69,11 +70,15 @@ public class vote extends Activity implements View.OnClickListener {
     public static String vote;
     public static String candidate;
     public static TextView voteView;
+    public static Fragment fg;
+    public static Activity activity;
 
 
-    public vote(Context c, TextView vote){
+    public vote(Context c, TextView vote, Fragment a, Activity ac){
         this.mContex=c;
         voteView=vote;
+        activity=ac;
+        fg=a;
     }
 
     public static View.OnClickListener btn_register = new View.OnClickListener(){
@@ -764,7 +769,7 @@ public class vote extends Activity implements View.OnClickListener {
             if(s[0].equals("1")){
                 tvEmail.setText("Counted!");
                 tvEmail.setVisibility(View.VISIBLE);
-                voteView.setText(s[1]);
+                new RecordingLayout(activity, fg).execute();
             }
         }
     }

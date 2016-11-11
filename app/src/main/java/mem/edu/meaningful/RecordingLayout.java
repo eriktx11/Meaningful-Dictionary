@@ -240,7 +240,7 @@ public class RecordingLayout extends AsyncTask<String, Void, String[]>{
                             TextView txtVote = (TextView) v.findViewById(vote_ly[vote_counter]);//creating the TextView to show how many votes exist.
                             vote_counter++;//moves index for next counter to the right.
                             txtVote.setText(recordingsURL[index - 5]);//getting the number of votes from the inbound data and displays to user
-                            voting = new vote(mActivity.getWindow().getContext(), txtVote);//sends context and TextView counter to vote Java constructor
+                            voting = new vote(mActivity.getWindow().getContext(), txtVote,fragment, mActivity);//sends context and TextView counter to vote Java constructor
                             ImageButton voteup_btn = (ImageButton) mActivity.findViewById(child_ly_id[vote_index]);//creates the up vote arrow
                             voteup_btn.setOnClickListener(voting);//setting onclickListener for up votting.
                             Integer id = child_ly_id[vote_index];//getting up vote ImageButton layout id
