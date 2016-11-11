@@ -2,6 +2,7 @@ package mem.edu.meaningful;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.UriPermission;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -96,9 +97,10 @@ public class record extends Activity implements View.OnClickListener {
 
             if (!_sPref.getAll().containsKey("userId")) {
 
-                String[] strFirstTime=new String[2];
+                String[] strFirstTime=new String[3];
                 strFirstTime[0] =  txtEmail.getText().toString();
                 strFirstTime[1] = _sPref.getSmsBody("loc");
+                strFirstTime[2] = _sPref.getSmsBody("full_loc");
                 new getHttpPost().execute(strFirstTime);
 
             } else {
@@ -128,6 +130,7 @@ public class record extends Activity implements View.OnClickListener {
             List<NameValuePair> paramx = new ArrayList<NameValuePair>();
             paramx.add(new BasicNameValuePair("sUsername", params[0]));
             paramx.add(new BasicNameValuePair("sLocation", params[1]));
+            paramx.add(new BasicNameValuePair("sCountry", params[2]));
             try {
                 httpPost.setEntity(new UrlEncodedFormEntity(paramx));
                 HttpResponse response = client.execute(httpPost);
@@ -187,11 +190,10 @@ public class record extends Activity implements View.OnClickListener {
 
             switch (postResult) {
                 case 1:
-                    if(s[1].equals("Email Exists!"))
-                    {
+                    if (s[1].equals("Email Exists!") || s[1].equals("Email needs validation!")) {
                         tvError.setVisibility(View.VISIBLE);
                         tvError.setTextColor(Color.parseColor("#FFF50B0B"));//red
-                        tvError.setText(s[1]+" request passcode");
+                        tvError.setText(s[1] + " request passcode");
                         tvEmail.setVisibility(View.INVISIBLE);
                         txtEmail.setEnabled(false);
                         choose.setText("Email me passcode");
@@ -199,24 +201,35 @@ public class record extends Activity implements View.OnClickListener {
                         upload.setEnabled(true);
                         upload.setText("Cancel");
                         upload.setOnClickListener(cancel);
-                    }
-                    else {
-                    tvError.setVisibility(View.VISIBLE);
-                    tvError.setTextColor(Color.parseColor("#FFF50B0B"));//red
-                    tvError.setText(s[1]);
+                    }else
+                    {
+                        tvError.setVisibility(View.VISIBLE);
+                        tvError.setTextColor(Color.parseColor("#FFF50B0B"));//red
+                        tvError.setText(s[1]);
                     }
                     break;
                 case 2:
-                    tvEmail.setVisibility(View.INVISIBLE);
-                    tvError.setVisibility(View.INVISIBLE);
-                    txtEmail.setVisibility(View.INVISIBLE);
-                    _sPref.saveSmsBody("userId", txtEmail.getText().toString());
-//                    upload.setEnabled(true);
-                    logOut.setVisibility(View.VISIBLE);
-                    logOut.setOnClickListener(btnLogout);
-                    // this will open audio folder to choose file.
-                    Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-                    fg.startActivityForResult(Intent.createChooser(openGallery, "Select Audio"), GALLEY_REQUEST_CODE);
+                    tvEmail.setText(s[1]);
+                    txtEmail.setVisibility(View.VISIBLE);
+                    tvEmail.setVisibility(View.VISIBLE);
+                    txtEmail.setEnabled(false);
+                    _sPref.saveSmsBody("emailflaw", txtEmail.getText().toString());
+                    choose.setText("Email me passcode");
+                    choose.setOnClickListener(sendCode);
+                    upload.setEnabled(true);
+                    upload.setText("Cancel");
+                    upload.setOnClickListener(cancel);
+//                        tvEmail.setVisibility(View.INVISIBLE);
+//                        txtEmail.setVisibility(View.INVISIBLE);
+//                        tvError.setVisibility(View.INVISIBLE);
+//                        _sPref.saveSmsBody("userId", _sPref.getSmsBody("emailflaw"));
+//                        logOut.setVisibility(View.VISIBLE);
+//                        logOut.setOnClickListener(btnLogout);
+//                        upload.setEnabled(false);
+//                        upload.setOnClickListener(btnUpload);
+//                        // this will open audio folder to choose file.
+//                        Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+//                        fg.startActivityForResult(Intent.createChooser(openGallery, "Select Audio"), GALLEY_REQUEST_CODE);
                     break;
             }
         }
@@ -391,7 +404,8 @@ public class record extends Activity implements View.OnClickListener {
             }
 
             switch (postResult){
-                case 0:tvError.setText("Wrong code");break;
+                case 0:tvError.setText("Wrong code");
+                       tvError.setVisibility(View.VISIBLE);break;
                 case 1:
                     txtEmail.setVisibility(View.INVISIBLE);
                     logOut.setVisibility(View.VISIBLE);
@@ -432,32 +446,7 @@ public class record extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-        dialog = new Dialog(mContex);
-        dialog.setContentView(R.layout.recording_box);
-        dialog.setTitle("Upload");
-
-        SoundFragment.realUri=null;
         _sPref = new AppPreferences(mContex);
-
-        image = (ImageView) dialog.findViewById(R.id.imageId);
-        txtEmail = (EditText) dialog.findViewById(R.id.txtEmail);
-        tvEmail = (TextView) dialog.findViewById(R.id.tvEmailId);
-        tvError = (TextView) dialog.findViewById(R.id.txtError);
-        logOut = (Button) dialog.findViewById(R.id.logOutId);
-
-        if (!_sPref.getAll().containsKey("userId")) {
-
-            tvEmail.setVisibility(View.VISIBLE);
-            txtEmail.setVisibility(View.VISIBLE);
-
-            if (txtEmail.requestFocus()) {
-                activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-            }
-        }else {
-            logOut.setVisibility(View.VISIBLE);
-            logOut.setOnClickListener(btnLogout);
-        }
-
         switch (v.getId()){//{"ca", "ny", "tn", "tx", "jm", "ng"}
             case R.id.rcrbtn1:_sPref.saveSmsBody("loc", "ca");_sPref.saveSmsBody("full_loc", "California");break;
             case R.id.rcrbtn2:_sPref.saveSmsBody("loc", "ny");_sPref.saveSmsBody("full_loc", "New York");break;
@@ -485,11 +474,40 @@ public class record extends Activity implements View.OnClickListener {
 //        Trinidad and Tobago tt
 //        United Kingdom uk
 
+        dialog = new Dialog(mContex);
+        dialog.setContentView(R.layout.recording_box);
+        dialog.setTitle("Upload");
+
+        SoundFragment.realUri=null;
+
+
+        image = (ImageView) dialog.findViewById(R.id.imageId);
+        txtEmail = (EditText) dialog.findViewById(R.id.txtEmail);
+        tvEmail = (TextView) dialog.findViewById(R.id.tvEmailId);
+        tvError = (TextView) dialog.findViewById(R.id.txtError);
+        logOut = (Button) dialog.findViewById(R.id.logOutId);
+
         choose = (Button) dialog.findViewById(R.id.btn_choose);
         upload = (Button) dialog.findViewById(R.id.btn_upload);
 
-        choose.setOnClickListener(btnChoose);
-        upload.setOnClickListener(btnUpload);
+        if (!_sPref.getAll().containsKey("userId")) {
+
+            String labelText="Uploading in: \n"+_sPref.getSmsBody("full_loc")+", are you sure?\n_________________\nYou won\'t be able to change your vote or Location";
+            tvEmail.setVisibility(View.VISIBLE);
+            tvEmail.setText(labelText);
+            choose.setText("OK");
+            choose.setOnClickListener(btn_agree);
+            upload.setText("CANCEL");
+            upload.setEnabled(true);
+            upload.setOnClickListener(btn_cancel);
+        }else {
+            logOut.setVisibility(View.VISIBLE);
+            logOut.setOnClickListener(btnLogout);
+
+            choose.setOnClickListener(btnChoose);
+            upload.setOnClickListener(btnUpload);
+        }
+
 
         if(MainActivity.network) {
             dialog.show();
@@ -497,6 +515,31 @@ public class record extends Activity implements View.OnClickListener {
             Toast.makeText(mContex, "No Network connexion", Toast.LENGTH_LONG).show();
         }
     }
+
+    public static View.OnClickListener btn_agree = new View.OnClickListener(){
+
+        @Override
+        public void onClick(View v) {
+            choose.setText("CHOOSE AUDIO");
+            choose.setOnClickListener(btnChoose);
+            upload.setEnabled(false);
+            upload.setText("UPLOAD");
+            upload.setOnClickListener(btnUpload);
+            txtEmail.setVisibility(View.VISIBLE);
+            tvEmail.setText("User not recognized. Please enter your valid email");
+//            if (txtEmail.requestFocus()) {
+//                activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+//            }
+        }
+    };
+
+    public static View.OnClickListener btn_cancel = new View.OnClickListener(){
+
+        @Override
+        public void onClick(View v) {
+            dialog.dismiss();
+        }
+    };
 
 
     public static class doFileUpload extends AsyncTask<String, Void, String[]> {

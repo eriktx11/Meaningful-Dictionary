@@ -81,9 +81,10 @@ public class vote extends Activity implements View.OnClickListener {
         @Override
         public void onClick(View v) {
 
-            String[] strFirstTime=new String[2];
+            String[] strFirstTime=new String[3];
             strFirstTime[0] =  txtEmail.getText().toString();
             strFirstTime[1] = _sPref.getSmsBody("loc");
+            strFirstTime[2] = _sPref.getSmsBody("full_loc");
 
             new getHttpPost().execute(strFirstTime);
         }
@@ -105,6 +106,7 @@ public class vote extends Activity implements View.OnClickListener {
             List<NameValuePair> paramx = new ArrayList<NameValuePair>();
             paramx.add(new BasicNameValuePair("sUsername", params[0]));
             paramx.add(new BasicNameValuePair("sLocation", params[1]));
+            paramx.add(new BasicNameValuePair("sCountry", params[2]));
             try {
                 httpPost.setEntity(new UrlEncodedFormEntity(paramx));
                 HttpResponse response = client.execute(httpPost);
@@ -164,7 +166,7 @@ public class vote extends Activity implements View.OnClickListener {
 
             switch (s[0]) {
                 case "0":
-                    if(s[1].equals("Email Exists!"))
+                    if(s[1].equals("Email Exists!") || s[1].equals("Email needs validation!"))
                     {
                         tvError.setVisibility(View.VISIBLE);
                         tvError.setTextColor(Color.parseColor("#FFF50B0B"));//red
@@ -183,14 +185,16 @@ public class vote extends Activity implements View.OnClickListener {
                     }
                     break;
                 case "1":
-                    tvEmail.setVisibility(View.INVISIBLE);
-                    tvError.setVisibility(View.INVISIBLE);
-                    txtEmail.setVisibility(View.INVISIBLE);
-                    _sPref.saveSmsBody("userId", txtEmail.getText().toString());
-                    logOut.setVisibility(View.VISIBLE);
-                    logOut.setOnClickListener(btnLogout);
-                    ok_log_vote.setText(voteLabel);
-                    ok_log_vote.setOnClickListener(btn_vote_now);
+                    tvEmail.setText(s[1]);
+                    txtEmail.setVisibility(View.VISIBLE);
+                    tvEmail.setVisibility(View.VISIBLE);
+                    txtEmail.setEnabled(false);
+                    _sPref.saveSmsBody("emailflaw", txtEmail.getText().toString());
+                    ok_log_vote.setText("Email me passcode");
+                    ok_log_vote.setOnClickListener(sendCode);
+                    cancel.setEnabled(true);
+                    cancel.setText("Cancel");
+                    cancel.setOnClickListener(btn_cancel);
                     break;
             }
         }
@@ -366,7 +370,6 @@ public class vote extends Activity implements View.OnClickListener {
             params[0] = strStatusID;
             params[1] = strError;
             return params;
-
         }
 
         @Override
@@ -481,6 +484,7 @@ public class vote extends Activity implements View.OnClickListener {
         cancel = (Button) dialog.findViewById(R.id.btn_cancel);
 
         ok_log_vote = (Button) dialog.findViewById(R.id.btn_login);
+
         Integer id =v.getId();
 
             switch (id){
@@ -664,7 +668,7 @@ public class vote extends Activity implements View.OnClickListener {
 //        Trinidad and Tobago tt
 //        United Kingdom uk
 
-        String labelText="Voting in: \n"+full_loc+", are you sure?\n_________________\nYou won\'t be able to change your vote";
+        String labelText="Voting in: \n"+full_loc+", are you sure?\n_________________\nYou won\'t be able to change your vote or Location";
         tvError.setText(labelText);
         ok_log_vote.setOnClickListener(btn_login_stat);
         cancel.setOnClickListener(btn_cancel);
@@ -743,6 +747,7 @@ public class vote extends Activity implements View.OnClickListener {
             }
             params[0] = strStatusID;
             params[1] = strVote;
+            params[2] = strError;
 
             return params;
         }
@@ -752,11 +757,13 @@ public class vote extends Activity implements View.OnClickListener {
             super.onPostExecute(s);
 
             if(s[0].equals("0")){
-                String labelText="Your vote already exists for that word. No vote was registered. Thank you";
                 tvError.setTextColor(Color.parseColor("#FFFC0202"));
-                tvError.setText(labelText);
+                tvError.setVisibility(View.VISIBLE);
+                tvError.setText(s[2]);
             }
             if(s[0].equals("1")){
+                tvEmail.setText("Counted!");
+                tvEmail.setVisibility(View.VISIBLE);
                 voteView.setText(s[1]);
             }
         }
