@@ -28,6 +28,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -50,34 +53,30 @@ import java.util.concurrent.TimeoutException;
 
 public class vote extends Activity implements View.OnClickListener {
 
-    public Dialog dialog;
+    public static Dialog dialog;
     private Context mContex;
-    private AppPreferences _sPref;
+    private static AppPreferences _sPref;
 
-    TextView tvError;
-    ImageView image;
-    EditText txtEmail;
-    TextView tvEmail;
-    Button logOut;
-    Button cancel;
-    Button ok_log_vote;
-    String voteLabel;
-    RecordingLayout ci;
+    public static TextView tvError;
+    public static ImageView image;
+    public static EditText txtEmail;
+    public static TextView tvEmail;
+    public static Button logOut;
+    public static Button cancel;
+    public static Button ok_log_vote;
+    public static String voteLabel;
 
-    String strStatusID;
-    String strVote;
-    int postResult;
-    String strError;
-    String vote;
-    String candidate;
-    private TextView voteView;
+    public static String vote;
+    public static String candidate;
+    public static TextView voteView;
+
 
     public vote(Context c, TextView vote){
         this.mContex=c;
-        this.voteView=vote;
+        voteView=vote;
     }
 
-    public View.OnClickListener btn_register = new View.OnClickListener(){
+    public static View.OnClickListener btn_register = new View.OnClickListener(){
 
         @Override
         public void onClick(View v) {
@@ -86,36 +85,104 @@ public class vote extends Activity implements View.OnClickListener {
             strFirstTime[0] =  txtEmail.getText().toString();
             strFirstTime[1] = _sPref.getSmsBody("loc");
 
-            LoginPlease login = new LoginPlease();
+            new getHttpPost().execute(strFirstTime);
+        }
+    };
 
+
+    //======================
+    public static class getHttpPost extends AsyncTask<String, Void, String[]> {
+
+        @Override
+        protected String[] doInBackground(String... params) {
+
+
+            String url = "http://www.dia40.com/oodles/meaning.php";
+            StringBuilder str = new StringBuilder();
+            HttpClient client = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url);
+
+            List<NameValuePair> paramx = new ArrayList<NameValuePair>();
+            paramx.add(new BasicNameValuePair("sUsername", params[0]));
+            paramx.add(new BasicNameValuePair("sLocation", params[1]));
             try {
-                 new LoginPlease.getHttpPost().execute(strFirstTime).get(3000, TimeUnit.MILLISECONDS);
-
-            } catch (InterruptedException e) {
+                httpPost.setEntity(new UrlEncodedFormEntity(paramx));
+                HttpResponse response = client.execute(httpPost);
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+                if (statusCode == 200) { // Status OK
+                    HttpEntity entity = response.getEntity();
+                    InputStream content = entity.getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        str.append(line);
+                    }
+                } else {
+                    Log.e("Log", "Failed to download result..");
+                }
+            } catch (ClientProtocolException e) {
                 e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (TimeoutException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
+            //logging.setFlag(true);
 
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            String strStatusID="0";
+            String strError="Please enter your email";
+            String result = str.toString();
+
+            if(result.equals("")){
+                strStatusID="0";
+                strError="Please enter your email";
+            }else {
+                /*** Default Value ***/
+                strStatusID="0";
+                strError="Unknow Status!";
+
+                JSONObject c;
+                try {
+                    c = new JSONObject(result);
+                    strStatusID=c.getString("StatusID");
+                    strError=c.getString("Error");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
-            switch (login.postResult) {
-                case 0:
-                    tvError.setText(login.strError);
-                    tvError.setTextColor(Color.parseColor("#FFFC0202"));
+            params[0] = strStatusID;
+            params[1] = strError;
+
+            return params;
+        }
+
+        @Override
+        protected void onPostExecute(String[] s) {
+            super.onPostExecute(s);
+
+
+            switch (s[0]) {
+                case "0":
+                    if(s[1].equals("Email Exists!"))
+                    {
+                        tvError.setVisibility(View.VISIBLE);
+                        tvError.setTextColor(Color.parseColor("#FFF50B0B"));//red
+                        tvError.setText(s[1]+" request passcode");
+                        tvEmail.setVisibility(View.INVISIBLE);
+                        txtEmail.setEnabled(false);
+                        ok_log_vote.setText("Email me passcode");
+                        ok_log_vote.setOnClickListener(sendCode);
+                        cancel.setEnabled(true);
+                        cancel.setText("Cancel");
+                        cancel.setOnClickListener(btn_cancel);
+                    }
+                    else {
+                        tvError.setText(s[1]);
+                        tvError.setTextColor(Color.parseColor("#FFFC0202"));
+                    }
                     break;
-                case 1:
-                    tvError.setText(login.strError);
-                    tvError.setTextColor(Color.parseColor("#FFFC0202"));
-                    break;
-                case 2:
+                case "1":
                     tvEmail.setVisibility(View.INVISIBLE);
                     tvError.setVisibility(View.INVISIBLE);
                     txtEmail.setVisibility(View.INVISIBLE);
@@ -127,7 +194,215 @@ public class vote extends Activity implements View.OnClickListener {
                     break;
             }
         }
+    }
+
+    public static View.OnClickListener sendCode = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            _sPref.saveSmsBody("emailflaw",txtEmail.getText().toString());
+            String emailflaw = _sPref.getSmsBody("emailflaw");
+            new sendPassCodeTask().execute(emailflaw,"");
+        }
     };
+
+
+
+    //===== start of sendPassCodeTask
+    public static class sendPassCodeTask extends AsyncTask<String, Void, String[]> {
+
+        @Override
+        protected String[] doInBackground(String... params) {
+
+
+            String urldata = "http://www.dia40.com/oodles/wflag.php";
+            StringBuilder strdata = new StringBuilder();
+            HttpClient client = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(urldata);
+            String result = "null";
+
+            try {
+                MultipartEntity entityFile = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+                entityFile.addPart("strUsername", new StringBody(params[0]));
+
+                httpPost.setEntity(entityFile);
+
+                HttpResponse response = client.execute(httpPost);
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+
+                if (statusCode == 200) {
+
+                    HttpEntity entity = response.getEntity();
+                    InputStream content = entity.getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        strdata.append(line);
+                    }
+                } else {
+                    Log.e("Log", "Failed to insert...");
+                }
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            result = strdata.toString();
+            Log.e("Debug", result);
+
+            String strStatusID="0";
+            String strError="";
+
+            if(result.equals("")){
+                strStatusID="0";
+                strError="Can not read Server";
+            }else {
+                JSONObject c;
+                try {
+                    c = new JSONObject(result);
+                    strStatusID=c.getString("StatusID");
+                    strError=c.getString("Error");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            params[0] = strStatusID;
+            params[1] = strError;
+            return params;
+
+        }
+
+        @Override
+        protected void onPostExecute(String[] val) {
+            super.onPostExecute(val);
+
+            txtEmail.setText("");
+            tvError.setVisibility(View.INVISIBLE);
+            tvEmail.setVisibility(View.VISIBLE);
+            tvEmail.setText("Passcode sent! Check your email");
+            ok_log_vote.setText("OK");
+            txtEmail.setEnabled(true);
+            ok_log_vote.setOnClickListener(validateCode);
+        }
+    }
+    //===== end of sendPassCodeTask
+
+
+    public static View.OnClickListener validateCode = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            new validateCodeTask().execute(txtEmail.getText().toString(),"");
+        }
+    };
+
+
+    //===== start of validateCodeTask
+    public static class validateCodeTask extends AsyncTask<String, Void, String[]> {
+
+        @Override
+        protected String[] doInBackground(String... params) {
+
+
+            String urldata = "http://www.dia40.com/oodles/vflag.php";
+            StringBuilder strdata = new StringBuilder();
+            HttpClient client = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(urldata);
+            String result = "null";
+
+            try {
+                MultipartEntity entityFile = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+                String emailflaw = _sPref.getSmsBody("emailflaw");
+                entityFile.addPart("strPass", new StringBody(params[0]));
+                entityFile.addPart("strUser", new StringBody(emailflaw));
+
+                httpPost.setEntity(entityFile);
+
+                HttpResponse response = client.execute(httpPost);
+                StatusLine statusLine = response.getStatusLine();
+                int statusCode = statusLine.getStatusCode();
+
+                if (statusCode == 200) {
+
+                    HttpEntity entity = response.getEntity();
+                    InputStream content = entity.getContent();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        strdata.append(line);
+                    }
+                } else {
+                    Log.e("Log", "Failed to insert...");
+                }
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Log.e("Debug", result);
+
+            result = strdata.toString();
+            String strError="Please enter your email";
+            String strStatusID ="Error in request";
+
+            if(result.equals("")){
+                strStatusID="0";
+                strError="Error in request";
+            }else {
+                JSONObject c;
+                try {
+                    c = new JSONObject(result);
+                    strStatusID=c.getString("StatusID");
+                    strError=c.getString("Error");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            params[0] = strStatusID;
+            params[1] = strError;
+            return params;
+
+        }
+
+        @Override
+        protected void onPostExecute(String[] val) {
+            super.onPostExecute(val);
+
+            int postResult;
+            if(val[0].equals("0"))
+            {
+                postResult=0;
+            }else {
+                postResult=1;
+            }
+
+            switch (postResult){
+                case 0:tvError.setText("Wrong code");
+                    tvError.setVisibility(View.VISIBLE);
+                    break;
+                case 1:
+                    txtEmail.setVisibility(View.INVISIBLE);
+                    logOut.setVisibility(View.VISIBLE);
+                    logOut.setOnClickListener(btnLogout);
+                    _sPref.saveSmsBody("userId",_sPref.getSmsBody("emailflaw"));
+                    tvError.setVisibility(View.INVISIBLE);
+                    tvEmail.setVisibility(View.VISIBLE);
+                    tvEmail.setText("Welcome back");
+                    cancel.setText("CANCEL");
+                    cancel.setVisibility(View.VISIBLE);
+                    ok_log_vote.setText(voteLabel);
+                    ok_log_vote.setOnClickListener(btn_vote_now);
+                    break;
+            }
+        }
+    }
+    //===== end of validateCodeTask
+
 
     public View.OnClickListener btn_login_stat = new View.OnClickListener(){
 
@@ -144,11 +419,13 @@ public class vote extends Activity implements View.OnClickListener {
                 logOut.setOnClickListener(btnLogout);
                 ok_log_vote.setText(voteLabel);
                 ok_log_vote.setOnClickListener(btn_vote_now);
+                cancel.setText("CANCEL");
+                cancel.setOnClickListener(btn_cancel);
             }
         }
     };
 
-    public View.OnClickListener btn_vote_now = new View.OnClickListener(){
+    public static View.OnClickListener btn_vote_now = new View.OnClickListener(){
 
         @Override
         public void onClick(View v) {
@@ -167,7 +444,7 @@ public class vote extends Activity implements View.OnClickListener {
         }
     };
 
-    public View.OnClickListener btn_cancel = new View.OnClickListener(){
+    public static View.OnClickListener btn_cancel = new View.OnClickListener(){
 
         @Override
         public void onClick(View v) {
@@ -175,7 +452,7 @@ public class vote extends Activity implements View.OnClickListener {
         }
     };
 
-    private View.OnClickListener btnLogout = new View.OnClickListener() {
+    private static View.OnClickListener btnLogout = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             _sPref.removePref("userId");
@@ -194,7 +471,7 @@ public class vote extends Activity implements View.OnClickListener {
         String full_loc = _sPref.getSmsBody("full_loc");
         dialog = new Dialog(mContex);
         dialog.setContentView(R.layout.vote_layout);
-        dialog.setTitle("vote");
+        dialog.setTitle("Vote");
 
         image = (ImageView) dialog.findViewById(R.id.imageId);
         txtEmail = (EditText) dialog.findViewById(R.id.txtEmail);
@@ -402,7 +679,7 @@ public class vote extends Activity implements View.OnClickListener {
     }
 
     //======================
-    public class postVote extends AsyncTask<String, Void, String[]> {
+    public static class postVote extends AsyncTask<String, Void, String[]> {
 
 
         @Override
@@ -443,9 +720,11 @@ public class vote extends Activity implements View.OnClickListener {
             }
 
             String result = str.toString();
+            String strStatusID="0";
+            String strError="";
+            String strVote="0";
 
             if(result.equals("")){
-                postResult=0;
                 strError="Please enter your email";
             }else {
                 /*** Default Value ***/
@@ -461,17 +740,7 @@ public class vote extends Activity implements View.OnClickListener {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                // Prepare Save Data
-                if (strStatusID.equals("0")) {
-//                    logging.setPostResult(1);
-                    postResult=1;
-                } else {
-                    postResult=2;
-//                    logging.setPostResult(2);
-                }
             }
-
             params[0] = strStatusID;
             params[1] = strVote;
 

@@ -2,9 +2,11 @@ package mem.edu.meaningful;
 
 import android.app.ActionBar;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -49,13 +51,13 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener SearchListener = new View.OnClickListener() {
         public void onClick(View v) {
 
-            ConnectivityManager cm =
-                    (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-            boolean isConnected = activeNetwork != null &&
-                    activeNetwork.isConnectedOrConnecting();
+//            ConnectivityManager cm =
+//                    (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+//            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+//            boolean isConnected = activeNetwork != null &&
+//                    activeNetwork.isConnectedOrConnecting();
 
-            if(isConnected) {//If not network don't run service
+            if(network) {//If not network don't run service
 
                 searchWord = editText.getText().toString();
                 _sPref.saveSmsBody("key", searchWord);
@@ -101,12 +103,6 @@ public class MainActivity extends AppCompatActivity {
         titleStrip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
 
         network = isDataConnected();
-        registerReceiver(new BroadcastReceiver() {
-            public void onReceive(Context context, Intent intent) {
-                network = isDataConnected();
-            }
-        }, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
-
     }
 
     private boolean isDataConnected() {
@@ -116,6 +112,26 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             return false;
         }
+    }
+
+
+    private BroadcastReceiver networkStateReceiver=new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            network = isDataConnected();
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    public void onPause() {
+        unregisterReceiver(networkStateReceiver);
+        super.onPause();
     }
 
     @Override

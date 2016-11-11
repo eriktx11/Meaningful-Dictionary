@@ -47,13 +47,7 @@ public class ConjugateFragment extends Fragment{
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        ConnectivityManager cm =
-                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-
-        if(isConnected) {
+        if(MainActivity.network) {
             View v = inflater.inflate(R.layout.conjugate_page, container, false);
             webView = (WebView) v.findViewById(R.id.webView);
 

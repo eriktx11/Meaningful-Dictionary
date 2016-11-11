@@ -172,8 +172,6 @@ public class SoundFragment extends Fragment {//
                 .into((ImageView) rootView.findViewById(R.id.imageView13));
 
 
-
-
 //        Australia au
 //        Canada ca use-> cca for android
 //        India in
@@ -184,13 +182,7 @@ public class SoundFragment extends Fragment {//
 //        Trinidad and Tobago tt
 //        The United Kingdom uk
 
-        ConnectivityManager cm =
-                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-
-        if(isConnected) {
+        if(MainActivity.network) {
             new RecordingLayout(getActivity(), fragment).execute();
             return rootView;
         }else {
